@@ -1,0 +1,96 @@
+{#
+/**
+ * @file
+ * Theme override to display a region.
+ *
+ * Available variables:
+ * - content: The content for this region, typically blocks.
+ * - attributes: HTML attributes for the region div.
+ * - region: The name of the region variable as defined in the theme's
+ *   .info.yml file.
+ *
+ * @ingroup templates
+ *
+ * @see template_preprocess_region()
+ */
+#}
+{%
+  set classes = [
+    'region',
+    'region-' ~ region|clean_class,
+    'footer-dark',
+  ]
+%}
+{% if content %}
+  <footer{{ attributes.addClass(classes) }}>
+    <div class="container">
+      <div class="col-sm-12">
+          {{ content }}
+      </div>
+        <div class="col-sm-12">
+          <hr>
+      </div>
+      <!-- Copyrights -->
+        <div class="col-sm-12">
+          <p>&copy; Mosaic 2014. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+      </div>
+    </div>
+    </footer>
+  </footer>
+{% endif %}
+<div class="style-toggle text-left hidden-xs">
+  <i class="fa fa-gears style-toggle-btn"></i>
+  <div class="style-toggle-header text-center">
+    Navbar Type
+  </div>
+  <div class="style-toggle-body text-left">
+    <div class="radio">
+      <label>
+        <input type="radio" name="navbar" id="opt-navbar-dark" value="opt-navbar-dark" checked>
+        Navbar Dark (default)
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="navbar" id="opt-navbar-white" value="opt-navbar-white">
+        Navbar White
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="navbar" id="opt-navbar-mixed" value="opt-navbar-mixed">
+        Navbar Mixed
+      </label>
+    </div>
+  </div>
+  <div class="style-toggle-header text-center">
+    Color Styles
+  </div>
+  <div class="style-toggle-body text-center">
+    <ul class="colors list-inline">
+      <li class="green"></li>
+      <li class="blue"></li>
+      <li class="orange"></li>
+      <li class="red"></li>
+    </ul>
+  </div>
+  <div class="style-toggle-header text-center">
+    Footer Type
+  </div>
+  <div class="style-toggle-body text-left">
+    <div class="radio">
+      <label>
+        <input type="radio" name="footer" id="opt-footer-dark" value="opt-footer-dark" checked>
+        Footer Dark (default)
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="footer" id="opt-footer-white" value="opt-footer-white">
+        Footer White
+      </label>
+    </div>
+    <hr>
+    <a href="theme-faq.html"><i class="fa fa-question-circle"></i> Using color schemes on a production site.</a>
+  </div>
+</div>

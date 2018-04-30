@@ -1,0 +1,55 @@
+==================================================================
+https://keybase.io/deburca
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://deburca.org
+  * I am deburca (https://keybase.io/deburca) on keybase.
+  * I have a public key ASDsFsLFPWO8FV6MaAuRY671kMWWF2SKztkfJzH9aqBD4Ao
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "0120ec16c2c53d63bc155e8c680b9163aef590c59617648aced91f2731fd6aa043e00a",
+      "host": "keybase.io",
+      "kid": "0120ec16c2c53d63bc155e8c680b9163aef590c59617648aced91f2731fd6aa043e00a",
+      "uid": "e9ce28aa21484553e9ca78f50102cb19",
+      "username": "deburca"
+    },
+    "merkle_root": {
+      "ctime": 1507922688,
+      "hash": "44265d507074ab3d6eff29e91131702e21d6ea2477336bb2b118c08d6f59f088cdbdd6be2ddc2bb5fd5cbd5d637477da0ccd02cc13f93bf6108ddcc715e72553",
+      "hash_meta": "98ccd1d8f4a93f162b9e82d3bf70da97c1c3d6bd1688a4280e28c6516e44e7cd",
+      "seqno": 1574616
+    },
+    "service": {
+      "hostname": "deburca.org",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "1.0.33"
+  },
+  "ctime": 1507922706,
+  "expire_in": 504576000,
+  "prev": "c130227fdb58920726efce1c3ccd866582818db197513b7caba4ad3329e2df8b",
+  "seqno": 6,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg7BbCxT1jvBVejGgLkWOu9ZDFlhdkis7ZHycx/WqgQ+AKp3BheWxvYWTFA0J7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTIwZWMxNmMyYzUzZDYzYmMxNTVlOGM2ODBiOTE2M2FlZjU5MGM1OTYxNzY0OGFjZWQ5MWYyNzMxZmQ2YWEwNDNlMDBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwZWMxNmMyYzUzZDYzYmMxNTVlOGM2ODBiOTE2M2FlZjU5MGM1OTYxNzY0OGFjZWQ5MWYyNzMxZmQ2YWEwNDNlMDBhIiwidWlkIjoiZTljZTI4YWEyMTQ4NDU1M2U5Y2E3OGY1MDEwMmNiMTkiLCJ1c2VybmFtZSI6ImRlYnVyY2EifSwibWVya2xlX3Jvb3QiOnsiY3RpbWUiOjE1MDc5MjI2ODgsImhhc2giOiI0NDI2NWQ1MDcwNzRhYjNkNmVmZjI5ZTkxMTMxNzAyZTIxZDZlYTI0NzczMzZiYjJiMTE4YzA4ZDZmNTlmMDg4Y2RiZGQ2YmUyZGRjMmJiNWZkNWNiZDVkNjM3NDc3ZGEwY2NkMDJjYzEzZjkzYmY2MTA4ZGRjYzcxNWU3MjU1MyIsImhhc2hfbWV0YSI6Ijk4Y2NkMWQ4ZjRhOTNmMTYyYjllODJkM2JmNzBkYTk3YzFjM2Q2YmQxNjg4YTQyODBlMjhjNjUxNmU0NGU3Y2QiLCJzZXFubyI6MTU3NDYxNn0sInNlcnZpY2UiOnsiaG9zdG5hbWUiOiJkZWJ1cmNhLm9yZyIsInByb3RvY29sIjoiaHR0cHM6In0sInR5cGUiOiJ3ZWJfc2VydmljZV9iaW5kaW5nIiwidmVyc2lvbiI6MX0sImNsaWVudCI6eyJuYW1lIjoia2V5YmFzZS5pbyBnbyBjbGllbnQiLCJ2ZXJzaW9uIjoiMS4wLjMzIn0sImN0aW1lIjoxNTA3OTIyNzA2LCJleHBpcmVfaW4iOjUwNDU3NjAwMCwicHJldiI6ImMxMzAyMjdmZGI1ODkyMDcyNmVmY2UxYzNjY2Q4NjY1ODI4MThkYjE5NzUxM2I3Y2FiYTRhZDMzMjllMmRmOGIiLCJzZXFubyI6NiwidGFnIjoic2lnbmF0dXJlIn2jc2lnxEAIO7r8quW8CTmOFnvKxTEYBKpAHwWbfbwFX5sU93iQ3S0IZCJkmnDwAl2bmQ6JR3w1sOsXMzGBBVIr7DLPtuYNqHNpZ190eXBlIKRoYXNogqR0eXBlCKV2YWx1ZcQg8a+L68Nm4SZpt6o/umrooQ7b4sPvyfgwBQ85DX3rZhujdGFnzQICp3ZlcnNpb24B
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/deburca
+
+==================================================================
