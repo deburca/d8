@@ -24,7 +24,7 @@ interface EnumerableInterface{
 	 *
 	 * @return mixed
 	 */
-	public function __each(callable $callback);
+	public function __each($callback);
 
 	/**
 	 * @param callable $callback
@@ -37,6 +37,11 @@ interface EnumerableInterface{
 	 * @return mixed
 	 */
 	public function __reverse();
+
+	/**
+	 * @return mixed
+	 */
+	public function __first();
 
 	/**
 	 * @return mixed
@@ -58,20 +63,13 @@ interface EnumerableInterface{
 	 *
 	 * @return array
 	 */
-	public function __findAll(callable $callback):array;
+	public function __findAll($callback):array;
 
 	/**
 	 * @param callable $callback
 	 *
 	 * @return array
 	 */
-	public function __reject(callable $callback):array;
-
-	/**
-	 * @param array $y
-	 *
-	 * @return bool
-	 */
-	public function __equal(array $y):bool;
+	public function __reject($callback):array;
 
 }

@@ -45,7 +45,7 @@ trait Enumerable{
 	 *
 	 * @return $this
 	 */
-	public function __each(callable $callback){
+	public function __each($callback){
 		$this->__map($callback);
 
 		return $this;
@@ -90,8 +90,15 @@ trait Enumerable{
 	/**
 	 * @return mixed
 	 */
+	public function __first(){
+		return $this->array[0] ?? null;
+	}
+
+	/**
+	 * @return mixed
+	 */
 	public function __last(){
-		return $this->array[count($this->array) - 1];
+		return $this->array[count($this->array) - 1] ?? null;
 	}
 
 	/**
@@ -120,7 +127,7 @@ trait Enumerable{
 	 * @return array
 	 * @throws \chillerlan\Traits\TraitException
 	 */
-	public function __findAll(callable $callback):array{
+	public function __findAll($callback):array{
 
 		if(!is_callable($callback)){
 			throw new TraitException('invalid callback');
@@ -147,7 +154,7 @@ trait Enumerable{
 	 * @return array
 	 * @throws \chillerlan\Traits\TraitException
 	 */
-	public function __reject(callable $callback):array{
+	public function __reject($callback):array{
 
 		if(!is_callable($callback)){
 			throw new TraitException('invalid callback');
@@ -164,26 +171,6 @@ trait Enumerable{
 		}
 
 		return $return;
-	}
-
-	/**
-	 * @param array $y
-	 *
-	 * @return bool
-	 */
-	public function __equal(array $y):bool{
-
-		if(count($this->array) !== count($y)){
-			return false;
-		}
-
-		$diff = 0;
-
-		foreach($this->array as $kx => $vx){
-			$diff |= $vx ^ $y[$kx];
-		}
-
-		return ((($diff - 1) >> 31) & 1) === 1;
 	}
 
 }

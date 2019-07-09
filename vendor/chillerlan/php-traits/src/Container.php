@@ -12,7 +12,7 @@
 
 namespace chillerlan\Traits;
 
-use ReflectionProperty;
+use ReflectionClass, ReflectionProperty;
 
 /**
  * a generic container with magic getter and setter
@@ -20,21 +20,24 @@ use ReflectionProperty;
 trait Container{
 
 	/**
-	 * @var \chillerlan\Traits\DotEnv|null
+	 * @param iterable $properties
 	 */
-	private $env;
-
-	/**
-	 * @param iterable                       $properties
-	 * @param \chillerlan\Traits\DotEnv|null $env
-	 */
-	public function __construct(array $properties = null, DotEnv $env = null){
-		$this->env = $env;
+	public function __construct(array $properties = null){
 
 		if(!empty($properties)){
 			$this->__fromIterable($properties);
 		}
 
+		// call a method with trait name as replacement constructor for each trait
+		$traits = (new ReflectionClass($this))->getTraits();
+
+		foreach($traits as $trait){
+			$method = $trait->getShortName();
+
+			if(method_exists($this, $method)){
+				call_user_func([$this, $trait->getShortName()]);
+			}
+		}
 	}
 
 	/**
@@ -46,9 +49,6 @@ trait Container{
 
 		if($this->__isset($property)){
 			return $this->{$property};
-		}
-		elseif($this->env instanceof DotEnv){
-			return $this->env->get($property);
 		}
 
 		return null;
@@ -65,11 +65,10 @@ trait Container{
 		// avoid overwriting private properties
 		if(property_exists($this, $property) && !$this->__isPrivate($property)){
 			$this->{$property} = $value;
-		}
-		elseif($this->env instanceof DotEnv){
-			$this->env->set($property, $value);
+			return;
 		}
 
+		return; // should not see me
 	}
 
 	/**
@@ -78,7 +77,7 @@ trait Container{
 	 * @return bool
 	 */
 	public function __isset(string $property):bool{
-		return (property_exists($this, $property) && !$this->__isPrivate($property)) || ($this->env instanceof DotEnv && $this->env->get($property));
+		return (isset($this->{$property}) && !$this->__isPrivate($property));
 	}
 
 	/**
@@ -144,10 +143,12 @@ trait Container{
 	}
 
 	/**
+	 * @param bool|null $prettyprint
+	 *
 	 * @return string
 	 */
-	public function __toJSON():string{
-		return json_encode($this->__toArray());
+	public function __toJSON(bool $prettyprint = null):string{
+		return json_encode($this->__toArray(), $prettyprint ? JSON_PRETTY_PRINT : 0);
 	}
 
 	/**

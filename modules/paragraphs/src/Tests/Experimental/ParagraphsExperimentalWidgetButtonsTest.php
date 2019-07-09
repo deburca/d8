@@ -81,7 +81,7 @@ class ParagraphsExperimentalWidgetButtonsTest extends ParagraphsExperimentalTest
     $this->drupalPostAjaxForm(NULL, $edit, 'field_paragraphs_1_collapse');
     // Verify that we have warning message for each paragraph.
     $this->assertEqual(2, count($this->xpath("//*[contains(@class, 'paragraphs-icon-changed')]")));
-    $this->assertRaw('<div class="paragraphs-collapsed-description">' . $closed_mode_text);
+    $this->assertRaw('<span class="summary-content">' . $closed_mode_text);
     $this->drupalPostForm(NULL, [], t('Save'));
     $this->assertText('paragraphed_test ' . $node->label() . ' has been updated.');
     $this->assertText($closed_mode_text);
@@ -211,7 +211,6 @@ class ParagraphsExperimentalWidgetButtonsTest extends ParagraphsExperimentalTest
     $this->assertNoField('edit-field-paragraphs-1-top-actions-dropdown-actions-test-button');
 
     // Check that "Duplicate" is hidden during translation.
-    $this->drupalPostAjaxForm(NULL, [], 'field_paragraphs_0_edit');
     $this->assertNoField('field_paragraphs_0_duplicate');
     $this->assertNoRaw('value="Duplicate"');
   }

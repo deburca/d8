@@ -1,6 +1,9 @@
 seckit_xss:
   csp:
     checkbox: FALSE
+    vendor-prefix:
+      x: FALSE
+      webkit: FALSE
     report-only: FALSE
     default-src: ''
     script-src: ''
@@ -8,10 +11,12 @@ seckit_xss:
     img-src: ''
     media-src: ''
     frame-src: ''
+    frame-ancestors: ''
     child-src: ''
     font-src: ''
     connect-src: ''
     report-uri: '/report-csp-violation'
+    upgrade-req: FALSE
     policy-uri: ''
   x_xss:
     seckit_x_xss_option_disable: Disabled
@@ -19,8 +24,6 @@ seckit_xss:
     seckit_x_xss_option_1: '1;'
     seckit_x_xss_option_1_block: '1; mode=block'
     select: 0
-  x_content_type:
-    checkbox: TRUE
 seckit_csrf:
   origin: FALSE
   origin_whitelist: ''
@@ -34,8 +37,17 @@ seckit_ssl:
   hsts_subdomains: FALSE
   hsts_max_age: 1000
   hsts_preload: FALSE
+seckit_ct:
+  expect_ct: FALSE
+  max_age: 86400
+  report_uri: ''
+  enforce: FALSE
+seckit_fp:
+  feature_policy: FALSE
+  feature_policy_policy: ''
 seckit_various:
   from_origin: FALSE
   from_origin_destination: same
-  from_origin_destination: ''
+  referrer_policy: FALSE
+  referrer_policy_policy: 'no-referrer-when-downgrade'
   disable_autocomplete: FALSE
