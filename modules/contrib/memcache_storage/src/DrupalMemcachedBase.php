@@ -101,6 +101,11 @@ abstract class DrupalMemcachedBase implements DrupalMemcachedInterface {
 
     // Initialize pecl memcache(d) object.
     $this->memcached = new $this->extension();
+    if (!empty($settings['sasl_auth']['user']) && !empty($settings['sasl_auth']['password'])) {
+      // SASL auth works only with binary protocol.
+      $this->memcached->setOption(\Memcached::OPT_BINARY_PROTOCOL, TRUE);
+      $this->memcached->setSaslAuthData($settings['sasl_auth']['user'], $settings['sasl_auth']['password']);
+    }
 
     // Save settings related to memcache_storage.
     $this->settings = $settings;

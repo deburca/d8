@@ -66,10 +66,11 @@ class DrupalMemcached extends DrupalMemcachedBase {
     // Add SASL support.
     // See http://php.net/manual/en/memcached.setsaslauthdata.php
     if (!empty($this->settings['sasl_auth']['user']) && !empty($this->settings['sasl_auth']['password'])) {
-      $this->memcached->setSaslAuthData($this->settings['sasl_auth']['user'], $this->settings['sasl_auth']['password']);
-
       // SASL auth works only with binary protocol.
       $this->options[\Memcached::OPT_BINARY_PROTOCOL] = TRUE;
+      $this->memcached->setOption(\Memcached::OPT_BINARY_PROTOCOL, TRUE);
+
+      $this->memcached->setSaslAuthData($this->settings['sasl_auth']['user'], $this->settings['sasl_auth']['password']);
     }
 
     // Set pecl memcached options.
