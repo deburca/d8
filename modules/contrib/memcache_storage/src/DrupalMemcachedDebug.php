@@ -61,8 +61,9 @@ class DrupalMemcachedDebug {
     }
 
     foreach ($common_stats as &$stats) {
-      $stats['hit']  = $stats['hit']  . ' / ' . number_format($stats['hit']  / ($stats['hit'] + $stats['miss']) * 100, 1) . '%';
-      $stats['miss'] = $stats['miss'] . ' / ' . number_format($stats['miss'] / ($stats['hit'] + $stats['miss']) * 100, 1) . '%';
+      $hit = $stats['hit'];
+      $stats['hit']  = $stats['hit']  . ' / ' . number_format($hit / ($hit + $stats['miss']) * 100, 1) . '%';
+      $stats['miss'] = $stats['miss'] . ' / ' . number_format($stats['miss'] / ($hit + $stats['miss']) * 100, 1) . '%';
     }
 
     return [
