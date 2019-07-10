@@ -46,7 +46,8 @@
         "drupal/paragraphs_edit": "^2.0",
         "drupal/redirect": "^1.4",
         "drupal/views_bootstrap": "^4.1",
-        "drupal/security_review": "1.x-dev"
+        "drupal/security_review": "1.x-dev",
+        "drupal/simplepodcast": "^1.8"
     },
     "replace": {
         "drupal/core": "^8.7"
