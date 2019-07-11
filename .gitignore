@@ -44,3 +44,4 @@ Vagrantfile
 .idea/*
 .DS_Store
 file_write_test.*
+sites/sites.php
