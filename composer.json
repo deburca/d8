@@ -45,9 +45,12 @@
         "drupal/memcache": "^2.0",
         "drupal/paragraphs_edit": "^2.0",
         "drupal/redirect": "^1.4",
-        "drupal/views_bootstrap": "^3.1",
+        "drupal/views_bootstrap": "^4.1",
         "drupal/security_review": "1.x-dev",
-        "drupal/simplepodcast": "^1.8"
+        "drupal/simplepodcast": "^1.8",
+        "drupal/bootstrap_barrio": "^4.22",
+        "drupal/bootstrap_library": "^1.11",
+        "oomphinc/composer-installers-extender": "^1.1"
     },
     "replace": {
         "drupal/core": "^8.7"
@@ -74,8 +77,10 @@
             "replace": false,
             "merge-extra": false
         },
+        "installer-types": ["twbs"],
         "installer-paths": {
             "core": ["type:drupal-core"],
+            "libraries/{$name}": ["type:drupal-library", "type:twbs"],
             "modules/contrib/{$name}": ["type:drupal-module"],
             "profiles/contrib/{$name}": ["type:drupal-profile"],
             "themes/contrib/{$name}": ["type:drupal-theme"],

@@ -57,3 +57,4 @@
  */
 $sites['falconi.net'] = 'falconi';
 $sites['deburca.org'] = 'deburca';
+$sites['localhost'] = 'deburca';
