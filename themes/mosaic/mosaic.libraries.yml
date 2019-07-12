@@ -6,6 +6,7 @@ theme:
       css/ui-elements.css: {}
       css/animate.css: {}
       css/lightbox.min.css: {}
+      css/tether.min.css: {}
       css/custom.css: {}
       fonts/font-awesome/css/font-awesome.min.css: {}
       '//fonts.googleapis.com/css?family=Oswald:400,700,300': {type: external}
@@ -16,6 +17,7 @@ theme:
     js/jquery.sticky.js: {}
     js/imagesloaded.pkgd.min.js: {}
     js/isotope.pkgd.min.js: {}
+    js/tether.min.js: {}
     js/custom.js: {}
     js/isotope-custom.js: {}
     js/lightbox.js: {}
