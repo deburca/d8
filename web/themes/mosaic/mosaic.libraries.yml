@@ -1,0 +1,30 @@
+theme:
+  css:
+    theme:
+      css/style.css: {}
+      css/color-styles.css: {}
+      css/ui-elements.css: {}
+      css/animate.css: {}
+      css/lightbox.min.css: {}
+      css/tether.min.css: {}
+      css/custom.css: {}
+      fonts/font-awesome/css/font-awesome.min.css: {}
+      '//fonts.googleapis.com/css?family=Oswald:400,700,300': {type: external}
+      '//fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic,700italic': {type: external}
+
+  js:
+    js/scrolltopcontrol.js: {}
+    js/jquery.sticky.js: {}
+    js/imagesloaded.pkgd.min.js: {}
+    js/isotope.pkgd.min.js: {}
+    js/tether.min.js: {}
+    js/custom.js: {}
+    js/isotope-custom.js: {}
+    js/lightbox.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal.ajax
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery.once
+
