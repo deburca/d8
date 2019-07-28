@@ -1,8 +1,0 @@
-{
-    "gitflow4code.features": [
-        {
-            "name": "feature/bootstrap4",
-            "base": "develop"
-        }
-    ]
-}
