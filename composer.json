@@ -25,7 +25,6 @@
         "drupal/backup_migrate": "^4.0",
         "drupal/block_class": "^1.0",
         "drupal/blogapi": "^1.0",
-        "drupal/bootstrap": "^3.20",
         "drupal/bootstrap_barrio": "^4.22",
         "drupal/bootstrap_layouts": "^5.1",
         "drupal/bootstrap_library": "^1.11",

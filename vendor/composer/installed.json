@@ -445,17 +445,17 @@
     },
     {
         "name": "composer/installers",
-        "version": "v1.6.0",
-        "version_normalized": "1.6.0.0",
+        "version": "v1.7.0",
+        "version_normalized": "1.7.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/composer/installers.git",
-            "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b"
+            "reference": "141b272484481432cda342727a427dc1e206bfa0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/cfcca6b1b60bc4974324efb5783c13dca6932b5b",
-            "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b",
+            "url": "https://api.github.com/repos/composer/installers/zipball/141b272484481432cda342727a427dc1e206bfa0",
+            "reference": "141b272484481432cda342727a427dc1e206bfa0",
             "shasum": ""
         },
         "require": {
@@ -469,7 +469,7 @@
             "composer/composer": "1.0.*@dev",
             "phpunit/phpunit": "^4.8.36"
         },
-        "time": "2018-08-27T06:10:37+00:00",
+        "time": "2019-08-12T15:00:31+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": "Composer\\Installers\\Plugin",
@@ -513,6 +513,7 @@
             "RadPHP",
             "SMF",
             "Thelia",
+            "Whmcs",
             "WolfCMS",
             "agl",
             "aimeos",
@@ -535,6 +536,7 @@
             "installer",
             "itop",
             "joomla",
+            "known",
             "kohana",
             "laravel",
             "lavalite",
@@ -1312,17 +1314,17 @@
     },
     {
         "name": "consolidation/site-process",
-        "version": "2.0.3",
-        "version_normalized": "2.0.3.0",
+        "version": "2.0.4",
+        "version_normalized": "2.0.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/consolidation/site-process.git",
-            "reference": "e25265f4a48c13284ebb6f9e0906ecd415d451df"
+            "reference": "e159f849abce696c2f5081c149a1f8ec8717dd97"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/consolidation/site-process/zipball/e25265f4a48c13284ebb6f9e0906ecd415d451df",
-            "reference": "e25265f4a48c13284ebb6f9e0906ecd415d451df",
+            "url": "https://api.github.com/repos/consolidation/site-process/zipball/e159f849abce696c2f5081c149a1f8ec8717dd97",
+            "reference": "e159f849abce696c2f5081c149a1f8ec8717dd97",
             "shasum": ""
         },
         "require": {
@@ -1340,7 +1342,7 @@
             "phpunit/phpunit": "^6",
             "squizlabs/php_codesniffer": "^2.8"
         },
-        "time": "2019-06-04T22:23:52+00:00",
+        "time": "2019-08-12T23:10:26+00:00",
         "type": "library",
         "extra": {
             "scenarios": {
@@ -1374,12 +1376,12 @@
         ],
         "authors": [
             {
-                "name": "Moshe Weitzman",
-                "email": "weitzman@tejasa.com"
-            },
-            {
                 "name": "Greg Anderson",
                 "email": "greg.1.anderson@greenknowe.org"
+            },
+            {
+                "name": "Moshe Weitzman",
+                "email": "weitzman@tejasa.com"
             }
         ],
         "description": "A thin wrapper around the Symfony Process Component that allows applications to use the Site Alias library to specify the target for a remote call."
@@ -2853,69 +2855,6 @@
         }
     },
     {
-        "name": "drupal/bootstrap",
-        "version": "3.20.0",
-        "version_normalized": "3.20.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://git.drupalcode.org/project/bootstrap.git",
-            "reference": "8.x-3.20"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/bootstrap-8.x-3.20.zip",
-            "reference": "8.x-3.20",
-            "shasum": "dc8ecfca0b8e8e3598ba611e056f850f2ab497cb"
-        },
-        "require": {
-            "drupal/core": "~8.0"
-        },
-        "type": "drupal-theme",
-        "extra": {
-            "branch-alias": {
-                "dev-3.x": "3.x-dev"
-            },
-            "drupal": {
-                "version": "8.x-3.20",
-                "datestamp": "1561055630",
-                "security-coverage": {
-                    "status": "covered",
-                    "message": "Covered by Drupal's security advisory policy"
-                }
-            }
-        },
-        "installation-source": "dist",
-        "notification-url": "https://packages.drupal.org/8/downloads",
-        "license": [
-            "GPL-2.0"
-        ],
-        "authors": [
-            {
-                "name": "Mark Carver (markcarver)",
-                "homepage": "https://www.drupal.org/u/markcarver",
-                "role": "Maintainer"
-            },
-            {
-                "name": "John McCormick (neardark)",
-                "homepage": "https://www.drupal.org/u/neardark",
-                "role": "Co-maintainer"
-            },
-            {
-                "name": "Fabiano Sant'Ana (wundo)",
-                "homepage": "https://www.drupal.org/u/wundo",
-                "role": "Co-maintainer"
-            }
-        ],
-        "description": "Built to use Bootstrap, a sleek, intuitive, and powerful front-end framework for faster and easier web development.",
-        "homepage": "https://www.drupal.org/project/bootstrap",
-        "support": {
-            "source": "http://cgit.drupalcode.org/bootstrap",
-            "docs": "https://drupal-bootstrap.org",
-            "issues": "https://www.drupal.org/project/issues/bootstrap",
-            "irc": "irc://irc.freenode.org/drupal-bootstrap"
-        }
-    },
-    {
         "name": "drupal/bootstrap_barrio",
         "version": "4.22.0",
         "version_normalized": "4.22.0.0",
@@ -3187,18 +3126,18 @@
     },
     {
         "name": "drupal/chosen",
-        "version": "2.7.0",
-        "version_normalized": "2.7.0.0",
+        "version": "2.8.0",
+        "version_normalized": "2.8.0.0",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/chosen.git",
-            "reference": "8.x-2.7"
+            "reference": "8.x-2.8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/chosen-8.x-2.7.zip",
-            "reference": "8.x-2.7",
-            "shasum": "8d0fdcb20a9842019f11ad7ac811d55e3b83e9ba"
+            "url": "https://ftp.drupal.org/files/projects/chosen-8.x-2.8.zip",
+            "reference": "8.x-2.8",
+            "shasum": "19a99867bc09bb1f937e992fc25d95b98a908735"
         },
         "require": {
             "drupal/chosen_lib": "*",
@@ -3210,8 +3149,8 @@
                 "dev-2.x": "2.x-dev"
             },
             "drupal": {
-                "version": "8.x-2.7",
-                "datestamp": "1554029581",
+                "version": "8.x-2.8",
+                "datestamp": "1565942881",
                 "security-coverage": {
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
@@ -3274,11 +3213,12 @@
     },
     {
         "name": "drupal/chosen_lib",
-        "version": "2.7.0",
-        "version_normalized": "2.7.0.0",
+        "version": "2.8.0",
+        "version_normalized": "2.8.0.0",
         "require": {
             "drupal/chosen": "self.version",
-            "drupal/core": "~8.0"
+            "drupal/core": "~8.0",
+            "php": ">=5.6.0"
         },
         "type": "metapackage",
         "extra": {
@@ -3286,11 +3226,16 @@
                 "dev-2.x": "2.x-dev"
             },
             "drupal": {
-                "version": "8.x-2.7",
-                "datestamp": "1554029581",
+                "version": "8.x-2.8",
+                "datestamp": "1565942881",
                 "security-coverage": {
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
+                }
+            },
+            "drush": {
+                "services": {
+                    "drush.services.yml": "^9"
                 }
             }
         },
@@ -3336,7 +3281,7 @@
                 "homepage": "https://www.drupal.org/user/235438"
             }
         ],
-        "description": "Add <a href=\"http://harvesthq.github.com/chosen/\">chosen</a> library definition.",
+        "description": "This module provides the basic integration with the Chosen jQuery plugin.",
         "homepage": "https://www.drupal.org/project/chosen",
         "support": {
             "source": "https://git.drupalcode.org/project/chosen"
@@ -5160,18 +5105,18 @@
     },
     {
         "name": "drupal/paragraphs",
-        "version": "1.8.0",
-        "version_normalized": "1.8.0.0",
+        "version": "1.9.0",
+        "version_normalized": "1.9.0.0",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/paragraphs.git",
-            "reference": "8.x-1.8"
+            "reference": "8.x-1.9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/paragraphs-8.x-1.8.zip",
-            "reference": "8.x-1.8",
-            "shasum": "a40849233de8403f5488c20c5b81ab4877373f65"
+            "url": "https://ftp.drupal.org/files/projects/paragraphs-8.x-1.9.zip",
+            "reference": "8.x-1.9",
+            "shasum": "c04753047fc995bfa2236c272d0b8344d77ee25d"
         },
         "require": {
             "drupal/core": "~8",
@@ -5199,8 +5144,8 @@
                 "dev-1.x": "1.x-dev"
             },
             "drupal": {
-                "version": "8.x-1.8",
-                "datestamp": "1553618281",
+                "version": "8.x-1.9",
+                "datestamp": "1565881389",
                 "security-coverage": {
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
@@ -6102,17 +6047,17 @@
     },
     {
         "name": "egulias/email-validator",
-        "version": "2.1.10",
-        "version_normalized": "2.1.10.0",
+        "version": "2.1.11",
+        "version_normalized": "2.1.11.0",
         "source": {
             "type": "git",
             "url": "https://github.com/egulias/EmailValidator.git",
-            "reference": "a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec"
+            "reference": "92dd169c32f6f55ba570c309d83f5209cefb5e23"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec",
-            "reference": "a6c8d7101b19a451c1707b1b79bbbc56e4bdb7ec",
+            "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/92dd169c32f6f55ba570c309d83f5209cefb5e23",
+            "reference": "92dd169c32f6f55ba570c309d83f5209cefb5e23",
             "shasum": ""
         },
         "require": {
@@ -6128,11 +6073,11 @@
         "suggest": {
             "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
         },
-        "time": "2019-07-19T20:52:08+00:00",
+        "time": "2019-08-13T17:33:27+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.0.x-dev"
+                "dev-master": "2.1.x-dev"
             }
         },
         "installation-source": "dist",
@@ -7241,17 +7186,17 @@
     },
     {
         "name": "nikic/php-parser",
-        "version": "v4.2.2",
-        "version_normalized": "4.2.2.0",
+        "version": "v4.2.3",
+        "version_normalized": "4.2.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/nikic/PHP-Parser.git",
-            "reference": "1bd73cc04c3843ad8d6b0bfc0956026a151fc420"
+            "reference": "e612609022e935f3d0337c1295176505b41188c8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1bd73cc04c3843ad8d6b0bfc0956026a151fc420",
-            "reference": "1bd73cc04c3843ad8d6b0bfc0956026a151fc420",
+            "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/e612609022e935f3d0337c1295176505b41188c8",
+            "reference": "e612609022e935f3d0337c1295176505b41188c8",
             "shasum": ""
         },
         "require": {
@@ -7259,9 +7204,9 @@
             "php": ">=7.0"
         },
         "require-dev": {
-            "phpunit/phpunit": "^6.5 || ^7.0"
+            "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
         },
-        "time": "2019-05-25T20:07:01+00:00",
+        "time": "2019-08-12T20:17:41+00:00",
         "bin": [
             "bin/php-parse"
         ],
@@ -8825,17 +8770,17 @@
     },
     {
         "name": "sebastian/exporter",
-        "version": "3.1.0",
-        "version_normalized": "3.1.0.0",
+        "version": "3.1.1",
+        "version_normalized": "3.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/exporter.git",
-            "reference": "234199f4528de6d12aaa58b612e98f7d36adb937"
+            "reference": "06a9a5947f47b3029d76118eb5c22802e5869687"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/234199f4528de6d12aaa58b612e98f7d36adb937",
-            "reference": "234199f4528de6d12aaa58b612e98f7d36adb937",
+            "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/06a9a5947f47b3029d76118eb5c22802e5869687",
+            "reference": "06a9a5947f47b3029d76118eb5c22802e5869687",
             "shasum": ""
         },
         "require": {
@@ -8846,7 +8791,7 @@
             "ext-mbstring": "*",
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-04-03T13:19:02+00:00",
+        "time": "2019-08-11T12:43:14+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -8865,6 +8810,10 @@
         ],
         "authors": [
             {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            },
+            {
                 "name": "Jeff Welch",
                 "email": "whatthejeff@gmail.com"
             },
@@ -8873,16 +8822,12 @@
                 "email": "github@wallbash.com"
             },
             {
-                "name": "Bernhard Schussek",
-                "email": "bschussek@2bepublished.at"
-            },
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de"
-            },
-            {
                 "name": "Adam Harvey",
                 "email": "aharvey@php.net"
+            },
+            {
+                "name": "Bernhard Schussek",
+                "email": "bschussek@gmail.com"
             }
         ],
         "description": "Provides the functionality to export PHP variables for visualization",

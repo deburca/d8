@@ -8,7 +8,9 @@ theme:
       css/lightbox.min.css: {}
       css/tether.min.css: {}
       css/custom.css: {}
-      fonts/font-awesome/css/font-awesome.min.css: {}
+      fontawesome/css/fontawesome.css: {}
+      fontawesome/css/brands.css: {}
+      fontawesome/css/solid.css: {}
       '//fonts.googleapis.com/css?family=Oswald:400,700,300': {type: external}
       '//fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic,700italic': {type: external}
 
