@@ -67,6 +67,24 @@ Last change:    20/06/2016
   border-color: #E35E54;
 }
 
+/* ===== Border Colors with links ===== */
+
+.body-green .border-color a {
+  text-decoration: none;
+}
+.body-blue .border-color a {
+  text-decoration: none;
+}
+.body-orange .border-color a {
+  text-decoration: none;
+}
+.body-red .border-color a {
+  text-decoration: none;
+}
+
+.headline span.border-color {
+  padding-bottom: 7px;
+}
 /* ===== Background Colors ===== */
 
 .body-green .bg-color {

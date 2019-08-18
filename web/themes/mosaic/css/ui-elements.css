@@ -74,6 +74,9 @@ hr.arrow-down:after {
   margin-bottom: 30px;
   line-height: 50px;
 }
+.page-header.headline {
+  padding-bottom: 1px;
+}
 .headline span {
   padding-bottom: 4px;
   border-bottom-width: 1px;
