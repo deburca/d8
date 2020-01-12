@@ -27,6 +27,7 @@
       $('[data-drupal-selector="edit-mapping"]').drupalSetSummary(function () {
         if (document.querySelector('select[name="mapping[type]"]').value === 'simple') {
           var domain = document.querySelector('input[name="mapping[simple][domain]"]').value;
+          var scheme = document.querySelector('[name="mapping[simple][scheme]"]').value;
           var which;
           switch (document.querySelector('select[name="mapping[simple][extensions_condition_toggle]"]').value) {
             case 'all':
@@ -39,7 +40,7 @@
               which = Drupal.t('some files');
               break;
           }
-          return Drupal.t('!domain: !which', {'!which': which, '!domain': domain ? domain : Drupal.t('none configured yet')});
+          return Drupal.t('!cdn-base-url: !which', {'!which': which, '!cdn-base-url': domain ? scheme + domain : Drupal.t('none configured yet')});
         }
         else {
           return Drupal.t('Advanced: <code>cdn.settings.yml</code>');

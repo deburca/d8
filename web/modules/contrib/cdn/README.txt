@@ -101,9 +101,9 @@ your .htaccess file:
   ### CDN START ###
   # See http://drupal.org/node/1413156
   <IfModule mod_headers.c>
-    # Transform /cdn/farfuture/[security token]/[mtime]/X/Y/Z to /X/Y/Z and set
+    # Transform /cdn/ff/[security token]/[mtime]/[scheme]/X/Y/Z to /X/Y/Z and set
     # environment variable for later Header rules.
-    RewriteCond %{REQUEST_URI} ^/cdn/farfuture/[^/]+/[^/]+/(.+)$
+    RewriteCond %{REQUEST_URI} ^/cdn/ff/[^/]+/[^/]+/[^/]+/(.+)$
     RewriteRule .* %1 [L,E=FARFUTURE_CDN:1]
 
     # Apache will change FARFUTURE_CDN to REDIRECT_FARFUTURE_CDN on internal
@@ -126,7 +126,7 @@ your .htaccess file:
 
 
     ###
-    ### Generic headers that apply to all /cdn/farfuture/* requests.
+    ### Generic headers that apply to all /cdn/ff/* requests.
     ###
 
     # Instead of being powered by Apache, tell the world this resource was

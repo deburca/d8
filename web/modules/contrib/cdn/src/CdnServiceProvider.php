@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Drupal\cdn;
 
 use Drupal\cdn\StackMiddleware\DuplicateContentPreventionMiddleware;
@@ -32,7 +34,7 @@ class CdnServiceProvider implements ServiceProviderInterface {
   /**
    * @return bool
    */
-  protected function cdnStatusIsEnabled() {
+  protected function cdnStatusIsEnabled() : bool {
     return BootstrapConfigStorageFactory::get()->read('cdn.settings')['status'] === TRUE;
   }
 
