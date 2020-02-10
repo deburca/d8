@@ -465,17 +465,17 @@
     },
     {
         "name": "composer/composer",
-        "version": "1.9.2",
-        "version_normalized": "1.9.2.0",
+        "version": "1.9.3",
+        "version_normalized": "1.9.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/composer/composer.git",
-            "reference": "7a04aa0201ddaa0b3cf64d41022bd8cdcd7fafeb"
+            "reference": "1291a16ce3f48bfdeca39d64fca4875098af4d7b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/composer/zipball/7a04aa0201ddaa0b3cf64d41022bd8cdcd7fafeb",
-            "reference": "7a04aa0201ddaa0b3cf64d41022bd8cdcd7fafeb",
+            "url": "https://api.github.com/repos/composer/composer/zipball/1291a16ce3f48bfdeca39d64fca4875098af4d7b",
+            "reference": "1291a16ce3f48bfdeca39d64fca4875098af4d7b",
             "shasum": ""
         },
         "require": {
@@ -505,7 +505,7 @@
             "ext-zip": "Enabling the zip extension allows you to unzip archives",
             "ext-zlib": "Allow gzip compression of HTTP requests"
         },
-        "time": "2020-01-14T15:30:32+00:00",
+        "time": "2020-02-04T11:58:49+00:00",
         "bin": [
             "bin/composer"
         ],
@@ -547,17 +547,17 @@
     },
     {
         "name": "composer/installers",
-        "version": "v1.7.0",
-        "version_normalized": "1.7.0.0",
+        "version": "v1.8.0",
+        "version_normalized": "1.8.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/composer/installers.git",
-            "reference": "141b272484481432cda342727a427dc1e206bfa0"
+            "reference": "7d610d50aae61ae7ed6675e58efeabdf279bb5e3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/141b272484481432cda342727a427dc1e206bfa0",
-            "reference": "141b272484481432cda342727a427dc1e206bfa0",
+            "url": "https://api.github.com/repos/composer/installers/zipball/7d610d50aae61ae7ed6675e58efeabdf279bb5e3",
+            "reference": "7d610d50aae61ae7ed6675e58efeabdf279bb5e3",
             "shasum": ""
         },
         "require": {
@@ -571,7 +571,7 @@
             "composer/composer": "1.0.*@dev",
             "phpunit/phpunit": "^4.8.36"
         },
-        "time": "2019-08-12T15:00:31+00:00",
+        "time": "2020-02-07T10:39:20+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": "Composer\\Installers\\Plugin",
@@ -607,6 +607,7 @@
             "Kanboard",
             "Lan Management System",
             "MODX Evo",
+            "MantisBT",
             "Mautic",
             "Maya",
             "OXID",
@@ -661,6 +662,7 @@
             "shopware",
             "silverstripe",
             "sydes",
+            "sylius",
             "symfony",
             "typo3",
             "wordpress",
@@ -6107,17 +6109,17 @@
     },
     {
         "name": "drush/drush",
-        "version": "9.7.1",
-        "version_normalized": "9.7.1.0",
+        "version": "9.7.2",
+        "version_normalized": "9.7.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drush-ops/drush.git",
-            "reference": "6f9a8d235daec06fd6f47b2d84da675750566479"
+            "reference": "ab5e345a72c9187a7d770486a09691f6526826aa"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drush-ops/drush/zipball/6f9a8d235daec06fd6f47b2d84da675750566479",
-            "reference": "6f9a8d235daec06fd6f47b2d84da675750566479",
+            "url": "https://api.github.com/repos/drush-ops/drush/zipball/ab5e345a72c9187a7d770486a09691f6526826aa",
+            "reference": "ab5e345a72c9187a7d770486a09691f6526826aa",
             "shasum": ""
         },
         "require": {
@@ -6137,7 +6139,7 @@
             "psr/log": "~1.0",
             "psy/psysh": "~0.6",
             "symfony/console": "^3.4",
-            "symfony/event-dispatcher": "^3.4",
+            "symfony/event-dispatcher": "^3.4 || ^4.0",
             "symfony/finder": "^3.4 || ^4.0",
             "symfony/process": "^3.4",
             "symfony/var-dumper": "^3.4 || ^4.0",
@@ -6159,7 +6161,7 @@
             "webflo/drupal-core-require-dev": "8.7.x-dev",
             "webflo/drupal-core-strict": "8.7.x-dev"
         },
-        "time": "2019-06-30T19:46:39+00:00",
+        "time": "2020-02-09T17:29:51+00:00",
         "bin": [
             "drush"
         ],
@@ -8034,44 +8036,41 @@
     },
     {
         "name": "phpdocumentor/reflection-docblock",
-        "version": "4.3.4",
-        "version_normalized": "4.3.4.0",
+        "version": "5.0.0",
+        "version_normalized": "5.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-            "reference": "da3fd972d6bafd628114f7e7e036f45944b62e9c"
+            "reference": "a48807183a4b819072f26e347bbd0b5199a9d15f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/da3fd972d6bafd628114f7e7e036f45944b62e9c",
-            "reference": "da3fd972d6bafd628114f7e7e036f45944b62e9c",
+            "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/a48807183a4b819072f26e347bbd0b5199a9d15f",
+            "reference": "a48807183a4b819072f26e347bbd0b5199a9d15f",
             "shasum": ""
         },
         "require": {
-            "php": "^7.0",
-            "phpdocumentor/reflection-common": "^1.0.0 || ^2.0.0",
-            "phpdocumentor/type-resolver": "~0.4 || ^1.0.0",
-            "webmozart/assert": "^1.0"
+            "ext-filter": "^7.1",
+            "php": "^7.2",
+            "phpdocumentor/reflection-common": "^2.0",
+            "phpdocumentor/type-resolver": "^1.0",
+            "webmozart/assert": "^1"
         },
         "require-dev": {
-            "doctrine/instantiator": "^1.0.5",
-            "mockery/mockery": "^1.0",
-            "phpdocumentor/type-resolver": "0.4.*",
-            "phpunit/phpunit": "^6.4"
+            "doctrine/instantiator": "^1",
+            "mockery/mockery": "^1"
         },
-        "time": "2019-12-28T18:55:12+00:00",
+        "time": "2020-02-09T09:16:15+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "4.x-dev"
+                "dev-master": "5.x-dev"
             }
         },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "phpDocumentor\\Reflection\\": [
-                    "src/"
-                ]
+                "phpDocumentor\\Reflection\\": "src"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -8082,6 +8081,10 @@
             {
                 "name": "Mike van Riel",
                 "email": "me@mikevanriel.com"
+            },
+            {
+                "name": "Jaap van Otterdijk",
+                "email": "account@ijaap.nl"
             }
         ],
         "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock."
