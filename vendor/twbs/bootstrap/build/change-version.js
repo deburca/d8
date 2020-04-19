@@ -1,15 +1,13 @@
 #!/usr/bin/env node
 
-'use strict'
-
 /*!
  * Script to update version number references in the project.
- * Copyright 2017-2018 The Bootstrap Authors
- * Copyright 2017-2018 Twitter, Inc.
+ * Copyright 2017-2019 The Bootstrap Authors
+ * Copyright 2017-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
-/* global Set */
+'use strict'
 
 const fs = require('fs')
 const path = require('path')
@@ -85,6 +83,7 @@ function main(args) {
   const newVersion = args[1]
   const EXCLUDED_DIRS = new Set([
     '.git',
+    '_gh_pages',
     'node_modules',
     'vendor'
   ])
@@ -96,6 +95,7 @@ function main(args) {
     '.js',
     '.json',
     '.md',
+    '.nuspec',
     '.scss',
     '.txt',
     '.yml'
