@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3f4e60b71eee01be5979da6969ac17e",
+    "content-hash": "70f0794031147275bb3a37a32a5d2077",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -4109,38 +4109,41 @@
         },
         {
             "name": "drupal/devel",
-            "version": "2.1.0",
+            "version": "3.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/devel.git",
-                "reference": "8.x-2.1"
+                "reference": "8.x-3.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/devel-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "8f735892922aa5f228e681e645e5f02b1c008f14"
+                "url": "https://ftp.drupal.org/files/projects/devel-8.x-3.0-beta1.zip",
+                "reference": "8.x-3.0-beta1",
+                "shasum": "dd251e350f4e3a25ae9a7a14ab8ba4e500276ac1"
             },
             "require": {
                 "drupal/core": "~8.0",
                 "symfony/var-dumper": "~2.7|^3|^4"
             },
+            "conflict": {
+                "kint-php/kint": "<3"
+            },
+            "suggest": {
+                "kint-php/kint": "Kint provides an informative display of arrays/objects. Useful for debugging and developing."
+            },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1556799496",
+                    "version": "8.x-3.0-beta1",
+                    "datestamp": "1572125285",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^9"
+                        "drush.services.yml": "^9 || ^10"
                     }
                 }
             },
@@ -4174,6 +4177,10 @@
                 {
                     "name": "See contributors",
                     "homepage": "https://www.drupal.org/node/3236/committers"
+                },
+                {
+                    "name": "pcambra",
+                    "homepage": "https://www.drupal.org/user/122101"
                 },
                 {
                     "name": "salvis",
@@ -4538,35 +4545,32 @@
         },
         {
             "name": "drupal/file_mdm",
-            "version": "1.1.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/file_mdm.git",
-                "reference": "8.x-1.1"
+                "reference": "8.x-2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/file_mdm-8.x-1.1.zip",
-                "reference": "8.x-1.1",
-                "shasum": "7f354aec6f89e3141c2aa1fb3747ad5d4578c13f"
+                "url": "https://ftp.drupal.org/files/projects/file_mdm-8.x-2.1.zip",
+                "reference": "8.x-2.1",
+                "shasum": "5c3d75622299ebddc0e8456bb08bb371da8771bd"
             },
             "require": {
-                "drupal/core": "~8.0",
-                "lsolesen/pel": "0.9.6",
-                "phenx/php-font-lib": "0.5",
-                "php": ">=5.6"
+                "drupal/core": "^8.8 || ^9",
+                "lsolesen/pel": "^0.9.8",
+                "phenx/php-font-lib": "^0.5.2",
+                "php": ">=7"
             },
             "require-dev": {
                 "drupal/image_effects": "*"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1488273785",
+                    "version": "8.x-2.1",
+                    "datestamp": "1586801064",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4584,46 +4588,6 @@
                 }
             ],
             "description": "Provides a service to manage file metadata.",
-            "homepage": "https://www.drupal.org/project/file_mdm",
-            "support": {
-                "source": "https://git.drupalcode.org/project/file_mdm"
-            }
-        },
-        {
-            "name": "drupal/file_mdm_exif",
-            "version": "1.1.0",
-            "require": {
-                "drupal/core": "~8.0",
-                "drupal/file_mdm": "self.version"
-            },
-            "require-dev": {
-                "drupal/image_effects": "*"
-            },
-            "type": "metapackage",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.1",
-                    "datestamp": "1488273785",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "mondrake",
-                    "homepage": "https://www.drupal.org/user/1307444"
-                }
-            ],
-            "description": "Provides a file metadata plugin for EXIF image information.",
             "homepage": "https://www.drupal.org/project/file_mdm",
             "support": {
                 "source": "https://git.drupalcode.org/project/file_mdm"
@@ -4742,29 +4706,26 @@
         },
         {
             "name": "drupal/honeypot",
-            "version": "1.30.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/honeypot.git",
-                "reference": "8.x-1.30"
+                "reference": "2.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/honeypot-8.x-1.30.zip",
-                "reference": "8.x-1.30",
-                "shasum": "1d7983e8e07feee4f13e4b05c9a10db15ae2097e"
+                "url": "https://ftp.drupal.org/files/projects/honeypot-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "6f8701f5be173595318e6afe9ff744edb324f85c"
             },
             "require": {
-                "drupal/core": "~8.0"
+                "drupal/core": "^8.0 || ^9.0"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.30",
-                    "datestamp": "1576274288",
+                    "version": "2.0.0",
+                    "datestamp": "1588105107",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4773,7 +4734,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -4801,37 +4762,38 @@
                 "spam"
             ],
             "support": {
-                "source": "https://git.drupalcode.org/project/honeypot"
+                "source": "https://git.drupalcode.org/project/honeypot",
+                "issues": "https://www.drupal.org/project/issues/honeypot"
             }
         },
         {
             "name": "drupal/imagemagick",
-            "version": "2.7.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/imagemagick.git",
-                "reference": "8.x-2.7"
+                "reference": "8.x-3.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/imagemagick-8.x-2.7.zip",
-                "reference": "8.x-2.7",
-                "shasum": "e70fa0124305d99d5cf3f59d95c3e52657c1c8b4"
+                "url": "https://ftp.drupal.org/files/projects/imagemagick-8.x-3.1.zip",
+                "reference": "8.x-3.1",
+                "shasum": "f427b06312325aa667c549fed261f73f29e231e7"
             },
             "require": {
-                "drupal/core": "^8.3",
-                "drupal/file_mdm": "^1.1",
-                "drupal/file_mdm_exif": "^1.1",
-                "fileeye/mimemap": "^1.1.1"
+                "drupal/core": "^8.8 || ^9",
+                "drupal/file_mdm": "^2",
+                "drupal/sophron": "^1",
+                "php": ">=7"
             },
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
-                    "dev-2.x": "2.x-dev"
+                    "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.7",
-                    "datestamp": "1581425670",
+                    "version": "8.x-3.1",
+                    "datestamp": "1581420882",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5662,6 +5624,59 @@
             "homepage": "https://www.drupal.org/project/simplepodcast",
             "support": {
                 "source": "https://git.drupalcode.org/project/simplepodcast"
+            }
+        },
+        {
+            "name": "drupal/sophron",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/sophron.git",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/sophron-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "8cbfd6df04c2ae47ca4a8c35644644bbf54dd25b"
+            },
+            "require": {
+                "drupal/core": "^8.4 || ^9",
+                "fileeye/mimemap": "^1.1.3"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1576526880",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Drupal\\sophron\\": "src/"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "mondrake",
+                    "homepage": "https://www.drupal.org/user/1307444"
+                }
+            ],
+            "description": "Provides an extensive MIME types management API",
+            "homepage": "https://www.drupal.org/project/sophron",
+            "support": {
+                "source": "https://git.drupalcode.org/project/sophron"
             }
         },
         {
@@ -7019,26 +7034,26 @@
         },
         {
             "name": "lsolesen/pel",
-            "version": "0.9.6",
+            "version": "0.9.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/lsolesen/pel.git",
-                "reference": "c9e3919f5db3b85c3c422d4f8d448dbcb2a87a23"
+                "url": "https://github.com/pel/pel.git",
+                "reference": "92da891eaeeabbb00bcd09e0cea53796cf9ca967"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lsolesen/pel/zipball/c9e3919f5db3b85c3c422d4f8d448dbcb2a87a23",
-                "reference": "c9e3919f5db3b85c3c422d4f8d448dbcb2a87a23",
+                "url": "https://api.github.com/repos/pel/pel/zipball/92da891eaeeabbb00bcd09e0cea53796cf9ca967",
+                "reference": "92da891eaeeabbb00bcd09e0cea53796cf9ca967",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.0.0"
+                "php": ">=5.4.0"
             },
             "require-dev": {
                 "ext-gd": "*",
-                "phpunit/phpunit": "5.7.*",
+                "phpunit/phpunit": ">=4.8.36 <8",
                 "satooshi/php-coveralls": "1.0.*",
-                "squizlabs/php_codesniffer": "3.0.0RC3"
+                "squizlabs/php_codesniffer": "^3.0.0"
             },
             "type": "library",
             "autoload": {
@@ -7053,24 +7068,24 @@
             "authors": [
                 {
                     "name": "Lars Olesen",
-                    "role": "Developer",
                     "email": "lars@intraface.dk",
-                    "homepage": "http://intraface.dk"
+                    "homepage": "http://intraface.dk",
+                    "role": "Developer"
                 },
                 {
                     "name": "Martin Geisler",
-                    "role": "Developer",
                     "email": "martin@geisler.net",
-                    "homepage": "http://geisler.net"
+                    "homepage": "http://geisler.net",
+                    "role": "Developer"
                 }
             ],
             "description": "PHP Exif Library. A library for reading and writing Exif headers in JPEG and TIFF images using PHP.",
-            "homepage": "http://lsolesen.github.com/pel/",
+            "homepage": "http://pel.github.com/pel/",
             "keywords": [
                 "exif",
                 "image"
             ],
-            "time": "2017-02-03T11:58:58+00:00"
+            "time": "2020-02-11T12:05:42+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -7646,20 +7661,20 @@
         },
         {
             "name": "phenx/php-font-lib",
-            "version": "0.5",
+            "version": "0.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PhenX/php-font-lib.git",
-                "reference": "19ad2bebc35be028fcc0221025fcbf3d436a3962"
+                "reference": "ca6ad461f032145fff5971b5985e5af9e7fa88d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/19ad2bebc35be028fcc0221025fcbf3d436a3962",
-                "reference": "19ad2bebc35be028fcc0221025fcbf3d436a3962",
+                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/ca6ad461f032145fff5971b5985e5af9e7fa88d8",
+                "reference": "ca6ad461f032145fff5971b5985e5af9e7fa88d8",
                 "shasum": ""
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8"
+                "phpunit/phpunit": "^4.8.35 || ^5 || ^6 || ^7"
             },
             "type": "library",
             "autoload": {
@@ -7679,7 +7694,7 @@
             ],
             "description": "A library to read, parse, export and make subsets of different types of font files.",
             "homepage": "https://github.com/PhenX/php-font-lib",
-            "time": "2017-02-11T10:58:43+00:00"
+            "time": "2020-03-08T15:31:32+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",

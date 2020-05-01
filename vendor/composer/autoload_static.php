@@ -165,6 +165,7 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         array (
             'Drush\\Internal\\' => 15,
             'Drush\\' => 6,
+            'Drupal\\sophron\\' => 15,
             'Drupal\\Driver\\' => 14,
             'Drupal\\Core\\' => 12,
             'Drupal\\Console\\Core\\' => 20,
@@ -508,6 +509,10 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         'Drush\\' => 
         array (
             0 => __DIR__ . '/..' . '/drush/drush/src',
+        ),
+        'Drupal\\sophron\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/web/modules/contrib/sophron/src',
         ),
         'Drupal\\Driver\\' => 
         array (
