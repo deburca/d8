@@ -34,7 +34,7 @@ jobs:
       uses: chindit/actions-phpstan@master
       with:
         # Arguments to add to PHPStan CLI
-        arguments: 'web/ --level=7' # optional, default is 
+        arguments: 'web/ --level=7 --autoload-file=web/autoload.php' # optional, default is 
       continue-on-error: true
     
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
