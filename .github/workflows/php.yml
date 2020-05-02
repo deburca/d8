@@ -23,14 +23,15 @@ jobs:
       continue-on-error: true
       
     - name: PHP Code Style (phpcs)
-      uses: chindit/actions-phpcs@1.0.1
+      uses: chindit/actions-phpcs@master
       with:
         # Folder to check code style
         dir: web/themes/mosaic # optional, default is .
+        arguements: --standard=web/core/phpcs.xml.dist
       continue-on-error: true
   
     - name: PHP STatic ANalyser (phpstan)
-      uses: chindit/actions-phpstan@1.0.1
+      uses: chindit/actions-phpstan@master
       with:
         # Arguments to add to PHPStan CLI
         arguments: 'web/ --level=7' # optional, default is 
