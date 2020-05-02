@@ -16,9 +16,11 @@ jobs:
 
     - name: Validate composer.json and composer.lock
       run: composer validate
+      continue-on-error: true
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
+      continue-on-error: true
 
     - name: PHP Lint
       uses: michaelw90/PHP-Lint@1.0.0
@@ -29,15 +31,18 @@ jobs:
       with:
         # Folder to check code style
         dir: web/themes/mosaic # optional, default is .
+      continue-on-error: true
         
     - name: PHPCodeSniffer
       uses: rtCamp/action-phpcs-inspection@v1.0.0
+      continue-on-error: true
   
     - name: PHP STatic ANalyser (phpstan)
       uses: chindit/actions-phpstan@1.0.1
       with:
         # Arguments to add to PHPStan CLI
         arguments: 'web/ --level=7' # optional, default is 
+      continue-on-error: true
     
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
