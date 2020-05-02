@@ -28,10 +28,6 @@ jobs:
         # Folder to check code style
         dir: web/themes/mosaic # optional, default is .
       continue-on-error: true
-        
-    - name: PHPCodeSniffer
-      uses: rtCamp/action-phpcs-inspection@v1.0.0
-      continue-on-error: true
   
     - name: PHP STatic ANalyser (phpstan)
       uses: chindit/actions-phpstan@1.0.1
