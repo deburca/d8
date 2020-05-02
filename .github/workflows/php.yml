@@ -27,7 +27,7 @@ jobs:
       with:
         # Folder to check code style
         dir: web/themes/mosaic # optional, default is .
-        arguements: --standard=web/core/phpcs.xml.dist
+        arguements: --standard=web/core/phpcs.xml.dist --extensions=php,module,inc,install,test,profile,theme,css,info,txt,md,yml
       continue-on-error: true
   
     - name: PHP STatic ANalyser (phpstan)
