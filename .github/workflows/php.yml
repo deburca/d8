@@ -29,6 +29,7 @@ jobs:
         dir: web/themes/mosaic # optional, default is .
         extensions: php,module,inc,install,test,profile,theme,css,info,txt,md,yml # op0tions, default is Drupal extensions
         standard: DrupalPractice # optional, default is PEAR
+        installed_paths: vendor/drupal/coder/coder_sniffer/DrupalPractice
       continue-on-error: true
   
     - name: PHP STatic ANalyser (phpstan)
