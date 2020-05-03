@@ -33,10 +33,11 @@ jobs:
       continue-on-error: true
   
     - name: PHP STatic ANalyser (phpstan)
-      uses: chindit/actions-phpstan@master
+      uses: deburca/actions-phpstan@master
       with:
         # Arguments to add to PHPStan CLI
-        arguments: 'web/ --level=7 --autoload-file=web/autoload.php' # optional, default is 
+        arguments: 'web/themes/mosaic --level=7' # optional, default is 
+        bin: vendor/bin/phpstan
       continue-on-error: true
     
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
