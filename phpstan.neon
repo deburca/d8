@@ -1,0 +1,9 @@
+parameters:
+	# Ignore tests
+	excludes_analyse:
+		- *Test.php
+		- *TestBase.php
+	# PHPStan Level 7
+	level: 7
+includes:
+	# Add the phpstan-drupal extension
