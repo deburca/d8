@@ -21,7 +21,11 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
       continue-on-error: true
-      
+    
+    - name: Show files
+      run: |
+        ls -la
+
     - name: PHP Code Style (phpcs)
       uses: deburca/actions-phpcs@master
       with:
