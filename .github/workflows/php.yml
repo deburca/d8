@@ -22,25 +22,11 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
       continue-on-error: true
     
-    - name: Show files
-      run: |
-        ls -la
-
     - name: PHP Code Style (phpcs)
-      uses: deburca/actions-phpcs@master
-      with:
-        # Folder to check code style
-        dir: web/themes/mosaic # optional, default is .
-        script: phpcs
-      continue-on-error: true
+      run: composer run-script phpcs web/themes/mosaic
   
     - name: PHP STatic ANalyser (phpstan)
-      uses: deburca/actions-phpstan@master
-      with:
-        # Arguments to add to PHPStan CLI
-        arguments: 'web/themes/mosaic --level=7' # optional, default is 
-        bin: '${{ github.workspace }}/vendor/bin/phpstan'
-      continue-on-error: true
+      run: composer run-script phpstan web/themes/mosaic --level=7 
     
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
