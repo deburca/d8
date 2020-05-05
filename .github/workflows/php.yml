@@ -31,7 +31,7 @@ jobs:
       continue-on-error: true
   
     - name: PHP Code Style (phpcs info)
-      run: ./vendor/bin/phpcs -
+      run: ./vendor/bin/phpcs -i
       continue-on-error: true
   
     - name: PHP Code Style (phpcs)
