@@ -189,7 +189,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
             'Doctrine\\Common\\Annotations\\' => 28,
             'Doctrine\\Common\\' => 16,
             'DeepCopy\\' => 9,
-            'Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => 55,
         ),
         'C' => 
         array (
@@ -609,10 +608,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
-        ),
-        'Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/dealerdirect/phpcodesniffer-composer-installer/src',
         ),
         'Consolidation\\SiteProcess\\' => 
         array (
