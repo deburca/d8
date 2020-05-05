@@ -23,10 +23,10 @@ jobs:
       continue-on-error: true
     
     - name: PHP Code Style (phpcs)
-      run: composer run-script phpcs web/themes/mosaic
+      run: ./vendor/bin/phpcs --extensions="php,module,inc,install,test,profile,theme,css,info,txt,md,yml" --ignore="*.min.*" --runtime-set installed_paths `pwd`/vendor/drupal/coder/coder_sniffer --standard=DrupalPractice web/themes/mosaic
   
     - name: PHP STatic ANalyser (phpstan)
-      run: composer run-script phpstan web/themes/mosaic --level=7 
+      run: ./vendor/bin/phpstan analyse --level=7 web/themes/mosaic
     
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
