@@ -23,7 +23,7 @@ jobs:
       continue-on-error: true
     
     - name: PHP Code Style (phpcs)
-      run: ./vendor/bin/phpcs --extensions="php,module,inc,install,test,profile,theme,css,info,txt,md,yml" --ignore="*.min.*" --runtime-set installed_paths `pwd`/vendor/drupal/coder/coder_sniffer --standard=DrupalPractice web/themes/mosaic
+      run: ./vendor/bin/phpcs --extensions="php,module,inc,install,test,profile,theme,css,info,txt,md,yml" --ignore="*.min.*" --runtime-set installed_paths ${{ github.workspace }}/vendor/drupal/coder/coder_sniffer --standard=DrupalPractice web/themes/mosaic
   
     - name: PHP STatic ANalyser (phpstan)
       run: ./vendor/bin/phpstan analyse --level=7 web/themes/mosaic
