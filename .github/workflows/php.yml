@@ -21,19 +21,7 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
       continue-on-error: true
-    
-    - name: PHP Code Style (phpcs installed_paths)
-      run: ./vendor/bin/phpcs --config-set installed_paths "${{ github.workspace }}/vendor/drupal/coder/coder_sniffer"
-      continue-on-error: true
-  
-    - name: PHP Code Style (phpcs show)
-      run: ./vendor/bin/phpcs --config-show
-      continue-on-error: true
-  
-    - name: PHP Code Style (phpcs info)
-      run: ./vendor/bin/phpcs -i
-      continue-on-error: true
-  
+
     - name: PHP Code Style (phpcs)
       run: ./vendor/bin/phpcs --extensions="php,module,inc,install,test,profile,theme,css,info,txt,md,yml" --ignore="*.min.*" --standard=DrupalPractice web/themes/mosaic
       continue-on-error: true
