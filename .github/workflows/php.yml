@@ -32,7 +32,7 @@ jobs:
       continue-on-error: true
 
     - name: Install dealerdirect/phpcodesniffer-composer-installer
-      run: composer install --dev dealerdirect/phpcodesniffer-composer-installer
+      run: composer require --dev dealerdirect/phpcodesniffer-composer-installer
       continue-on-error: true
 
     - name: PHP Code Style (phpcs)
