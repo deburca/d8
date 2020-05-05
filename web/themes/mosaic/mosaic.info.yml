@@ -29,5 +29,3 @@ libraries:
 libraries-extend:
   bootstrap_barrio/framework:
    - 'mosaic/framework'
-
-version: '8.x-4.0.beta1'
