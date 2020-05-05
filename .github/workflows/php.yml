@@ -26,8 +26,12 @@ jobs:
       run: ./vendor/bin/phpcs --config-set installed_paths "${{ github.workspace }}/vendor/drupal/coder/coder_sniffer"
       continue-on-error: true
   
-    - name: PHP Code Style (phpcs shoe)
+    - name: PHP Code Style (phpcs show)
       run: ./vendor/bin/phpcs --config-show
+      continue-on-error: true
+  
+    - name: PHP Code Style (phpcs info)
+      run: ./vendor/bin/phpcs -
       continue-on-error: true
   
     - name: PHP Code Style (phpcs)
