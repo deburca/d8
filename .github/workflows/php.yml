@@ -31,10 +31,13 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
       continue-on-error: true
 
+    - name: Install dealerdirect/phpcodesniffer-composer-installer
+      run: composer install --dev dealerdirect/phpcodesniffer-composer-installer
+      continue-on-error: true
+
     - name: PHP Code Style (phpcs)
       run: >
          ./vendor/bin/phpcs \
-          --runtime-set installed_paths ${{ github.workspace }}/vendor/drupal/coder/coder_sniffer \
           --extensions="php,module,inc,install,test,profile,theme,css,info,txt,md,yml" \
           --ignore="*.min.*" \
           --standard="DrupalPractice,Drupal" \
