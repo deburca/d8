@@ -317,7 +317,7 @@ function _bootstrap_library_data() {
     }
   },
   "fontawesome": {
-    "5.13.0": "//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+    "5.13.0": "//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css",
     "4.4.0": "//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
     "4.2.0": "//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css",
     "4.1.0": "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css",

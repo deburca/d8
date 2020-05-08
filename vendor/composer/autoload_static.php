@@ -175,13 +175,12 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
             'Drupal\\Console\\Composer\\Plugin\\' => 31,
             'Drupal\\Console\\' => 15,
             'Drupal\\Component\\' => 17,
-            'Drupal\\' => 7,
-            'DrupalPractice\\' => 15,
             'DrupalComposer\\DrupalScaffold\\' => 30,
             'DrupalCodeGenerator\\' => 20,
             'Dotenv\\' => 7,
             'Doctrine\\Persistence\\' => 21,
             'Doctrine\\Instantiator\\' => 22,
+            'Doctrine\\Inflector\\' => 19,
             'Doctrine\\Common\\Lexer\\' => 22,
             'Doctrine\\Common\\Inflector\\' => 26,
             'Doctrine\\Common\\Collections\\' => 28,
@@ -550,14 +549,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         array (
             0 => __DIR__ . '/../..' . '/web/core/lib/Drupal/Component',
         ),
-        'Drupal\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/drupal/coder/coder_sniffer/Drupal',
-        ),
-        'DrupalPractice\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/drupal/coder/coder_sniffer/DrupalPractice',
-        ),
         'DrupalComposer\\DrupalScaffold\\' => 
         array (
             0 => __DIR__ . '/..' . '/drupal-composer/drupal-scaffold/src',
@@ -577,6 +568,10 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         'Doctrine\\Instantiator\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
+        ),
+        'Doctrine\\Inflector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Inflector',
         ),
         'Doctrine\\Common\\Lexer\\' => 
         array (
