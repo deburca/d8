@@ -2305,17 +2305,17 @@
     },
     {
         "name": "doctrine/inflector",
-        "version": "1.4.0",
-        "version_normalized": "1.4.0.0",
+        "version": "1.4.1",
+        "version_normalized": "1.4.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/inflector.git",
-            "reference": "ab5de36233a1995f9c776c741b803eb8207aebef"
+            "reference": "4111f6853aea6f28b2b1dcfdde83d12dd3d5e6e3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/inflector/zipball/ab5de36233a1995f9c776c741b803eb8207aebef",
-            "reference": "ab5de36233a1995f9c776c741b803eb8207aebef",
+            "url": "https://api.github.com/repos/doctrine/inflector/zipball/4111f6853aea6f28b2b1dcfdde83d12dd3d5e6e3",
+            "reference": "4111f6853aea6f28b2b1dcfdde83d12dd3d5e6e3",
             "shasum": ""
         },
         "require": {
@@ -2328,7 +2328,7 @@
             "phpstan/phpstan-strict-rules": "^0.11",
             "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0"
         },
-        "time": "2020-05-06T11:01:57+00:00",
+        "time": "2020-05-09T15:09:09+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -8490,17 +8490,17 @@
     },
     {
         "name": "phpstan/phpstan",
-        "version": "0.12.23",
-        "version_normalized": "0.12.23.0",
+        "version": "0.12.25",
+        "version_normalized": "0.12.25.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phpstan/phpstan.git",
-            "reference": "71e529efced79e055fa8318b692e7f7d03ea4e75"
+            "reference": "9619551d68b2d4c0d681a8df73f3c847c798ee64"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpstan/phpstan/zipball/71e529efced79e055fa8318b692e7f7d03ea4e75",
-            "reference": "71e529efced79e055fa8318b692e7f7d03ea4e75",
+            "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9619551d68b2d4c0d681a8df73f3c847c798ee64",
+            "reference": "9619551d68b2d4c0d681a8df73f3c847c798ee64",
             "shasum": ""
         },
         "require": {
@@ -8509,7 +8509,7 @@
         "conflict": {
             "phpstan/phpstan-shim": "*"
         },
-        "time": "2020-05-05T12:55:44+00:00",
+        "time": "2020-05-10T20:36:16+00:00",
         "bin": [
             "phpstan",
             "phpstan.phar"
@@ -9908,6 +9908,59 @@
         "description": "PHAR file format utilities, for when PHP phars you up",
         "keywords": [
             "phar"
+        ]
+    },
+    {
+        "name": "squizlabs/php_codesniffer",
+        "version": "3.5.5",
+        "version_normalized": "3.5.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+            "reference": "73e2e7f57d958e7228fce50dc0c61f58f017f9f6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/73e2e7f57d958e7228fce50dc0c61f58f017f9f6",
+            "reference": "73e2e7f57d958e7228fce50dc0c61f58f017f9f6",
+            "shasum": ""
+        },
+        "require": {
+            "ext-simplexml": "*",
+            "ext-tokenizer": "*",
+            "ext-xmlwriter": "*",
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
+        },
+        "time": "2020-04-17T01:09:41+00:00",
+        "bin": [
+            "bin/phpcs",
+            "bin/phpcbf"
+        ],
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Greg Sherwood",
+                "role": "lead"
+            }
+        ],
+        "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+        "homepage": "https://github.com/squizlabs/PHP_CodeSniffer",
+        "keywords": [
+            "phpcs",
+            "standards"
         ]
     },
     {
