@@ -403,7 +403,7 @@ function bootstrap_barrio_preprocess_form_element(&$variables) {
  * Implements hook_preprocess_HOOK() for form-element-label.html.twig.
  */
 function bootstrap_barrio_preprocess_form_element_label(&$variables) {
-  $element = $variables['element'];
+  // $element = $variables['element'];
 }
 
 /**
