@@ -129,6 +129,7 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
             'PhpParser\\' => 10,
             'PHPStan\\ExtensionInstaller\\' => 27,
             'PHPStan\\' => 8,
+            'PDepend\\' => 8,
         ),
         'M' => 
         array (
@@ -461,6 +462,10 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
             0 => __DIR__ . '/..' . '/mglaman/phpstan-drupal/src',
             1 => __DIR__ . '/..' . '/phpstan/phpstan-deprecation-rules/src',
         ),
+        'PDepend\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pdepend/pdepend/src/main/php/PDepend',
+        ),
         'Masterminds\\' => 
         array (
             0 => __DIR__ . '/..' . '/masterminds/html5/src',
@@ -703,6 +708,13 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
             'Stack' => 
             array (
                 0 => __DIR__ . '/..' . '/stack/builder/src',
+            ),
+        ),
+        'P' => 
+        array (
+            'PHPMD\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpmd/phpmd/src/main/php',
             ),
         ),
         'E' => 
