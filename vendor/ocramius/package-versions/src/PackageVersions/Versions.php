@@ -241,7 +241,7 @@ final class Versions
   'sensiolabs/security-checker' => 'v6.0.3@a576c01520d9761901f269c4934ba55448be4a54',
   'squizlabs/php_codesniffer' => '3.5.5@73e2e7f57d958e7228fce50dc0c61f58f017f9f6',
   'symfony/http-client' => 'v5.0.8@93b41572fbb3b8dd11d4f6f0434bbbbacd8619ab',
-  'symfony/http-client-contracts' => 'v2.0.1@378868b61b85c5cac6822d4f84e26999c9f2e881',
+  'symfony/http-client-contracts' => 'v2.1.1@e3ba2688594d8ef284f40348f7efb72cba4edec4',
   'symfony/mime' => 'v5.0.8@5d6c81c39225a750f3f43bee15f03093fb9aaa0b',
   'symfony/options-resolver' => 'v5.0.8@3707e3caeff2b797c0bfaadd5eba723dd44e6bf1',
   'symfony/polyfill-php73' => 'v1.17.0@a760d8964ff79ab9bf057613a5808284ec852ccc',
@@ -252,7 +252,7 @@ final class Versions
   'vlucas/phpdotenv' => 'v2.6.4@67d472b1794c986381a8950e4958e1adb779d561',
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'drupal-composer/drupal-project' => 'dev-master@defe06afa2739ff4e0ee2d0028242d6f0cf40d51',
+  'drupal-composer/drupal-project' => 'dev-master@06c408580e594931e99901bc91260f855c2d13a2',
 );
 
     private function __construct()
