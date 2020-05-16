@@ -24,22 +24,42 @@ jobs:
         php-version: ${{ matrix.php_version }}
         
     - name: Validate composer.json and composer.lock
-      run: composer validate
-      continue-on-error: true
+      run: >
+        composer \
+          validate
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
-      continue-on-error: true
+      run: >
+        composer \
+          install \
+          --prefer-dist \
+          --no-progress \
+          --no-suggest
 
     - name: PHP Code Style (phpcs)
       run:  ./vendor/bin/phpcs -pv
-  
+
+    - name: PHP Mess Detector (phpmd)
+      run: >
+        ./vendor/bin/phpmd \
+          web/themes/ \
+          text \
+          cleancode,codesize,controversial,design,naming,unusedcode \
+          --ignore-violations-on-exit
+
     - name: PHP STatic ANalyser (phpstan)
       run: >
         ./vendor/bin/phpstan analyse \
           --level=7 \
           web/themes/mosaic
-    
+
+    - name: PHP Quality Assurance (phpqa)
+      run: >
+        ./vendor/bin/phpqa \
+          --analyzedDirs web/themes/mosaic \
+          --tools phpmetrics,phploc:1,phpcs,phpmd,pdepend,phpcpd,psalm:1,security-checker \
+          --output cli
+
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
