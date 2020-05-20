@@ -37,11 +37,13 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         '952683d815ff0a7bf322b93c0be7e4e4' => __DIR__ . '/..' . '/chi-teck/drupal-code-generator/src/bootstrap.php',
+        '5f0e95b8df5acf4a92c896dc3ac4bb6e' => __DIR__ . '/..' . '/phpmetrics/phpmetrics/src/functions.php',
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
         '5a12a5271c58108e0aa33355e6ac54ea' => __DIR__ . '/..' . '/drupal/console-core/src/functions.php',
-        '5f0e95b8df5acf4a92c896dc3ac4bb6e' => __DIR__ . '/..' . '/phpmetrics/phpmetrics/src/functions.php',
         '15db5f28ad7d06aa60739851ece0eb76' => __DIR__ . '/..' . '/edgedesign/phpqa/src/report.php',
         '09ba5fd9a1738f23e8e118aaa6654171' => __DIR__ . '/..' . '/edgedesign/phpqa/src/paths.php',
+        '4d945db823e5f6ca6dd83ad1f5fbcc43' => __DIR__ . '/..' . '/wikimedia/relpath/src/RelPath/RelPath.php',
+        '6513700b70192b7dfd0e5e9fc8082cf3' => __DIR__ . '/..' . '/wikimedia/relpath/src/Wikimedia/RelPath.php',
         'd511210698f02d87ca48e3972f64323e' => __DIR__ . '/../..' . '/load.environment.php',
     );
 
@@ -132,6 +134,7 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
             'SelfUpdate\\' => 11,
             'Seld\\PharUtils\\' => 15,
             'Seld\\JsonLint\\' => 14,
+            'Seld\\CliPrompt\\' => 15,
         ),
         'R' => 
         array (
@@ -148,6 +151,7 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
             'Prophecy\\' => 9,
             'PhpParser\\' => 10,
             'PhpCsFixer\\' => 11,
+            'PhpAssumptions\\' => 15,
             'PackageVersions\\' => 16,
             'PHPStan\\ExtensionInstaller\\' => 27,
             'PHPStan\\' => 8,
@@ -156,10 +160,12 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         'M' => 
         array (
             'Masterminds\\' => 12,
+            'MacFJA\\PHPQAExtensions\\' => 23,
         ),
         'L' => 
         array (
             'League\\Container\\' => 17,
+            'League\\CLImate\\' => 15,
             'LanguageServerProtocol\\' => 23,
         ),
         'J' => 
@@ -490,6 +496,10 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         array (
             0 => __DIR__ . '/..' . '/seld/jsonlint/src/Seld/JsonLint',
         ),
+        'Seld\\CliPrompt\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/seld/cli-prompt/src',
+        ),
         'Robo\\' => 
         array (
             0 => __DIR__ . '/..' . '/consolidation/robo/src',
@@ -530,6 +540,10 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         array (
             0 => __DIR__ . '/..' . '/friendsofphp/php-cs-fixer/src',
         ),
+        'PhpAssumptions\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rskuipers/php-assumptions/src/PhpAssumptions',
+        ),
         'PackageVersions\\' => 
         array (
             0 => __DIR__ . '/..' . '/ocramius/package-versions/src/PackageVersions',
@@ -551,9 +565,17 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         array (
             0 => __DIR__ . '/..' . '/masterminds/html5/src',
         ),
+        'MacFJA\\PHPQAExtensions\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/macfja/phpqa-extensions/src',
+        ),
         'League\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/container/src',
+        ),
+        'League\\CLImate\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/climate/src',
         ),
         'LanguageServerProtocol\\' => 
         array (

@@ -1,0 +1,1 @@
+../macfja/phpqa-extensions/bin/phpqa-extensions.php
