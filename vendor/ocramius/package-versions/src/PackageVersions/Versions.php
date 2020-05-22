@@ -97,7 +97,7 @@ final class Versions
   'drupal/memcache' => '2.0.0@8.x-2.0',
   'drupal/memcache_storage' => '1.0.0-beta2@8.x-1.0-beta2',
   'drupal/optimizedb' => '1.0.0-rc2@8.x-1.0-rc2',
-  'drupal/paragraphs' => '1.11.0@8.x-1.11',
+  'drupal/paragraphs' => '1.12.0@8.x-1.12',
   'drupal/paragraphs_edit' => '2.0.0-alpha6@8.x-2.0-alpha6',
   'drupal/pathauto' => '1.8.0@8.x-1.8',
   'drupal/redirect' => '1.6.0@8.x-1.6',
@@ -107,7 +107,7 @@ final class Versions
   'drupal/sophron' => '1.0.0@8.x-1.0',
   'drupal/token' => '1.7.0@8.x-1.7',
   'drupal/tour_ui' => '1.0.0-beta2@8.x-1.0-beta2',
-  'drupal/views_bootstrap' => '4.2.0@8.x-4.2',
+  'drupal/views_bootstrap' => '4.3.0@8.x-4.3',
   'drupal/viewsreference' => '2.0.0-alpha7@8.x-2.0-alpha7',
   'drupal/xmlrpc' => '1.0.0-beta1@8.x-1.0-beta1',
   'drush/drush' => '9.7.2@ab5e345a72c9187a7d770486a09691f6526826aa',
@@ -238,8 +238,8 @@ final class Versions
   'phpmetrics/phpmetrics' => 'v2.6.2@67ac2cea23c6f9c5bdfd1c98fc0e55eef16ef59d',
   'phpstan/extension-installer' => '1.0.4@2e041def501d661b806f50000c8a4dccbd4907b4',
   'phpstan/phpstan' => '0.12.25@9619551d68b2d4c0d681a8df73f3c847c798ee64',
-  'phpstan/phpstan-deprecation-rules' => '0.12.2@51d21a83b97e539e1fc56c1ce42ac0f187407fb6',
-  'roave/security-advisories' => 'dev-master@885e8b1e0bc2096989fd20938342e407e8045186',
+  'phpstan/phpstan-deprecation-rules' => '0.12.3@6f87f9c733d13bc069bc58f1735933b50dac32cb',
+  'roave/security-advisories' => 'dev-master@e38de1df609b39d97144514d28b0804ad4daaddb',
   'rskuipers/php-assumptions' => '0.8.0@10f82ca2a268d6624553d2de4659ed6451d9ac60',
   'sebastian/finder-facade' => '1.2.3@167c45d131f7fc3d159f56f191a0a22228765e16',
   'sebastian/phpcpd' => '4.1.0@0d9afa762f2400de077b2192f4a9d127de0bb78e',
@@ -259,7 +259,7 @@ final class Versions
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'wikimedia/relpath' => '2.1.1@35e701ff16abf461bb8676a9d9177f86fa0b2c94',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'drupal-composer/drupal-project' => 'dev-master@d1525f0c5ed9032d409f1b7935263c914f7378d2',
+  'drupal-composer/drupal-project' => 'dev-master@802001b7b91cee8bd7bb4dcb23b5440b493d9d7b',
 );
 
     private function __construct()
