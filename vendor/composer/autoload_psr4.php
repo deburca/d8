@@ -72,7 +72,6 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log/Psr/Log'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
-    'Psalm\\Plugin\\' => array($vendorDir . '/vimeo/psalm/src/Psalm/Plugin'),
     'Psalm\\' => array($vendorDir . '/vimeo/psalm/src/Psalm'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src/Prophecy'),
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),

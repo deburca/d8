@@ -146,7 +146,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
-            'Psalm\\Plugin\\' => 13,
             'Psalm\\' => 6,
             'Prophecy\\' => 9,
             'PhpParser\\' => 10,
@@ -519,10 +518,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
-        ),
-        'Psalm\\Plugin\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/vimeo/psalm/src/Psalm/Plugin',
         ),
         'Psalm\\' => 
         array (
