@@ -247,11 +247,11 @@ final class Versions
   'sensiolabs/security-checker' => 'v6.0.3@a576c01520d9761901f269c4934ba55448be4a54',
   'squizlabs/php_codesniffer' => '3.5.5@73e2e7f57d958e7228fce50dc0c61f58f017f9f6',
   'symfony/http-client' => 'v5.0.8@93b41572fbb3b8dd11d4f6f0434bbbbacd8619ab',
-  'symfony/http-client-contracts' => 'v2.1.1@e3ba2688594d8ef284f40348f7efb72cba4edec4',
+  'symfony/http-client-contracts' => 'v2.1.2@f8bed25edc964d015bcd87f1fec5734963931910',
   'symfony/mime' => 'v5.0.8@5d6c81c39225a750f3f43bee15f03093fb9aaa0b',
   'symfony/options-resolver' => 'v5.0.8@3707e3caeff2b797c0bfaadd5eba723dd44e6bf1',
   'symfony/polyfill-php73' => 'v1.17.0@a760d8964ff79ab9bf057613a5808284ec852ccc',
-  'symfony/service-contracts' => 'v2.0.1@144c5e51266b281231e947b51223ba14acf1a749',
+  'symfony/service-contracts' => 'v2.1.2@66a8f0957a3ca54e4f724e49028ab19d75a8918b',
   'symfony/stopwatch' => 'v5.0.8@a1d86d30d4522423afc998f32404efa34fcf5a73',
   'theseer/fdomdocument' => '1.6.6@6e8203e40a32a9c770bcb62fe37e68b948da6dca',
   'vimeo/psalm' => '3.11.5@3c60609c218d4d4b3b257728b8089094e5c6c6c2',
@@ -259,7 +259,7 @@ final class Versions
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'wikimedia/relpath' => '2.1.1@35e701ff16abf461bb8676a9d9177f86fa0b2c94',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'drupal-composer/drupal-project' => 'dev-master@be5eaef355f80c8e1c91c25872044b4fd7970ea4',
+  'drupal-composer/drupal-project' => 'dev-master@637f2dcff97c6e25ff8f7399a47c692e826a58b2',
 );
 
     private function __construct()
