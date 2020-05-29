@@ -54,7 +54,7 @@ final class Versions
   'doctrine/collections' => '1.6.5@fc0206348e17e530d09463fef07ba8968406cd6d',
   'doctrine/common' => '2.13.1@fb00cd761126b11d8f334c09cf5b1f3f83fefc17',
   'doctrine/event-manager' => '1.1.0@629572819973f13486371cb611386eb17851e85c',
-  'doctrine/inflector' => '1.4.2@889b42b8155f2aa274596b6e0424371b1e3c51bb',
+  'doctrine/inflector' => '1.4.3@4650c8b30c753a76bf44fb2ed00117d6f367490c',
   'doctrine/instantiator' => '1.3.0@ae466f726242e637cebdd526a7d991b9433bacf1',
   'doctrine/lexer' => '1.2.1@e864bbf5904cb8f5bb334f99209b48018522f042',
   'doctrine/persistence' => '1.3.7@0af483f91bada1c9ded6c2cfd26ab7d5ab2094e0',
@@ -259,7 +259,7 @@ final class Versions
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'wikimedia/relpath' => '2.1.1@35e701ff16abf461bb8676a9d9177f86fa0b2c94',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'drupal-composer/drupal-project' => 'dev-master@637f2dcff97c6e25ff8f7399a47c692e826a58b2',
+  'drupal-composer/drupal-project' => 'dev-master@d9e28e945fef6f1d975132c2284d6249a0cd85a1',
 );
 
     private function __construct()
