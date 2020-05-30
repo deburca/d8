@@ -52,10 +52,10 @@ final class Versions
   'doctrine/annotations' => '1.10.3@5db60a4969eba0e0c197a19c077780aadbc43c5d',
   'doctrine/cache' => '1.10.1@35a4a70cd94e09e2259dfae7488afc6b474ecbd3',
   'doctrine/collections' => '1.6.5@fc0206348e17e530d09463fef07ba8968406cd6d',
-  'doctrine/common' => '2.13.1@fb00cd761126b11d8f334c09cf5b1f3f83fefc17',
+  'doctrine/common' => '2.13.2@6902fafacb43333d9dc3d949c0a06048a31549ac',
   'doctrine/event-manager' => '1.1.0@629572819973f13486371cb611386eb17851e85c',
   'doctrine/inflector' => '1.4.3@4650c8b30c753a76bf44fb2ed00117d6f367490c',
-  'doctrine/instantiator' => '1.3.0@ae466f726242e637cebdd526a7d991b9433bacf1',
+  'doctrine/instantiator' => '1.3.1@f350df0268e904597e3bd9c4685c53e0e333feea',
   'doctrine/lexer' => '1.2.1@e864bbf5904cb8f5bb334f99209b48018522f042',
   'doctrine/persistence' => '1.3.7@0af483f91bada1c9ded6c2cfd26ab7d5ab2094e0',
   'doctrine/reflection' => '1.2.1@55e71912dfcd824b2fdd16f2d9afe15684cfce79',
@@ -238,7 +238,7 @@ final class Versions
   'phpmetrics/phpmetrics' => 'v2.6.2@67ac2cea23c6f9c5bdfd1c98fc0e55eef16ef59d',
   'phpstan/extension-installer' => '1.0.4@2e041def501d661b806f50000c8a4dccbd4907b4',
   'phpstan/phpstan' => '0.12.25@9619551d68b2d4c0d681a8df73f3c847c798ee64',
-  'phpstan/phpstan-deprecation-rules' => '0.12.3@6f87f9c733d13bc069bc58f1735933b50dac32cb',
+  'phpstan/phpstan-deprecation-rules' => '0.12.4@9b4b8851fb5d59fd0eed00fbe9c22cfc328e0187',
   'roave/security-advisories' => 'dev-master@55922f51129488c246a776ff944463605d447da0',
   'rskuipers/php-assumptions' => '0.8.0@10f82ca2a268d6624553d2de4659ed6451d9ac60',
   'sebastian/finder-facade' => '1.2.3@167c45d131f7fc3d159f56f191a0a22228765e16',
@@ -259,7 +259,7 @@ final class Versions
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'wikimedia/relpath' => '2.1.1@35e701ff16abf461bb8676a9d9177f86fa0b2c94',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'drupal-composer/drupal-project' => 'dev-master@d9e28e945fef6f1d975132c2284d6249a0cd85a1',
+  'drupal-composer/drupal-project' => 'dev-master@96015ed4410a311b25fc8befd3cb4070c8612875',
 );
 
     private function __construct()
