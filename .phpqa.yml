@@ -8,19 +8,21 @@ phpqa:
     report: false
     execution: parallel
     output: file
-    tools: phpmetrics,phploc,phpcs,php-cs-fixer,phpmd,pdepend,phpcpd,phpstan,phpunit,psalm,security-checker,parallel-lint
+    tools: phpmetrics,phploc,phpcs,php-cs-fixer,phpmd,pdepend,phpcpd,psalm,security-checker,parallel-lint
     # array definition and allowed errors count is supported too
     # tools: [phploc, phpcs:0]
     verbose: false
-
     # Other config
     # Php file extensions to parse.
     extensions:
-        - module,theme,php
+    extensions: module,theme,install,php,yml,twig
+
+phploc:
+    names: '*.module,*.theme,*.install,*.php,*.yml,*.twig'
 
 phpcs:
     # alternatively you can use an array to define multiple standards (https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage#specifying-a-coding-standard)
-    standard: PSR2
+    standard: 'web/modules/contrib/coder/coder_sniffer/Drupal,web/modules/contrib/coder/coder_sniffer/DrupalPractice,vendor/phpcompatibility/php-compatibility/PHPCompatibility'
     # number of allowed errors is compared with warnings+errors, or just errors from checkstyle.xml
     ignoreWarnings: false
     # https://github.com/squizlabs/PHP_CodeSniffer/wiki/Reporting
@@ -62,7 +64,7 @@ phpmetrics:
     # composer: composer.json
 
 phpstan:
-    level: 0
+    level: 7
     # https://github.com/phpstan/phpstan#configuration
     # standard: tests/.travis/phpstan.neon
 
@@ -94,6 +96,8 @@ report:
     php-cs-fixer: vendor/edgedesign/phpqa/app/report/php-cs-fixer.xsl
     psalm: vendor/edgedesign/phpqa/app/report/psalm.xsl
     phpstan: vendor/edgedesign/phpqa/app/report/phpstan.xsl
+    phpa: vendor/macfja/phpqa-extensions/app/report/phpassumptions.xsl
+    phpmnd: vendor/macfja/phpqa-extensions/app/report/phpmagicnumber.xsl
     assets:
         bootstrap.min.css: https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css
         jquery.min.js: https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js
@@ -127,3 +131,5 @@ tool:
     phpunit: Edge\QA\Tools\Analyzer\Phpunit
     psalm: Edge\QA\Tools\Analyzer\Psalm
     security-checker: Edge\QA\Tools\Analyzer\SecurityChecker
+    phpa: MacFJA\PHPQAExtensions\Tools\Analyzer\PhpAssumptions
+    phpmnd: MacFJA\PHPQAExtensions\Tools\Analyzer\PhpMagicNumber
