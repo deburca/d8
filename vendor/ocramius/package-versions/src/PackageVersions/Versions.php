@@ -81,7 +81,7 @@ final class Versions
   'drupal/core-dev' => '8.8.6@edeec67c12be4b459d2873ac99044787b51ebe42',
   'drupal/ctools' => '3.4.0@8.x-3.4',
   'drupal/devel' => '3.0.0-beta1@8.x-3.0-beta1',
-  'drupal/ds' => '3.6.0@8.x-3.6',
+  'drupal/ds' => '3.7.0@8.x-3.7',
   'drupal/entity_browser' => '2.5.0@8.x-2.5',
   'drupal/entity_reference_revisions' => '1.8.0@8.x-1.8',
   'drupal/field_formatter_class' => '1.3.0@8.x-1.3',
@@ -261,7 +261,7 @@ final class Versions
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'wikimedia/relpath' => '2.1.1@35e701ff16abf461bb8676a9d9177f86fa0b2c94',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'drupal-composer/drupal-project' => 'dev-master@a128845a180512cdbdc102c3d8455c85174f9c77',
+  'drupal-composer/drupal-project' => 'dev-master@86e21109454a8d0c90bdb86e6683a291f8f23672',
 );
 
     private function __construct()
