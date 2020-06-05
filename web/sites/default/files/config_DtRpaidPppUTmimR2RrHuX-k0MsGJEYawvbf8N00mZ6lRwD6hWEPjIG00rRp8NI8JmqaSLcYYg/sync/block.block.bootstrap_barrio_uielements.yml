@@ -1,0 +1,40 @@
+uuid: 2907de0f-50a0-4570-9869-110559d31064
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:b04877ce-1cb0-4a2c-a24f-b77ca4fe32c6'
+  module:
+    - block_class
+    - block_content
+    - node
+    - system
+  theme:
+    - bootstrap_barrio
+id: bootstrap_barrio_uielements
+theme: bootstrap_barrio
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'block_content:b04877ce-1cb0-4a2c-a24f-b77ca4fe32c6'
+settings:
+  id: 'block_content:b04877ce-1cb0-4a2c-a24f-b77ca4fe32c6'
+  label: 'UI elements'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      page: page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  request_path:
+    id: request_path
+    pages: /node/106
+    negate: false
+    context_mapping: {  }

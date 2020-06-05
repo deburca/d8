@@ -1,0 +1,28 @@
+uuid: d7b90d8a-5e6d-4b32-8fef-76ebda5d3ba4
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.frontpage
+  module:
+    - block_class
+    - views
+  theme:
+    - mosaic
+third_party_settings:
+  block_class:
+    classes: col-sm-4
+id: views_block__frontpage_block_social
+theme: mosaic
+region: footer
+weight: -10
+provider: null
+plugin: 'views_block:frontpage-block_social'
+settings:
+  id: 'views_block:frontpage-block_social'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility: {  }

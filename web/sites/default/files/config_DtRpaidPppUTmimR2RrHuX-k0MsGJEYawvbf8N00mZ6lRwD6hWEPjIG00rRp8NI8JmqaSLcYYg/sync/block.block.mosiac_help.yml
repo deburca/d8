@@ -1,0 +1,22 @@
+uuid: 11907860-5a5c-4ead-ab82-fd3c64dc9a69
+langcode: en
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - mosiac
+_core:
+  default_config_hash: 8I8iACSa0sKO3k3jlvUG1ge52rfcKX7USJAQYnzuBgg
+id: mosiac_help
+theme: mosiac
+region: content
+weight: -30
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  provider: help
+  label_display: '0'
+visibility: {  }

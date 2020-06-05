@@ -1,0 +1,14 @@
+uuid: 512a9992-be39-478e-b53e-539bcab1bbc0
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.editor_falconi_
+  module:
+    - user
+id: user_remove_role_action.editor_falconi_
+label: 'Remove the Editor (Falconi) role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: editor_falconi_

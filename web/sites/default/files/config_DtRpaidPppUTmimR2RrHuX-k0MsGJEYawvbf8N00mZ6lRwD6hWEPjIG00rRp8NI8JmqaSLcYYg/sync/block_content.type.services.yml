@@ -1,0 +1,8 @@
+uuid: 4ecbc774-40b1-461a-8672-9ee54f5d2566
+langcode: en
+status: true
+dependencies: {  }
+id: services
+label: Services
+revision: 0
+description: 'A basic block contains a title and a body for the services area.'

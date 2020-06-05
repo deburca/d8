@@ -1,0 +1,28 @@
+uuid: d8ec5b28-6ed3-47f2-95db-8e01de61e294
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.frontpage
+  module:
+    - block_class
+    - views
+  theme:
+    - bootstrap_barrio
+third_party_settings:
+  block_class:
+    classes: col-sm-4
+id: bootstrap_barrio_views_block__frontpage_block_social
+theme: bootstrap_barrio
+region: top_header
+weight: -10
+provider: null
+plugin: 'views_block:frontpage-block_social'
+settings:
+  id: 'views_block:frontpage-block_social'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility: {  }

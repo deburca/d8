@@ -1,0 +1,32 @@
+uuid: b19b2f3b-f4bd-41b8-9c42-98a4e0130bbb
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.user.small_thumbnail
+    - field.field.user.user.user_picture
+    - image.style.thumbnail_50_50_
+  module:
+    - field_formatter_class
+    - image
+    - user
+_core:
+  default_config_hash: V51QPCKkgNREKtSmB9Iu2wmAMEpktVpnzklWaZV8UYo
+id: user.user.small_thumbnail
+targetEntityType: user
+bundle: user
+mode: small_thumbnail
+content:
+  user_picture:
+    type: image
+    weight: 0
+    region: content
+    settings:
+      image_style: thumbnail_50_50_
+      image_link: content
+    third_party_settings:
+      field_formatter_class:
+        class: ''
+    label: hidden
+hidden:
+  member_for: true

@@ -1,0 +1,15 @@
+uuid: 52ae6563-e2ba-4103-901a-fec3e7d84a73
+name: 'de Búrca.org'
+mail: paddy@deburca.org
+slogan: ''
+page:
+  403: ''
+  404: ''
+  front: /node
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+_core:
+  default_config_hash: yXadRE77Va-G6dxhd2kPYapAvbnSvTF6hO4oXiOEynI
+mail_notification: ''

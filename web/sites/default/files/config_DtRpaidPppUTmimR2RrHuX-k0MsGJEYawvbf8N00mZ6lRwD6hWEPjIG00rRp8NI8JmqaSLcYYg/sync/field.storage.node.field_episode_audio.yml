@@ -1,0 +1,21 @@
+uuid: 21d7f20d-053e-445a-bd95-4b7fd908db80
+langcode: en
+status: true
+dependencies:
+  module:
+    - link
+    - node
+_core:
+  default_config_hash: mvHmkqhh-o5HB2DAaJ9a1DvX23q-Cdjbq1CQMS0NmG8
+id: node.field_episode_audio
+field_name: field_episode_audio
+entity_type: node
+type: link
+settings: {  }
+module: link
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

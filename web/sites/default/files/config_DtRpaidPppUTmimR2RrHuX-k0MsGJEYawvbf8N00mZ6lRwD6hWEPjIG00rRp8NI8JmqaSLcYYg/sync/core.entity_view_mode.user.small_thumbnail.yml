@@ -1,0 +1,10 @@
+uuid: 202b5ce7-46df-4dd0-abd6-f6633028c7bc
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.small_thumbnail
+label: 'Small thumbnail'
+targetEntityType: user
+cache: true

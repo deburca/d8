@@ -1,0 +1,14 @@
+uuid: 86b9fa32-0dcf-43d2-8bc7-225ec1b601ed
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.breadcrumb
+    - taxonomy.vocabulary.topics
+id: taxonomy_term.topics.breadcrumb
+targetEntityType: taxonomy_term
+bundle: topics
+mode: breadcrumb
+content: {  }
+hidden:
+  description: true

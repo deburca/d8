@@ -1,0 +1,22 @@
+uuid: f28ee8c2-7775-46de-969b-88560b8aa233
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: stuff
+label: Stuff
+type: 'canonical_entities:node'
+pattern: '[node:field_topic:entity:vocabulary]/[node:field_topic:entity:parents]/[node:field_topic:entity:name]/[node:title]'
+selection_criteria:
+  071c4c5e-7633-44df-bb50-2d492c1d710b:
+    id: node_type
+    bundles:
+      article: article
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 071c4c5e-7633-44df-bb50-2d492c1d710b
+selection_logic: and
+weight: -5
+relationships: {  }

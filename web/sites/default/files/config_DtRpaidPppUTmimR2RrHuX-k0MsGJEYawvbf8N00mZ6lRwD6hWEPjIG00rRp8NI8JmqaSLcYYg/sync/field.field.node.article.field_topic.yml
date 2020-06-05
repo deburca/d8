@@ -1,0 +1,33 @@
+uuid: 9e73372f-f363-4883-b0c7-2fefd4ff8e62
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_topic
+    - node.type.article
+    - taxonomy.vocabulary.topics
+  content:
+    - 'taxonomy_term:topics:daa1006f-f11d-4d51-ad3b-4e184f80e2d6'
+id: node.article.field_topic
+field_name: field_topic
+entity_type: node
+bundle: article
+label: Topic
+description: 'Tings stuff relate to'
+required: false
+translatable: false
+default_value:
+  -
+    target_uuid: daa1006f-f11d-4d51-ad3b-4e184f80e2d6
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      topics: topics
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

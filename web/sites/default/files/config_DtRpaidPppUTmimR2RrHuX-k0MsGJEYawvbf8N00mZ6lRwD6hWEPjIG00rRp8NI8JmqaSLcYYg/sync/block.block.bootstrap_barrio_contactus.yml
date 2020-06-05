@@ -1,0 +1,29 @@
+uuid: 4764e29f-abc8-44e2-9bef-e2c46996cfa5
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:a6f9f1a1-5277-4d6a-899f-22a847cc3b11'
+  module:
+    - block_class
+    - block_content
+  theme:
+    - bootstrap_barrio
+third_party_settings:
+  block_class:
+    classes: col-sm-4
+id: bootstrap_barrio_contactus
+theme: bootstrap_barrio
+region: top_header
+weight: -11
+provider: null
+plugin: 'block_content:a6f9f1a1-5277-4d6a-899f-22a847cc3b11'
+settings:
+  id: 'block_content:a6f9f1a1-5277-4d6a-899f-22a847cc3b11'
+  label: 'Contact us'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

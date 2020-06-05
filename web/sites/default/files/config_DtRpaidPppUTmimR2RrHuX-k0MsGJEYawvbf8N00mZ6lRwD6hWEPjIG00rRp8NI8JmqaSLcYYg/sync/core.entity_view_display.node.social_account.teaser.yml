@@ -1,0 +1,30 @@
+uuid: 1d0364ce-3e36-4728-9dae-b22ef6c487c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.social_account.body
+    - node.type.social_account
+  module:
+    - text
+    - user
+id: node.social_account.teaser
+targetEntityType: node
+bundle: social_account
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

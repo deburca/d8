@@ -1,0 +1,22 @@
+uuid: d5e62fa4-6176-43e4-87a7-016aa7bc3cf6
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - mosaic
+_core:
+  default_config_hash: 9RnnTUBcn0WRWXfrGOnId2H0Q31uQUeu_F5TnDxl2yg
+id: mosaic_messages
+theme: mosaic
+region: header
+weight: -10
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }

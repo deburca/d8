@@ -1,0 +1,9 @@
+uuid: 93babfc4-ee5d-4c0d-861d-a30aa90ad5e1
+langcode: en
+status: true
+dependencies: {  }
+id: text
+label: Text
+icon_uuid: null
+description: 'Paragraph with text.'
+behavior_plugins: {  }

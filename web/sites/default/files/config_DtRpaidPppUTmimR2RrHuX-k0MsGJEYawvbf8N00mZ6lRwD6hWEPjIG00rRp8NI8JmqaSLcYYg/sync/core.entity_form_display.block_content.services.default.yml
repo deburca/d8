@@ -1,0 +1,40 @@
+uuid: 3925f119-44d0-4443-bf26-1ebd3dc75fa8
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.services
+    - field.field.block_content.services.body
+    - field.field.block_content.services.field_icon
+  module:
+    - text
+id: block_content.services.default
+targetEntityType: block_content
+bundle: services
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 3
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+    region: content
+  field_icon:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

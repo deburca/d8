@@ -1,0 +1,22 @@
+uuid: 9e67d4bf-9fb6-447b-b1bb-bb5b9335461e
+langcode: en
+status: false
+dependencies:
+  module:
+    - system
+  theme:
+    - mosaic
+_core:
+  default_config_hash: iggZSiUKz4mYP1YPJ8SsUfFu79HIgOTt6IDy3Up59aM
+id: mosaic_powered
+theme: mosaic
+region: footer
+weight: -8
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  provider: system
+  label_display: '0'
+visibility: {  }

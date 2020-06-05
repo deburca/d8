@@ -1,0 +1,10 @@
+uuid: bd4fc2fd-9a96-438d-ada4-d9f917dd2ed6
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: taxonomy_term.breadcrumb
+label: Breadcrumb
+targetEntityType: taxonomy_term
+cache: true
