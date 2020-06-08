@@ -4,7 +4,6 @@ module:
   admin_toolbar_tools: 0
   advagg: 0
   advagg_bundler: 0
-  advagg_cdn: 0
   advagg_css_minify: 0
   advagg_js_minify: 0
   automated_cron: 0
@@ -22,8 +21,6 @@ module:
   bootstrap_library: 0
   bootstrap_paragraphs: 0
   breakpoint: 0
-  cdn: 0
-  cdn_ui: 0
   chosen: 0
   chosen_lib: 0
   ckeditor: 0
@@ -35,6 +32,7 @@ module:
   datetime: 0
   dblog: 0
   devel: 0
+  domain: 0
   dynamic_page_cache: 0
   editor: 0
   entity_reference_revisions: 0
@@ -49,7 +47,6 @@ module:
   geshifilter: 0
   help: 0
   history: 0
-  hms_field: 0
   honeypot: 0
   image: 0
   inline_form_errors: 0
@@ -62,7 +59,6 @@ module:
   media_library: 0
   menu_ui: 0
   node: 0
-  optimizedb: 0
   options: 0
   page_cache: 0
   paragraphs_edit: 0
@@ -75,14 +71,12 @@ module:
   search: 0
   seckit: 0
   shortcut: 0
-  simplepodcast: 0
   system: 0
   taxonomy: 0
   text: 0
   token: 0
   toolbar: 0
   tour: 0
-  tour_ui: 0
   update: 0
   user: 0
   views_bootstrap: 0

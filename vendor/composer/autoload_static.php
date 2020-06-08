@@ -20,8 +20,8 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
-        '7e9bd612cc444b3eed788ebbe46263a0' => __DIR__ . '/..' . '/laminas/laminas-zendframework-bridge/src/autoload.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        '7e9bd612cc444b3eed788ebbe46263a0' => __DIR__ . '/..' . '/laminas/laminas-zendframework-bridge/src/autoload.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
@@ -66,10 +66,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         'p' => 
         array (
             'phpDocumentor\\Reflection\\' => 25,
-        ),
-        'l' => 
-        array (
-            'lsolesen\\pel\\' => 13,
         ),
         'c' => 
         array (
@@ -199,11 +195,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
             'Grasmash\\Expander\\' => 18,
             'Goutte\\' => 7,
         ),
-        'F' => 
-        array (
-            'FontLib\\' => 8,
-            'FileEye\\MimeMap\\' => 16,
-        ),
         'E' => 
         array (
             'Egulias\\EmailValidator\\' => 23,
@@ -213,7 +204,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         array (
             'Drush\\Internal\\' => 15,
             'Drush\\' => 6,
-            'Drupal\\sophron\\' => 15,
             'Drupal\\Driver\\' => 14,
             'Drupal\\Core\\' => 12,
             'Drupal\\Console\\Core\\' => 20,
@@ -275,10 +265,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-        ),
-        'lsolesen\\pel\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/lsolesen/pel/src',
         ),
         'cweagans\\Composer\\' => 
         array (
@@ -637,14 +623,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         array (
             0 => __DIR__ . '/..' . '/fabpot/goutte/Goutte',
         ),
-        'FontLib\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib',
-        ),
-        'FileEye\\MimeMap\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/fileeye/mimemap/src',
-        ),
         'Egulias\\EmailValidator\\' => 
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/EmailValidator',
@@ -660,10 +638,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         'Drush\\' => 
         array (
             0 => __DIR__ . '/..' . '/drush/drush/src',
-        ),
-        'Drupal\\sophron\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/web/modules/contrib/sophron/src',
         ),
         'Drupal\\Driver\\' => 
         array (

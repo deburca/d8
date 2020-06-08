@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.user.small_thumbnail
+    - field.field.user.user.field_domain_admin
     - field.field.user.user.user_picture
     - image.style.thumbnail_50_50_
   module:
@@ -29,4 +30,5 @@ content:
         class: ''
     label: hidden
 hidden:
+  field_domain_admin: true
   member_for: true
