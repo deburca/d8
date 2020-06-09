@@ -54,7 +54,8 @@
         "drupal/views_bootstrap": "^4.1",
         "drupal/viewsreference": "^2.0",
         "drupal/xmlrpc": "^1.0",
-        "drush/drush": "^9.0.0"
+        "drush/drush": "^9.0.0",
+        "psr/container": "^1.0"
     },
     "require-dev": {
         "edgedesign/phpqa": "^1.23",
