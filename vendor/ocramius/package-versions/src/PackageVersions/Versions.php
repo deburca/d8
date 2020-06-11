@@ -136,6 +136,8 @@ final class Versions
   'phpdocumentor/reflection-docblock' => '5.1.0@cd72d394ca794d3466a3b2fc09d5a6c1dc86b47e',
   'phpdocumentor/type-resolver' => '1.1.0@7462d5f123dfc080dfdf26897032a6513644fc95',
   'phpspec/prophecy' => 'v1.10.3@451c3cd1418cf640de218914901e51b064abb093',
+  'phpstan/phpstan' => '0.12.28@76c0c4ec90b1eed66fa4855b8b4b53fa9054353f',
+  'phpstan/phpstan-strict-rules' => '0.12.2@a670a59aff7cf96f75d21b974860ada10e25b2ee',
   'phpunit/php-code-coverage' => '6.1.4@807e6013b00af69b6c5d9ceb4282d0393dbb9d8d',
   'phpunit/php-file-iterator' => '2.0.2@050bedf145a257b1ff02746c31894800e5122946',
   'phpunit/php-text-template' => '1.2.1@31f8b717e51d9a2afca6c9f046f5d69fc27c8686',
@@ -226,7 +228,6 @@ final class Versions
   'phpmd/phpmd' => '2.8.2@714629ed782537f638fe23c4346637659b779a77',
   'phpmetrics/phpmetrics' => 'v2.6.2@67ac2cea23c6f9c5bdfd1c98fc0e55eef16ef59d',
   'phpstan/extension-installer' => '1.0.4@2e041def501d661b806f50000c8a4dccbd4907b4',
-  'phpstan/phpstan' => '0.12.28@76c0c4ec90b1eed66fa4855b8b4b53fa9054353f',
   'phpstan/phpstan-deprecation-rules' => '0.12.4@9b4b8851fb5d59fd0eed00fbe9c22cfc328e0187',
   'roave/security-advisories' => 'dev-master@59f3050bcd5dab238c9ac3eada55269cc2fcfaa8',
   'rskuipers/php-assumptions' => '0.8.0@10f82ca2a268d6624553d2de4659ed6451d9ac60',
@@ -249,7 +250,7 @@ final class Versions
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'wikimedia/relpath' => '2.1.1@35e701ff16abf461bb8676a9d9177f86fa0b2c94',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'drupal-composer/drupal-project' => 'dev-master@5324d127368f26010338a3b2df208758e5262109',
+  'drupal-composer/drupal-project' => 'dev-master@679c37665cb45b403494357117082bbc68d4254f',
 );
 
     private function __construct()

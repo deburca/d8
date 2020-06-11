@@ -538,6 +538,7 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         array (
             0 => __DIR__ . '/..' . '/mglaman/phpstan-drupal/src',
             1 => __DIR__ . '/..' . '/phpstan/phpstan-deprecation-rules/src',
+            2 => __DIR__ . '/..' . '/phpstan/phpstan-strict-rules/src',
         ),
         'PDepend\\' => 
         array (
