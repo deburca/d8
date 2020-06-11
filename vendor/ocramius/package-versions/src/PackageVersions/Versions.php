@@ -85,7 +85,7 @@ final class Versions
   'drupal/entity_browser' => '2.5.0@8.x-2.5',
   'drupal/entity_reference_revisions' => '1.8.0@8.x-1.8',
   'drupal/field_formatter_class' => '1.3.0@8.x-1.3',
-  'drupal/field_group' => '3.0.0@8.x-3.0',
+  'drupal/field_group' => '3.1.0@8.x-3.1',
   'drupal/geshifilter' => '2.0.0-beta1@8.x-2.0-beta1',
   'drupal/honeypot' => '2.0.0@2.0.0',
   'drupal/libraries' => '3.0.0-alpha1@8.x-3.0-alpha1',
@@ -210,7 +210,7 @@ final class Versions
   'friendsofphp/php-cs-fixer' => 'v2.16.3@83baf823a33a1cbd5416c8626935cf3f843c10b0',
   'league/climate' => '3.5.2@6b53a28a58ad9f5f63042e291eb870cf0d02a9c9',
   'macfja/phpqa-extensions' => '0.1.0@c98e5079c3091209b2d8c568757dc0217897839d',
-  'mglaman/phpstan-drupal' => '0.12.3@c72367d12498c9f5d3738852d4089b4570690a55',
+  'mglaman/phpstan-drupal' => '0.12.4@4a74b797251562081715bb086a49d460c61a8783',
   'netresearch/jsonmapper' => 'v2.1.0@e0f1e33a71587aca81be5cffbb9746510e1fe04e',
   'nette/finder' => 'v2.5.2@4ad2c298eb8c687dd0e74ae84206a4186eeaed50',
   'nette/utils' => 'v3.1.2@488f58378bba71767e7831c83f9e0fa808bf83b9',
@@ -226,9 +226,9 @@ final class Versions
   'phpmd/phpmd' => '2.8.2@714629ed782537f638fe23c4346637659b779a77',
   'phpmetrics/phpmetrics' => 'v2.6.2@67ac2cea23c6f9c5bdfd1c98fc0e55eef16ef59d',
   'phpstan/extension-installer' => '1.0.4@2e041def501d661b806f50000c8a4dccbd4907b4',
-  'phpstan/phpstan' => '0.12.27@2abbd3253e38a258137f647f4e5fdbcb13142c3e',
+  'phpstan/phpstan' => '0.12.28@76c0c4ec90b1eed66fa4855b8b4b53fa9054353f',
   'phpstan/phpstan-deprecation-rules' => '0.12.4@9b4b8851fb5d59fd0eed00fbe9c22cfc328e0187',
-  'roave/security-advisories' => 'dev-master@de6fda3af9b36c77fdeb62b968157032f7111b09',
+  'roave/security-advisories' => 'dev-master@59f3050bcd5dab238c9ac3eada55269cc2fcfaa8',
   'rskuipers/php-assumptions' => '0.8.0@10f82ca2a268d6624553d2de4659ed6451d9ac60',
   'sebastian/finder-facade' => '1.2.3@167c45d131f7fc3d159f56f191a0a22228765e16',
   'sebastian/phpcpd' => '4.1.0@0d9afa762f2400de077b2192f4a9d127de0bb78e',
@@ -249,7 +249,7 @@ final class Versions
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'wikimedia/relpath' => '2.1.1@35e701ff16abf461bb8676a9d9177f86fa0b2c94',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'drupal-composer/drupal-project' => 'dev-master@4d76d2d09e5fc266fefb9945270da7c7b6dbf022',
+  'drupal-composer/drupal-project' => 'dev-master@5324d127368f26010338a3b2df208758e5262109',
 );
 
     private function __construct()

@@ -5,5 +5,6 @@ parameters:
 		- *TestBase.php
 	# PHPStan Level 7
 	level: 7
+
 includes:
-	# Add the phpstan-drupal extension
+	- vendor/phpstan/phpstan-strict-rules/rules.neon
