@@ -22,7 +22,7 @@
         "drupal-composer/drupal-scaffold": "^2.5",
         "drupal/admin_toolbar": "^2",
         "drupal/advagg": "^4.0",
-        "drupal/backup_migrate": "^4.0",
+        "drupal/backup_migrate": "^5.0",
         "drupal/block_class": "^1.0",
         "drupal/blogapi": "^1.0",
         "drupal/bootstrap_barrio": "^4.22",
