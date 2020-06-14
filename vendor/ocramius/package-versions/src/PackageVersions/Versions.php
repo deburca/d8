@@ -250,7 +250,7 @@ final class Versions
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'wikimedia/relpath' => '2.1.1@35e701ff16abf461bb8676a9d9177f86fa0b2c94',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'drupal-composer/drupal-project' => 'dev-master@4efd8474cd26496f8a091c7696794e99f8c4d087',
+  'drupal-composer/drupal-project' => 'dev-master@71f0a745c641db0e00d5a33d37979e2cdd1482e9',
 );
 
     private function __construct()
