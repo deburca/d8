@@ -8,7 +8,6 @@ dependencies:
     - field.field.node.article.comment
     - field.field.node.article.field_carousel
     - field.field.node.article.field_highlight
-    - field.field.node.article.field_paragraph
     - field.field.node.article.field_tags
     - field.field.node.article.field_topic
     - node.type.article
@@ -31,6 +30,5 @@ hidden:
   comment: true
   field_carousel: true
   field_highlight: true
-  field_paragraph: true
   field_tags: true
   field_topic: true

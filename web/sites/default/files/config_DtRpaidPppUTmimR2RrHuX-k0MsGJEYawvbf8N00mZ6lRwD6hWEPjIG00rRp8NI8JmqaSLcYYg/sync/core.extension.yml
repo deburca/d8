@@ -14,15 +14,11 @@ module:
   block_class: 0
   block_content: 0
   blogapi: 0
-  blogapi_blogger: 0
   blogapi_metaweblog: 0
   blogapi_movabletype: 0
   bootstrap_layouts: 0
   bootstrap_library: 0
-  bootstrap_paragraphs: 0
   breakpoint: 0
-  chosen: 0
-  chosen_lib: 0
   ckeditor: 0
   color: 0
   comment: 0
@@ -59,7 +55,6 @@ module:
   node: 0
   options: 0
   page_cache: 0
-  paragraphs_edit: 0
   path: 0
   path_alias: 0
   quickedit: 0
@@ -85,7 +80,6 @@ module:
   menu_link_content: 1
   pathauto: 1
   views: 10
-  paragraphs: 11
   standard: 1000
 theme:
   stable: 0

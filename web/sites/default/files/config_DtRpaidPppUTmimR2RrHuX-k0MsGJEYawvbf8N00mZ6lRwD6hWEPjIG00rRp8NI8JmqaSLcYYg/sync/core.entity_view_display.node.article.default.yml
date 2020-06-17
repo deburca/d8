@@ -8,14 +8,12 @@ dependencies:
     - field.field.node.article.comment
     - field.field.node.article.field_carousel
     - field.field.node.article.field_highlight
-    - field.field.node.article.field_paragraph
     - field.field.node.article.field_tags
     - field.field.node.article.field_topic
     - node.type.article
   module:
     - comment
     - ds
-    - entity_reference_revisions
     - field_formatter_class
     - text
     - user
@@ -95,19 +93,6 @@ content:
       view_mode: default
       pager_id: 0
     third_party_settings: {  }
-  field_paragraph:
-    type: entity_reference_revisions_entity_view
-    weight: 4
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings:
-      field_formatter_class:
-        class: row
-      ds:
-        ds_limit: ''
-    region: right
   field_tags:
     type: entity_reference_label
     weight: 2
