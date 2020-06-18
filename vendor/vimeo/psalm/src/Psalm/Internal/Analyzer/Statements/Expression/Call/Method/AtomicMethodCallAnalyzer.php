@@ -282,6 +282,8 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
                             $method_name_lc
                         );
 
+                        $mixin_class_storage = $codebase->classlike_storage_provider->get($lhs_type_part_new->value);
+
                         if ($codebase->methods->methodExists(
                             $new_method_id,
                             $context->calling_method_id,
@@ -295,9 +297,13 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
                             $statements_analyzer->getFilePath()
                         )) {
                             $lhs_type_part = clone $lhs_type_part_new;
-                            $class_storage = $codebase->classlike_storage_provider->get($lhs_type_part->value);
+                            $class_storage = $mixin_class_storage;
 
                             $naive_method_exists = true;
+                            $method_id = $new_method_id;
+                        } elseif (isset($mixin_class_storage->pseudo_methods[$method_name_lc])) {
+                            $lhs_type_part = clone $lhs_type_part_new;
+                            $class_storage = $mixin_class_storage;
                             $method_id = $new_method_id;
                         }
                     }
@@ -349,7 +355,10 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
                     new Type\Union([$lhs_type_part]),
                     $mixin_declaring_class_storage->name,
                     $fq_class_name,
-                    $class_storage->parent_class
+                    $class_storage->parent_class,
+                    true,
+                    false,
+                    $class_storage->final
                 );
 
                 $new_lhs_type_part = array_values($lhs_type_expanded->getAtomicTypes())[0];
@@ -413,6 +422,7 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
                     $method_id,
                     $class_storage,
                     $context,
+                    $config,
                     $all_intersection_return_type,
                     $result
                 );
@@ -624,6 +634,7 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
             $context,
             $method_id,
             $declaring_method_id,
+            $naive_method_id,
             $cased_method_id,
             $lhs_type_part,
             $static_type,
@@ -704,10 +715,18 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
                     && (isset($class_storage_for_method->methods[$method_name_lc]))
                     && !$class_storage_for_method->methods[$method_name_lc]->overridden_somewhere
                     && !$class_storage_for_method->methods[$method_name_lc]->overridden_downstream
-                    && ($plain_getter_property = $class_storage_for_method->methods[$method_name_lc]->plain_getter)
-                    && isset($context->vars_in_scope[$getter_var_id = $lhs_var_id . '->' . $plain_getter_property])
                 ) {
-                    $return_type_candidate = clone $context->vars_in_scope[$getter_var_id];
+                    $plain_getter_property = $class_storage_for_method->methods[$method_name_lc]->plain_getter;
+
+                    if ($plain_getter_property) {
+                        $getter_var_id = $lhs_var_id . '->' . $plain_getter_property;
+
+                        if (isset($context->vars_in_scope[$getter_var_id])) {
+                            $return_type_candidate = clone $context->vars_in_scope[$getter_var_id];
+                        } else {
+                            $plain_getter_property = null;
+                        }
+                    }
                 }
             }
 

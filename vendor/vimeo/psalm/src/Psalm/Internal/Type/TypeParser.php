@@ -86,7 +86,7 @@ class TypeParser
             }
         }
 
-        $parse_tree = ParseTree::createFromTokens($type_tokens);
+        $parse_tree = (new ParseTreeCreator($type_tokens))->create();
         $codebase = ProjectAnalyzer::getInstance()->getCodebase();
         $parsed_type = self::getTypeFromTree(
             $parse_tree,
@@ -490,6 +490,10 @@ class TypeParser
                 if (isset($keyed_intersection_types['static'])) {
                     unset($keyed_intersection_types['static']);
                     $intersect_static = true;
+                }
+
+                if (!$keyed_intersection_types && $intersect_static) {
+                    return new TNamedObject('static');
                 }
 
                 $first_type = array_shift($keyed_intersection_types);

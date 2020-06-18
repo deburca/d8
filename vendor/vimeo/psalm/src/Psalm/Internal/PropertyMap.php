@@ -98,7 +98,7 @@ return [
         's' => 'integer',
         'f' => 'float', // only present from 7.1 onwards
         'invert' => 'integer',
-        'days' => 'mixed',
+        'days' => 'false|int',
     ],
     'tokyotyrantexception' => [
         'code' => 'int',
@@ -260,12 +260,11 @@ return [
         'field_count' => 'int',
         'host_info' => 'string',
         'info' => 'string',
-        'insert_id' => 'mixed',
+        'insert_id' => 'int',
         'protocol_version' => 'string',
         'server_info' => 'string',
         'server_version' => 'int',
         'sqlstate' => 'string',
-        'stat' => 'mixed',
         'thread_id' => 'int',
         'warning_count' => 'int',
     ],
@@ -302,7 +301,7 @@ return [
     'mysqli_warning' => [
         'errno' => 'int',
         'message' => 'string',
-        'sqlstate' => 'mixed',
+        'sqlstate' => 'string',
     ],
     'eventlistener' => [
         'fd' => 'int',
@@ -327,7 +326,7 @@ return [
         'proprietary' => 'bool',
         'id' => 'int',
         'attribute' => 'array',
-        'child' => 'array',
+        'child' => '?array',
     ],
     'recursivecachingiterator' => [
         'name' => 'string',

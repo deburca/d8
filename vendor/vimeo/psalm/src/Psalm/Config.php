@@ -28,6 +28,7 @@ use function is_dir;
 use function is_file;
 use function json_decode;
 use function libxml_clear_errors;
+use const GLOB_NOSORT;
 use const LIBXML_ERR_ERROR;
 use const LIBXML_ERR_FATAL;
 use function libxml_get_errors;
@@ -76,6 +77,7 @@ use function chdir;
 use function simplexml_import_dom;
 use const LIBXML_NONET;
 use function is_a;
+use const SCANDIR_SORT_NONE;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -296,6 +298,11 @@ class Config
      * @var bool
      */
     public $skip_checks_on_unresolvable_includes = true;
+
+    /**
+     * @var bool
+     */
+    public $seal_all_methods = false;
 
     /**
      * @var bool
@@ -783,7 +790,8 @@ class Config
             'ensureArrayStringOffsetsExist' => 'ensure_array_string_offsets_exist',
             'ensureArrayIntOffsetsExist' => 'ensure_array_int_offsets_exist',
             'reportMixedIssues' => 'show_mixed_issues',
-            'skipChecksOnUnresolvableIncludes' => 'skip_checks_on_unresolvable_includes'
+            'skipChecksOnUnresolvableIncludes' => 'skip_checks_on_unresolvable_includes',
+            'sealAllMethods' => 'seal_all_methods'
         ];
 
         foreach ($booleanAttributes as $xmlName => $internalName) {
@@ -1729,7 +1737,7 @@ class Config
         } elseif (is_dir($phpstorm_meta_path)) {
             $phpstorm_meta_path = realpath($phpstorm_meta_path);
 
-            foreach (glob($phpstorm_meta_path . '/*.meta.php') as $glob) {
+            foreach (glob($phpstorm_meta_path . '/*.meta.php', GLOB_NOSORT) as $glob) {
                 if (is_file($glob) && realpath(dirname($glob)) === $phpstorm_meta_path) {
                     $stub_files[] = $glob;
                 }
@@ -1972,7 +1980,7 @@ class Config
     public static function removeCacheDirectory($dir)
     {
         if (is_dir($dir)) {
-            $objects = scandir($dir);
+            $objects = scandir($dir, SCANDIR_SORT_NONE);
 
             if ($objects === false) {
                 throw new \UnexpectedValueException('Not expecting false here');

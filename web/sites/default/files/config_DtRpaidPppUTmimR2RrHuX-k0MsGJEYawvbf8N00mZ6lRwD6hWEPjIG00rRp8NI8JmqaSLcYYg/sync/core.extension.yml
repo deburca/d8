@@ -84,7 +84,6 @@ module:
 theme:
   stable: 0
   classy: 0
-  seven: 0
   mosaic: 0
   bootstrap_barrio: 0
   claro: 0

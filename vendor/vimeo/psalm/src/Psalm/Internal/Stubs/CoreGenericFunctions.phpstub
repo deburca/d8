@@ -560,11 +560,11 @@ function htmlspecialchars_decode(string $string, ?int $quote_style = null) : str
 /**
  * @psalm-pure
  *
- * @param string|string[] $search
- * @param string|string[] $replace
- * @param string|string[] $subject
+ * @param string|array<string|int|float> $search
+ * @param string|array<string|int|float> $replace
+ * @param string|array<string|int|float> $subject
  * @param int $count
- * @return string|string[]
+ * @return ($subject is array ? array<string> : string)
  *
  * @psalm-flow ($replace, $subject) -> return
  */
@@ -574,10 +574,10 @@ function str_replace($search, $replace, $subject, &$count = null) {}
  * @psalm-pure
  *
  * @param string|string[] $search
- * @param string|string[] $replace
- * @param string|string[] $subject
+ * @param string|array<string|int|float> $replace
+ * @param string|array<string|int|float> $subject
  * @param int $count
- * @return string|string[]
+ * @return ($subject is array ? array<string> : string)
  *
  * @psalm-flow ($replace, $subject) -> return
  */
@@ -618,3 +618,12 @@ function sprintf(string $format, ...$args) : string {}
  * @psalm-flow ($path) -> return
  */
 function realpath(string $path) {}
+
+/**
+ * @psalm-pure
+ *
+ * @param numeric-string $left_operand
+ * @param numeric-string $right_operand
+ * @return ($right_operand is "0" ? null : numeric-string)
+ */
+function bcdiv(string $left_operand, string $right_operand, int $scale = 0): ?string {}

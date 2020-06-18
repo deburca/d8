@@ -289,6 +289,10 @@ class ReturnAnalyzer
                         return null;
                     }
 
+                    if ($local_return_type->isMixed()) {
+                        return null;
+                    }
+
                     if (!$context->collect_initializations
                         && !$context->collect_mutations
                         && $statements_analyzer->getFilePath() === $statements_analyzer->getRootFilePath()
@@ -408,7 +412,7 @@ class ReturnAnalyzer
                         } else {
                             if (IssueBuffer::accepts(
                                 new InvalidReturnStatement(
-                                    'The inferred type \'' . $stmt_type->getId()
+                                    'The inferred type \'' . $inferred_type->getId()
                                         . '\' does not match the declared return '
                                         . 'type \'' . $local_return_type->getId() . '\' for ' . $cased_method_id,
                                     new CodeLocation($source, $stmt->expr)

@@ -79,7 +79,7 @@ class TypeExpander
      *
      * @return Type\Atomic|non-empty-array<int, Type\Atomic>
      */
-    private static function expandAtomic(
+    public static function expandAtomic(
         Codebase $codebase,
         Type\Atomic &$return_type,
         ?string $self_class,
@@ -187,6 +187,19 @@ class TypeExpander
                 $return_type->as_type = $new_as_type;
                 $return_type->as = $return_type->as_type->value;
             }
+        } elseif ($return_type instanceof Type\Atomic\TTemplateParam) {
+            $new_as_type = self::expandUnion(
+                $codebase,
+                clone $return_type->as,
+                $self_class,
+                $static_class_type,
+                $parent_class,
+                $evaluate_class_constants,
+                $evaluate_conditional_types,
+                $final
+            );
+
+            $return_type->as = $new_as_type;
         }
 
         if ($return_type instanceof Type\Atomic\TScalarClassConstant) {
@@ -202,7 +215,14 @@ class TypeExpander
                 if (strpos($return_type->const_name, '*') !== false) {
                     $class_storage = $codebase->classlike_storage_provider->get($return_type->fq_classlike_name);
 
-                    $matching_constants = \array_keys($class_storage->class_constant_locations);
+                    $all_class_constants = $class_storage->public_class_constants
+                        + $class_storage->protected_class_constants
+                        + $class_storage->private_class_constants
+                        + $class_storage->public_class_constant_nodes
+                        + $class_storage->protected_class_constant_nodes
+                        + $class_storage->private_class_constant_nodes;
+
+                    $matching_constants = \array_keys($all_class_constants);
 
                     $const_name_part = \substr($return_type->const_name, 0, -1);
 
@@ -268,7 +288,32 @@ class TypeExpander
                     $resolved_type_alias = $class_storage->type_aliases[$type_alias_name];
 
                     if ($resolved_type_alias->replacement_atomic_types) {
-                        return $resolved_type_alias->replacement_atomic_types;
+                        $replacement_atomic_types = $resolved_type_alias->replacement_atomic_types;
+
+                        $recursively_fleshed_out_types = [];
+
+                        foreach ($replacement_atomic_types as $replacement_atomic_type) {
+                            $recursively_fleshed_out_type = self::expandAtomic(
+                                $codebase,
+                                $replacement_atomic_type,
+                                $self_class,
+                                $static_class_type,
+                                $parent_class,
+                                $evaluate_class_constants,
+                                $evaluate_conditional_types
+                            );
+
+                            if (is_array($recursively_fleshed_out_type)) {
+                                $recursively_fleshed_out_types = array_merge(
+                                    $recursively_fleshed_out_type,
+                                    $recursively_fleshed_out_types
+                                );
+                            } else {
+                                $recursively_fleshed_out_types[] = $recursively_fleshed_out_type;
+                            }
+                        }
+
+                        return $recursively_fleshed_out_types;
                     }
                 }
             }
@@ -320,8 +365,9 @@ class TypeExpander
             || $return_type instanceof Type\Atomic\TGenericObject
             || $return_type instanceof Type\Atomic\TIterable
         ) {
-            foreach ($return_type->type_params as &$type_param) {
-                $type_param = self::expandUnion(
+            foreach ($return_type->type_params as $k => $type_param) {
+                /** @psalm-suppress PropertyTypeCoercion */
+                $return_type->type_params[$k] = self::expandUnion(
                     $codebase,
                     $type_param,
                     $self_class,

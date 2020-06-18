@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28e681ab9949ae3b89a7460785d2cbfe",
+    "content-hash": "f643dd8c68f348e1ee1b10d35e6832dd",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3207,17 +3207,17 @@
         },
         {
             "name": "drupal/bootstrap_barrio",
-            "version": "4.28.0",
+            "version": "5.0.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/bootstrap_barrio.git",
-                "reference": "8.x-4.28"
+                "reference": "5.0.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/bootstrap_barrio-8.x-4.28.zip",
-                "reference": "8.x-4.28",
-                "shasum": "2608e4545a0efe4c2d4b76e109e77264a3a51785"
+                "url": "https://ftp.drupal.org/files/projects/bootstrap_barrio-5.0.0-beta1.zip",
+                "reference": "5.0.0-beta1",
+                "shasum": "1a24c5bac9d315c5e91118caf59de0605c14ea50"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -3226,11 +3226,11 @@
             "type": "drupal-theme",
             "extra": {
                 "drupal": {
-                    "version": "8.x-4.28",
-                    "datestamp": "1589051361",
+                    "version": "5.0.0-beta1",
+                    "datestamp": "1592442215",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -4475,17 +4475,17 @@
         },
         {
             "name": "drupal/field_formatter_class",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/field_formatter_class.git",
-                "reference": "8.x-1.3"
+                "reference": "8.x-1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/field_formatter_class-8.x-1.3.zip",
-                "reference": "8.x-1.3",
-                "shasum": "aacb67f98a8307fc2810e29a7a7aa279493b6c7c"
+                "url": "https://ftp.drupal.org/files/projects/field_formatter_class-8.x-1.4.zip",
+                "reference": "8.x-1.4",
+                "shasum": "158a1151c37e6aed76702528269fe4a53378de8e"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -4493,8 +4493,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.3",
-                    "datestamp": "1588733360",
+                    "version": "8.x-1.4",
+                    "datestamp": "1592471596",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -14384,22 +14384,22 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.11.5",
+            "version": "3.11.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "3c60609c218d4d4b3b257728b8089094e5c6c6c2"
+                "reference": "7fc1f50f54bd6b174b1c43a37c1b0b151915d55c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/3c60609c218d4d4b3b257728b8089094e5c6c6c2",
-                "reference": "3c60609c218d4d4b3b257728b8089094e5c6c6c2",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/7fc1f50f54bd6b174b1c43a37c1b0b151915d55c",
+                "reference": "7fc1f50f54bd6b174b1c43a37c1b0b151915d55c",
                 "shasum": ""
             },
             "require": {
                 "amphp/amp": "^2.1",
                 "amphp/byte-stream": "^1.5",
-                "composer/semver": "^1.4",
+                "composer/semver": "^1.4 || ^2.0 || ^3.0",
                 "composer/xdebug-handler": "^1.1",
                 "ext-dom": "*",
                 "ext-json": "*",
@@ -14477,7 +14477,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2020-05-27T15:12:09+00:00"
+            "time": "2020-06-17T20:40:35+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

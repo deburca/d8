@@ -1,11 +1,16 @@
-core: 8.x
-type: theme
-base theme: bootstrap_barrio
-core_version_requirement: ^8 || ^9
-
 name: 'Mosaic - Responsive Professional Theme'
+type: theme
 description: 'Uses the Bootstrap framework Sass source files and must be compiled (not for beginners).'
-package: 'Bootstrap'
+core: 8.x
+core_version_requirement: ^8 || ^9
+base theme: bootstrap_barrio
+
+libraries:
+  - 'mosaic/theme'
+
+libraries-extend:
+  bootstrap_barrio/framework:
+   - 'mosaic/framework'
 
 regions:
   tools: 'Tool bar'
@@ -23,9 +28,6 @@ regions:
   page_top: 'Page top'
   page_bottom: 'Page bottom'
 
-libraries:
-  - 'mosaic/theme'
-
-libraries-extend:
-  bootstrap_barrio/framework:
-   - 'mosaic/framework'
+# Information added by Drupal.org packaging script on 2020-06-18
+version: '1.0.0'
+project: 'Mosaic'
