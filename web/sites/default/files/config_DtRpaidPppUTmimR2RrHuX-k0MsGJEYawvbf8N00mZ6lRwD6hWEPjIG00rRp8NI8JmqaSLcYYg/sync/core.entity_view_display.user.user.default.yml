@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.user.user.field_domain_admin
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
@@ -33,5 +32,4 @@ content:
       field_formatter_class:
         class: ''
     label: hidden
-hidden:
-  field_domain_admin: true
+hidden: {  }

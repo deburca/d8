@@ -1,8 +1,0 @@
-content_types:
-  article: article
-  page: 0
-  social_account: 0
-text_format: basic_html
-body_article: body
-taxonomy_article: field_tags
-comment_article: comment
