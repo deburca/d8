@@ -1,3 +1,9 @@
 [submodule "security_review"]
 	path = web/modules/contrib/security_review
 	url = https://git.drupalcode.org/project/security_review.git
+[submodule "coder"]
+	path = vendor/drupal/coder
+	url = https://git.drupalcode.org/project/coder.git
+[submodule "devel"]
+	path = web/modules/contrib/devel
+	url = https://git.drupalcode.org/project/devel.git
