@@ -23,6 +23,8 @@ use function implode;
 use function substr;
 use function strlen;
 use function array_intersect;
+use function strpos;
+use function array_reverse;
 
 class Taint
 {
@@ -35,7 +37,7 @@ class Taint
     /** @var array<string, Sink> */
     private $sinks = [];
 
-    /** @var array<string, array<string, array{array<string>, array<string>}>> */
+    /** @var array<string, array<string, Path>> */
     private $forward_edges = [];
 
     /** @var array<string, array<string, true>> */
@@ -73,13 +75,18 @@ class Taint
     public function addPath(
         Taintable $from,
         Taintable $to,
+        string $path_type,
         array $added_taints = [],
         array $removed_taints = []
     ) : void {
         $from_id = $from->id;
         $to_id = $to->id;
 
-        $this->forward_edges[$from_id][$to_id] = [$added_taints, $removed_taints];
+        if ($from_id === $to_id) {
+            return;
+        }
+
+        $this->forward_edges[$from_id][$to_id] = new Path($path_type, $added_taints, $removed_taints);
     }
 
     public function getPredecessorPath(Taintable $source) : string
@@ -159,7 +166,7 @@ class Taint
         $sources = $this->sources;
         $sinks = $this->sinks;
 
-        for ($i = 0; count($sinks) && count($sources) && $i < 20; $i++) {
+        for ($i = 0; count($sinks) && count($sources) && $i < 40; $i++) {
             $new_sources = [];
 
             foreach ($sources as $source) {
@@ -200,7 +207,11 @@ class Taint
     ) : array {
         $new_sources = [];
 
-        foreach ($this->forward_edges[$generated_source->id] as $to_id => [$added_taints, $removed_taints]) {
+        foreach ($this->forward_edges[$generated_source->id] as $to_id => $path) {
+            $path_type = $path->type;
+            $added_taints = $path->unescaped_taints;
+            $removed_taints = $path->escaped_taints;
+
             if (!isset($this->nodes[$to_id])) {
                 continue;
             }
@@ -220,16 +231,62 @@ class Taint
                 continue;
             }
 
+            if (strpos($path_type, 'array-fetch-') === 0) {
+                $previous_path_types = array_reverse($generated_source->path_types);
+
+                foreach ($previous_path_types as $previous_path_type) {
+                    if ($previous_path_type === 'array-assignment') {
+                        break;
+                    }
+
+                    if (strpos($previous_path_type, 'array-assignment-') === 0) {
+                        if (substr($previous_path_type, 17) === substr($path_type, 12)) {
+                            break;
+                        }
+
+                        continue 2;
+                    }
+                }
+            }
+
+            if (strpos($path_type, 'property-fetch-') === 0) {
+                $previous_path_types = array_reverse($generated_source->path_types);
+
+                foreach ($previous_path_types as $previous_path_type) {
+                    if ($previous_path_type === 'property-assignment') {
+                        break;
+                    }
+
+                    if (strpos($previous_path_type, 'property-assignment-') === 0) {
+                        if (substr($previous_path_type, 20) === substr($path_type, 15)) {
+                            break;
+                        }
+
+                        continue 2;
+                    }
+                }
+            }
+
             if (isset($sinks[$to_id])) {
                 $matching_taints = array_intersect($sinks[$to_id]->taints, $new_taints);
 
                 if ($matching_taints && $generated_source->code_location) {
+                    $config = \Psalm\Config::getInstance();
+
+                    if ($sinks[$to_id]->code_location
+                        && $config->reportIssueInFile('TaintedInput', $sinks[$to_id]->code_location->file_path)
+                    ) {
+                        $issue_location = $sinks[$to_id]->code_location;
+                    } else {
+                        $issue_location = $generated_source->code_location;
+                    }
+
                     if (IssueBuffer::accepts(
                         new TaintedInput(
                             'Detected tainted ' . implode(', ', $matching_taints)
                                 . ' in path: ' . $this->getPredecessorPath($generated_source)
                                 . ' -> ' . $this->getSuccessorPath($sinks[$to_id]),
-                            $sinks[$to_id]->code_location ?: $generated_source->code_location
+                            $issue_location
                         )
                     )) {
                         // fall through
@@ -243,6 +300,7 @@ class Taint
             $new_destination->previous = $generated_source;
             $new_destination->taints = $new_taints;
             $new_destination->specialized_calls = $generated_source->specialized_calls;
+            $new_destination->path_types = array_merge($generated_source->path_types, [$path_type]);
 
             $new_sources[$to_id] = $new_destination;
         }

@@ -91,9 +91,9 @@ class FunctionDocblockComment
     /**
      * Represents the flow from function params to return type
      *
-     * @var ?string
+     * @var array<string>
      */
-    public $flow;
+    public $flows = [];
 
     /**
      * @var array<string>
@@ -109,6 +109,11 @@ class FunctionDocblockComment
      * @var array<int, array{name:string, taint: string}>
      */
     public $taint_sink_params = [];
+
+    /**
+     * @var array<string>
+     */
+    public $taint_source_types = [];
 
     /**
      * @var array<int, array{name:string}>

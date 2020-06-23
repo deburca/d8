@@ -1350,6 +1350,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
 
                 $storage->mutation_free = $docblock_info->mutation_free;
                 $storage->external_mutation_free = $docblock_info->external_mutation_free;
+                $storage->specialize_instance = $docblock_info->taint_specialize;
 
                 $storage->override_property_visibility = $docblock_info->override_property_visibility;
                 $storage->override_method_visibility = $docblock_info->override_method_visibility;
@@ -2500,24 +2501,49 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             }
         }
 
+        foreach ($docblock_info->taint_source_types as $taint_source_type) {
+            if ($taint_source_type === 'input') {
+                $storage->taint_source_types = array_merge(
+                    $storage->taint_source_types,
+                    \Psalm\Type\TaintKindGroup::ALL_INPUT
+                );
+            } else {
+                $storage->taint_source_types[] = $taint_source_type;
+            }
+        }
+
         $storage->added_taints = $docblock_info->added_taints;
         $storage->removed_taints = $docblock_info->removed_taints;
 
-        if ($docblock_info->flow) {
-            $flow_parts = explode('->', $docblock_info->flow);
+        if ($docblock_info->flows) {
+            foreach ($docblock_info->flows as $flow) {
+                $path_type = 'arg';
 
-            if (isset($flow_parts[1]) && trim($flow_parts[1]) === 'return') {
-                $source_param_string = trim($flow_parts[0]);
+                $fancy_path_regex = '/-\(([a-z\-]+)\)->/';
 
-                if ($source_param_string[0] === '(' && substr($source_param_string, -1) === ')') {
-                    $source_params = preg_split('/, ?/', substr($source_param_string, 1, -1));
+                if (preg_match($fancy_path_regex, $flow, $matches)) {
+                    if (isset($matches[1])) {
+                        $path_type = $matches[1];
+                    }
 
-                    foreach ($source_params as $source_param) {
-                        $source_param = substr($source_param, 1);
+                    $flow = preg_replace($fancy_path_regex, '->', $flow);
+                }
 
-                        foreach ($storage->params as $i => $param_storage) {
-                            if ($param_storage->name === $source_param) {
-                                $storage->return_source_params[] = $i;
+                $flow_parts = explode('->', $flow);
+
+                if (isset($flow_parts[1]) && trim($flow_parts[1]) === 'return') {
+                    $source_param_string = trim($flow_parts[0]);
+
+                    if ($source_param_string[0] === '(' && substr($source_param_string, -1) === ')') {
+                        $source_params = preg_split('/, ?/', substr($source_param_string, 1, -1));
+
+                        foreach ($source_params as $source_param) {
+                            $source_param = substr($source_param, 1);
+
+                            foreach ($storage->params as $i => $param_storage) {
+                                if ($param_storage->name === $source_param) {
+                                    $storage->return_source_params[$i] = $path_type;
+                                }
                             }
                         }
                     }

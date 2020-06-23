@@ -192,6 +192,11 @@ abstract class FunctionLikeStorage
     /**
      * @var array<string>
      */
+    public $taint_source_types = [];
+
+    /**
+     * @var array<string>
+     */
     public $added_taints = [];
 
     /**
@@ -200,7 +205,7 @@ abstract class FunctionLikeStorage
     public $removed_taints = [];
 
     /**
-     * @var list<int>
+     * @var array<int, string>
      */
     public $return_source_params = [];
 

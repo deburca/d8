@@ -31,6 +31,7 @@
         "drupal/core-composer-scaffold": "^9.0.0",
         "drupal/core-recommended": "^9.0.0",
         "drupal/ctools": "^3.2",
+        "drupal/devel": "3.x-dev",
         "drupal/ds": "^3.3",
         "drupal/entity_browser": "^2.2",
         "drupal/entity_reference_revisions": "^1.6",
@@ -40,6 +41,7 @@
         "drupal/honeypot": "^2.0",
         "drupal/jquery_ui_accordion": "^1.1",
         "drupal/link_attributes": "^1.8",
+        "drupal/olivero": "^1.0",
         "drupal/pathauto": "^1.4",
         "drupal/redirect": "^1.4",
         "drupal/seckit": "^2.0",
@@ -47,6 +49,7 @@
         "drupal/views_bootstrap": "^4.1",
         "drupal/viewsreference": "^2.0",
         "drush/drush": "^10.0.0",
+        "kint-php/kint": "^3.3",
         "ocramius/proxy-manager": "^2.2",
         "phpstan/phpstan-strict-rules": "^0.12.2",
         "psr/container": "^1.0"

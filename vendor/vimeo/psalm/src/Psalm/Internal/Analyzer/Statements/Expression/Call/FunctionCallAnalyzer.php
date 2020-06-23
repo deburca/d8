@@ -14,6 +14,7 @@ use Psalm\Internal\Codebase\InternalCallMapHandler;
 use Psalm\CodeLocation;
 use Psalm\Context;
 use Psalm\Internal\FileManipulation\FileManipulationBuffer;
+use Psalm\Internal\Taint\Source;
 use Psalm\Internal\Taint\TaintNode;
 use Psalm\Issue\DeprecatedFunction;
 use Psalm\Issue\ForbiddenCode;
@@ -641,7 +642,9 @@ class FunctionCallAnalyzer extends CallAnalyzer
 
                         if (strpos($var_type_part->value, '::')) {
                             $parts = explode('::', strtolower($var_type_part->value));
-                            $potential_method_id = new \Psalm\Internal\MethodIdentifier($parts[0], $parts[1]);
+                            $fq_class_name = $parts[0];
+                            $fq_class_name = \preg_replace('/^\\\\/', '', $fq_class_name);
+                            $potential_method_id = new \Psalm\Internal\MethodIdentifier($fq_class_name, $parts[1]);
                         } else {
                             $explicit_function_name = new PhpParser\Node\Name\FullyQualified(
                                 $var_type_part->value,
@@ -1023,56 +1026,182 @@ class FunctionCallAnalyzer extends CallAnalyzer
             }
         }
 
-        if ($codebase->taint
-            && $function_storage
-            && $stmt_type
-            && $codebase->config->trackTaintsInPath($statements_analyzer->getFilePath())
+        if ($function_storage && $stmt_type) {
+            self::taintReturnType($statements_analyzer, $stmt, $function_id, $function_storage, $stmt_type);
+        }
+
+
+        return $stmt_type;
+    }
+
+    private static function taintReturnType(
+        StatementsAnalyzer $statements_analyzer,
+        PhpParser\Node\Expr\FuncCall $stmt,
+        string $function_id,
+        FunctionLikeStorage $function_storage,
+        Type\Union $stmt_type
+    ) : void {
+        $codebase = $statements_analyzer->getCodebase();
+
+        if (!$codebase->taint
+            || !$codebase->config->trackTaintsInPath($statements_analyzer->getFilePath())
         ) {
-            $return_location = new CodeLocation($statements_analyzer->getSource(), $stmt);
+            return;
+        }
 
-            $function_return_sink = TaintNode::getForMethodReturn(
-                $function_id,
-                $function_id,
-                $return_location,
-                $function_storage->specialize_call ? $return_location : null
-            );
+        $return_location = new CodeLocation($statements_analyzer->getSource(), $stmt);
 
-            $codebase->taint->addTaintNode($function_return_sink);
+        $function_return_sink = TaintNode::getForMethodReturn(
+            $function_id,
+            $function_id,
+            $return_location,
+            $function_storage->specialize_call ? $return_location : null
+        );
 
-            $stmt_type->parent_nodes[] = $function_return_sink;
+        $codebase->taint->addTaintNode($function_return_sink);
 
-            if ($function_storage->return_source_params) {
-                foreach ($function_storage->return_source_params as $i) {
-                    if (!isset($stmt->args[$i])) {
-                        continue;
+        $stmt_type->parent_nodes[] = $function_return_sink;
+
+        if ($function_storage->return_source_params) {
+            $removed_taints = $function_storage->removed_taints;
+
+            if ($function_id === 'preg_replace' && count($stmt->args) > 2) {
+                $first_stmt_type = $statements_analyzer->node_data->getType($stmt->args[0]->value);
+                $second_stmt_type = $statements_analyzer->node_data->getType($stmt->args[1]->value);
+
+                if ($first_stmt_type
+                    && $second_stmt_type
+                    && $first_stmt_type->isSingleStringLiteral()
+                    && $second_stmt_type->isSingleStringLiteral()
+                ) {
+                    $first_arg_value = $first_stmt_type->getSingleStringLiteral()->value;
+
+                    $pattern = \substr($first_arg_value, 1, -1);
+
+                    if ($pattern[0] === '['
+                        && $pattern[1] === '^'
+                        && \substr($pattern, -1) === ']'
+                    ) {
+                        $pattern = \substr($pattern, 2, -1);
+
+                        if (self::simpleExclusion($pattern, $first_arg_value[0])) {
+                            $removed_taints[] = 'html';
+                            $removed_taints[] = 'sql';
+                        }
                     }
-
-                    $arg_location = new CodeLocation(
-                        $statements_analyzer->getSource(),
-                        $stmt->args[$i]->value
-                    );
-
-                    $function_param_sink = TaintNode::getForMethodArgument(
-                        $function_id,
-                        $function_id,
-                        $i,
-                        $arg_location,
-                        $function_storage->specialize_call ? $return_location : null
-                    );
-
-                    $codebase->taint->addTaintNode($function_param_sink);
-
-                    $codebase->taint->addPath(
-                        $function_param_sink,
-                        $function_return_sink,
-                        $function_storage->added_taints,
-                        $function_storage->removed_taints
-                    );
                 }
+            }
+
+            foreach ($function_storage->return_source_params as $i => $path_type) {
+                if (!isset($stmt->args[$i])) {
+                    continue;
+                }
+
+                $arg_location = new CodeLocation(
+                    $statements_analyzer->getSource(),
+                    $stmt->args[$i]->value
+                );
+
+                $function_param_sink = TaintNode::getForMethodArgument(
+                    $function_id,
+                    $function_id,
+                    $i,
+                    $arg_location,
+                    $function_storage->specialize_call ? $return_location : null
+                );
+
+                $codebase->taint->addTaintNode($function_param_sink);
+
+                $codebase->taint->addPath(
+                    $function_param_sink,
+                    $function_return_sink,
+                    $path_type,
+                    $function_storage->added_taints,
+                    $removed_taints
+                );
             }
         }
 
-        return $stmt_type;
+        if ($function_storage->taint_source_types) {
+            $method_node = Source::getForMethodReturn(
+                $function_id,
+                $function_id,
+                $return_location
+            );
+
+            $method_node->taints = $function_storage->taint_source_types;
+
+            $codebase->taint->addSource($method_node);
+        }
+    }
+
+    private static function simpleExclusion(string $pattern, string $escape_char) : bool
+    {
+        $str_length = \strlen($pattern);
+
+        for ($i = 0; $i < $str_length; $i++) {
+            $current = $pattern[$i];
+            $next = $pattern[$i + 1] ?? null;
+
+            if ($current === '\\') {
+                if ($next == null
+                    || $next === 'x'
+                    || $next === 'u'
+                ) {
+                    return false;
+                }
+
+                if ($next === '.'
+                    || $next === '('
+                    || $next === ')'
+                    || $next === '['
+                    || $next === ']'
+                    || $next === 's'
+                    || $next === 'w'
+                    || $next === $escape_char
+                ) {
+                    $i++;
+                    continue;
+                }
+
+                return false;
+            }
+
+            if ($next !== '-') {
+                if ($current === '_'
+                    || $current === '-'
+                    || $current === '|'
+                    || $current === ':'
+                    || $current === '#'
+                    || $current === ' '
+                ) {
+                    continue;
+                }
+
+                return false;
+            }
+
+            if ($current === ']') {
+                return false;
+            }
+
+            if (!isset($pattern[$i + 2]) || $next !== '-') {
+                return false;
+            }
+
+            if (($current === 'a' && $pattern[$i + 2] === 'z')
+                || ($current === 'a' && $pattern[$i + 2] === 'Z')
+                || ($current === 'A' && $pattern[$i + 2] === 'Z')
+                || ($current === '0' && $pattern[$i + 2] === '9')
+            ) {
+                $i += 2;
+                continue;
+            }
+
+            return false;
+        }
+
+        return true;
     }
 
     private static function checkFunctionCallPurity(
