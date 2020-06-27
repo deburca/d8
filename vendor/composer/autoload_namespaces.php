@@ -10,7 +10,6 @@ return array(
     'WebDriver' => array($vendorDir . '/instaclick/php-webdriver/lib'),
     'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'Stack' => array($vendorDir . '/stack/builder/src'),
-    'ProxyManager\\' => array($vendorDir . '/ocramius/proxy-manager/src'),
     'PHPMD\\' => array($vendorDir . '/phpmd/phpmd/src/main/php'),
     'LSS' => array($vendorDir . '/openlss/lib-array2xml'),
     'JsonMapper' => array($vendorDir . '/netresearch/jsonmapper/src'),

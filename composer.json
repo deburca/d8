@@ -45,12 +45,10 @@
         "drupal/pathauto": "^1.4",
         "drupal/redirect": "^1.4",
         "drupal/seckit": "^2.0",
-        "drupal/upgrade_status": "^2.0",
         "drupal/views_bootstrap": "^4.1",
         "drupal/viewsreference": "^2.0",
         "drush/drush": "^10.0.0",
         "kint-php/kint": "^3.3",
-        "ocramius/proxy-manager": "^2.2",
         "phpstan/phpstan-strict-rules": "^0.12.2",
         "psr/container": "^1.0"
     },

@@ -68,13 +68,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         array (
             'cweagans\\Composer\\' => 18,
         ),
-        'Z' => 
-        array (
-            'Zend\\Text\\' => 10,
-            'Zend\\ServiceManager\\' => 20,
-            'Zend\\EventManager\\' => 18,
-            'Zend\\Code\\' => 10,
-        ),
         'X' => 
         array (
             'XdgBaseDir\\' => 11,
@@ -160,7 +153,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         ),
         'M' => 
         array (
-            'MathieuViossat\\Util\\' => 20,
             'Masterminds\\' => 12,
         ),
         'L' => 
@@ -270,22 +262,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         'cweagans\\Composer\\' => 
         array (
             0 => __DIR__ . '/..' . '/cweagans/composer-patches/src',
-        ),
-        'Zend\\Text\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/zendframework/zend-text/src',
-        ),
-        'Zend\\ServiceManager\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/zendframework/zend-servicemanager/src',
-        ),
-        'Zend\\EventManager\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/zendframework/zend-eventmanager/src',
-        ),
-        'Zend\\Code\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/zendframework/zend-code/src',
         ),
         'XdgBaseDir\\' => 
         array (
@@ -549,10 +525,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         'PDepend\\' => 
         array (
             0 => __DIR__ . '/..' . '/pdepend/pdepend/src/main/php/PDepend',
-        ),
-        'MathieuViossat\\Util\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/mathieuviossat/arraytotexttable/src',
         ),
         'Masterminds\\' => 
         array (
@@ -840,10 +812,6 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         ),
         'P' => 
         array (
-            'ProxyManager\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/ocramius/proxy-manager/src',
-            ),
             'PHPMD\\' => 
             array (
                 0 => __DIR__ . '/..' . '/phpmd/phpmd/src/main/php',
