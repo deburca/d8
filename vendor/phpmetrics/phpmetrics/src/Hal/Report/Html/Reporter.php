@@ -152,7 +152,7 @@ class Reporter
             'oop',
             'complexity',
             'panel',
-            'violation',
+            'violations',
             'packages',
             'package_relations',
             'composer',
@@ -175,14 +175,13 @@ class Reporter
                     $consolidated,
                     $history
                 );
+
+                file_put_contents(
+                    $outDir . '/classes.js',
+                    'var classes = ' . json_encode($consolidated->getClasses(), JSON_PRETTY_PRINT)
+                );
             }
         }
-
-        // json data
-        file_put_contents(
-            $outDir . '/classes.js',
-            'var classes = ' . json_encode($consolidated->getClasses(), JSON_PRETTY_PRINT)
-        );
 
         $this->output->writeln(sprintf('HTML report generated in "%s" directory', $logDir));
     }

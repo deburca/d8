@@ -47,7 +47,7 @@ class Composer
             $package->installed = $installed;
             $package->required = $version;
             $package->name = $requirement;
-            $package->status = version_compare($package->required, $package->latest) === -1 ? 'outdated' : 'latest';
+            $package->status = version_compare($installed, $package->latest, '<') ? 'outdated' : 'latest';
             $packages[$requirement] = $package;
         }
 
@@ -70,7 +70,10 @@ class Composer
 
         // find composer.json files
         $finder = new Finder(['json'], $this->config->get('exclude'));
-        $files = $finder->fetch($this->config->get('files'));
+
+        // include root dir by default
+        $files = array_merge($this->config->get('files'), ['./']);
+        $files = $finder->fetch($files);
 
         foreach ($files as $filename) {
             if (!\preg_match('/composer(-dist)?\.json/', $filename)) {
