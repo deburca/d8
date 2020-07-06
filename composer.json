@@ -31,7 +31,7 @@
         "drupal/core-composer-scaffold": "^9.0.0",
         "drupal/core-recommended": "^9.0.0",
         "drupal/ctools": "^3.2",
-        "drupal/devel": "3.x-dev",
+        "drupal/devel": "^4.0",
         "drupal/ds": "^3.3",
         "drupal/entity_browser": "^2.2",
         "drupal/entity_reference_revisions": "^1.6",

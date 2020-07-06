@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4f25c9480b00b7b1b229468fd300d73",
+    "content-hash": "971c46e4a964c17c03c821a97f37117e",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2860,11 +2860,17 @@
         },
         {
             "name": "drupal/devel",
-            "version": "dev-3.x",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/devel.git",
-                "reference": "97f8fb7de76be25089adc8557c109a5fe5d91e0b"
+                "reference": "4.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/devel-4.0.0.zip",
+                "reference": "4.0.0",
+                "shasum": "6c01ef8dd4e926e63b08fe28dea5357c7caa49c9"
             },
             "require": {
                 "doctrine/common": "^2.7",
@@ -2891,15 +2897,12 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-3.x": "3.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-3.0-beta1+125-dev",
-                    "datestamp": "1590483942",
+                    "version": "4.0.0",
+                    "datestamp": "1592918748",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 },
                 "installer-paths": {
@@ -2909,7 +2912,7 @@
                     "web/libraries/{$name}": [
                         "type:drupal-library"
                     ],
-                    "web/modules/{$name}": [
+                    "web/modules/contrib/{$name}": [
                         "type:drupal-module"
                     ],
                     "web/profiles/{$name}": [
@@ -2933,35 +2936,42 @@
                     }
                 }
             },
+            "autoload": {
+                "classmap": [
+                    ".spoons/ScriptHandler.php"
+                ]
+            },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "scripts": {
                 "si": [
-                    "drush si -v --db-url=sqlite://sites/default/files/.sqlite testing"
+                    "drush si -v --db-url=${SIMPLETEST_DB:-mysql://root:password@mariadb/db}"
                 ],
                 "phpcs": [
-                    "PWD=$(pwd) && phpcs --runtime-set ignore_warnings_on_exit 1 --runtime-set ignore_errors_on_exit 1 --ignore=$PWD/web/,$PWD/vendor/"
+                    "phpcs --runtime-set ignore_warnings_on_exit 1 --runtime-set ignore_errors_on_exit 1 web/modules/custom"
                 ],
                 "lint": [
                     "parallel-lint --exclude web --exclude vendor ."
                 ],
-                "runserver": [
-                    "drush runserver 0.0.0.0"
+                "webserver": [
+                    "cd web && php -S 0.0.0.0:8888 .ht.router.php"
                 ],
                 "chromedriver": [
                     "chromedriver --port=9515 --verbose --whitelisted-ips --log-path=/tmp/chromedriver.log --no-sandbox"
                 ],
-                "create-symlinks": [
-                    "cd web/modules/${PWD##*/} && find ../../.. -maxdepth 1 ! -name .git ! -name web ! -name vendor -print | while read file; do ln -s $file .; done"
-                ],
                 "unit": [
-                    "phpunit --verbose --printer '\\Drupal\\Tests\\Listeners\\HtmlOutputPrinter' web/modules/${PWD##*/}"
+                    "phpunit --verbose web/modules/custom"
                 ],
                 "phpstan": [
-                    "phpstan analyse web/modules/${PWD##*/}"
+                    "phpstan analyse web/modules/custom"
+                ],
+                "stylelint": [
+                    "yarn --silent --cwd web/core stylelint --formatter verbose --config ./.stylelintrc.json ../modules/custom/**/*.css"
+                ],
+                "eslint": [
+                    "yarn --silent --cwd web/core eslint -c ./.eslintrc.json ../modules/custom"
                 ],
                 "post-update-cmd": [
-                    "DIR=${PWD##*/} && rm -rf web/modules/$DIR && mkdir -p web/modules/$DIR",
-                    "@create-symlinks"
+                    "Spoons\\ScriptHandler::createSymlinks"
                 ]
             },
             "license": [
@@ -2980,12 +2990,10 @@
             "description": "Various blocks, pages, and functions for developers.",
             "homepage": "https://www.drupal.org/project/devel",
             "support": {
-                "source": "https://gitlab.com/drupalspoons/devel/-/tree/8.x-3.x",
+                "source": "https://gitlab.com/drupalspoons/devel",
                 "issues": "https://gitlab.com/drupalspoons/devel/-/issues",
-                "slack": "https://drupal.slack.com/archives/C012WAW1MH6",
-                "docs": "https://www.drupal.org/docs/8/modules/devel"
-            },
-            "time": "2020-04-25T12:53:02+00:00"
+                "slack": "https://drupal.slack.com/archives/C012WAW1MH6"
+            }
         },
         {
             "name": "drupal/ds",
@@ -5088,16 +5096,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.5.0",
+            "version": "v4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "53c2753d756f5adb586dca79c2ec0e2654dd9463"
+                "reference": "c346bbfafe2ff60680258b631afb730d186ed864"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/53c2753d756f5adb586dca79c2ec0e2654dd9463",
-                "reference": "53c2753d756f5adb586dca79c2ec0e2654dd9463",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/c346bbfafe2ff60680258b631afb730d186ed864",
+                "reference": "c346bbfafe2ff60680258b631afb730d186ed864",
                 "shasum": ""
             },
             "require": {
@@ -5136,7 +5144,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2020-06-03T07:24:19+00:00"
+            "time": "2020-07-02T17:12:47+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -5397,16 +5405,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.31",
+            "version": "0.12.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "776c8056b401e1b67f277b9e9fb334d1a274671d"
+                "reference": "d03863f504c8432b3de4d1881f73f6acb8c0e67c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/776c8056b401e1b67f277b9e9fb334d1a274671d",
-                "reference": "776c8056b401e1b67f277b9e9fb334d1a274671d",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d03863f504c8432b3de4d1881f73f6acb8c0e67c",
+                "reference": "d03863f504c8432b3de4d1881f73f6acb8c0e67c",
                 "shasum": ""
             },
             "require": {
@@ -5449,7 +5457,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-24T20:55:29+00:00"
+            "time": "2020-07-01T11:57:52+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
@@ -13452,16 +13460,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.12.1",
+            "version": "3.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "9b860214d58c48b5cbe99bdb17914d0eb723c9cd"
+                "reference": "7c7ebd068f8acaba211d4a2c707c4ba90874fa26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/9b860214d58c48b5cbe99bdb17914d0eb723c9cd",
-                "reference": "9b860214d58c48b5cbe99bdb17914d0eb723c9cd",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/7c7ebd068f8acaba211d4a2c707c4ba90874fa26",
+                "reference": "7c7ebd068f8acaba211d4a2c707c4ba90874fa26",
                 "shasum": ""
             },
             "require": {
@@ -13545,7 +13553,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2020-06-23T00:24:34+00:00"
+            "time": "2020-07-03T16:59:07+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -13713,7 +13721,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "drupal/devel": 20,
         "phpmd/phpmd": 0
     },
     "prefer-stable": true,

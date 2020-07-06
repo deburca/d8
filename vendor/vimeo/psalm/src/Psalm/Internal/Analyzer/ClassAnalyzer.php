@@ -1680,7 +1680,18 @@ class ClassAnalyzer extends ClassLikeAnalyzer
             return null;
         }
 
-        $method_analyzer = new MethodAnalyzer($stmt, $source);
+        try {
+            $method_analyzer = new MethodAnalyzer($stmt, $source);
+        } catch (\UnexpectedValueException $e) {
+            \Psalm\IssueBuffer::add(
+                new \Psalm\Issue\ParseError(
+                    'Problem loading method: ' . $e->getMessage(),
+                    new CodeLocation($this, $stmt)
+                )
+            );
+
+            return null;
+        }
 
         $actual_method_id = $method_analyzer->getMethodId();
 
@@ -1786,8 +1797,6 @@ class ClassAnalyzer extends ClassLikeAnalyzer
 
         $type_provider = new \Psalm\Internal\Provider\NodeDataProvider();
 
-        $time = \microtime(true);
-
         $method_analyzer->analyze(
             $method_context,
             $type_provider,
@@ -1811,11 +1820,6 @@ class ClassAnalyzer extends ClassLikeAnalyzer
                 $method_context->has_returned
             );
         }
-
-        $project_analyzer->progress->debug(
-            'Analyzing method ' . $stmt->name . ' took '
-                . \number_format(\microtime(true) - $time, 4) . "seconds \n"
-        );
 
         if (!$method_already_analyzed
             && !$class_context->collect_initializations
@@ -1908,7 +1912,8 @@ class ClassAnalyzer extends ClassLikeAnalyzer
                 $codebase,
                 null,
                 null,
-                null
+                null,
+                $original_fq_classlike_name
             );
         }
 

@@ -111,6 +111,11 @@ class IssueData
     public $link;
 
     /**
+     * @var ?list<TaintNodeData|array{label: string, entry_path_type: string}>
+     */
+    public $taint_trace;
+
+    /**
      * @param string $severity
      * @param int $line_from
      * @param int $line_to
@@ -128,6 +133,7 @@ class IssueData
      * @param int $column_to
      * @param int $error_level
      * @param int $shortcode
+     * @param ?list<TaintNodeData|array{label: string, entry_path_type: string}> $taint_trace
      */
     public function __construct(
         $severity,
@@ -146,7 +152,8 @@ class IssueData
         $column_from,
         $column_to,
         $shortcode = 0,
-        $error_level = -1
+        $error_level = -1,
+        $taint_trace = null
     ) {
         $this->severity = $severity;
         $this->line_from = $line_from;
@@ -166,5 +173,6 @@ class IssueData
         $this->shortcode = $shortcode;
         $this->error_level = $error_level;
         $this->link = 'https://psalm.dev/' . \str_pad((string) $shortcode, 3, "0", \STR_PAD_LEFT);
+        $this->taint_trace = $taint_trace;
     }
 }
