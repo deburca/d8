@@ -17,6 +17,8 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
+      with:
+        remote: true
 
     - name: Set up PHP ${{ matrix.php_version }}
       uses: shivammathur/setup-php@v2
