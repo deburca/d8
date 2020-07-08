@@ -114,8 +114,8 @@ h3.headline span {
 .body-green .pagination > .active > span:hover,
 .body-green .pagination > .active > a:focus,
 .body-green .pagination > .active > span:focus {
-  background-color: #94BA65;
-  border-color: #94BA65;
+  background-color: #428400;
+  border-color: #428400;
 }
 .body-blue .pagination > .active > a,
 .body-blue .pagination > .active > span,
@@ -160,22 +160,22 @@ h3.headline span {
 /* 1. Panel Green */
 
 .panel-green {
-  border-color: #94BA65;
+  border-color: #428400;
 }
 .panel-green > .panel-heading {
   color: #fff;
-  background-color: #94BA65;
-  border-color: #94BA65;
+  background-color: #428400;
+  border-color: #428400;
 }
 .panel-green > .panel-heading + .panel-collapse .panel-body {
-  border-top-color: #94BA65;
+  border-top-color: #428400;
 }
 .panel-green > .panel-footer + .panel-collapse .panel-body {
-  border-bottom-color: #94BA65;
+  border-bottom-color: #428400;
 }
 .panel-green > .panel-footer {
-  background-color: #94BA65;
-  border-top: 1px solid #94BA65;
+  background-color: #428400;
+  border-top: 1px solid #428400;
 }
 
 /* 2. Panel Blue */
@@ -260,7 +260,7 @@ h3.headline span {
 
 .info-board-green {
   background-color: #F5F9F1;
-  border-color: #94BA65;
+  border-color: #428400;
 }
 
 /* 2. Info board blue */
@@ -316,7 +316,7 @@ h3.headline span {
 .body-green .nav-tabs > li.active > a,
 .body-green .nav-tabs > li.active > a:hover,
 .body-green .nav-tabs > li.active > a:focus {
-  border-bottom-color: #94BA65;
+  border-bottom-color: #428400;
 }
 .body-blue .nav-tabs > li.active > a,
 .body-blue .nav-tabs > li.active > a:hover,
@@ -359,7 +359,7 @@ h3.headline span {
 .body-green .nav-pills > li.active > a, 
 .body-green .nav-pills > li.active > a:hover,
 .body-green .nav-pills > li.active > a:focus {
-  background-color: #94BA65;
+  background-color: #428400;
 }
 .body-blue .nav-pills > li.active > a, 
 .body-blue .nav-pills > li.active > a:hover,
@@ -383,7 +383,7 @@ h3.headline span {
 .nav-pills-green > li.active > a,
 .nav-pills-green > li.active > a:hover,
 .nav-pills-green > li.active > a:focus {
-  background-color: #94BA65 !important;
+  background-color: #428400 !important;
 }
 .nav-pills-blue > li.active > a,
 .nav-pills-blue > li.active > a:hover,

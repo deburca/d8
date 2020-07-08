@@ -20,7 +20,7 @@ Last change:    20/06/2016
   cursor: pointer;
 }
 .style-toggle-body .colors > .green {
-  background-color: #94BA65;
+  background-color: #428400;
 }
 .style-toggle-body .colors > .blue {
   background-color: #2790B0;
@@ -36,7 +36,7 @@ Last change:    20/06/2016
 
 .body-green a,
 .body-green .text-color {
-  color: #94BA65;
+  color: #428400;
 }
 .body-blue a,
 .body-blue .text-color {
@@ -55,7 +55,7 @@ Last change:    20/06/2016
 /* ===== Border Colors ===== */
 
 .body-green .border-color {
-  border-color: #94BA65;
+  border-color: #428400;
 }
 .body-blue .border-color {
   border-color: #2790B0;
@@ -88,7 +88,7 @@ Last change:    20/06/2016
 /* ===== Background Colors ===== */
 
 .body-green .bg-color {
-  background-color: #94BA65;
+  background-color: #428400;
 }
 .body-blue .bg-color {
   background-color: #2790B0;
@@ -101,7 +101,7 @@ Last change:    20/06/2016
 }
 .body-green .bg-hover-color:hover,
 .body-green .open > .bg-hover-color {
-  background-color: #94BA65 !important;
+  background-color: #428400 !important;
 }
 .body-blue .bg-hover-color:hover,
 .body-blue .open > .bg-hover-color {
@@ -118,7 +118,7 @@ Last change:    20/06/2016
 .body-green .dropdown-menu > .active > a,
 .body-green .dropdown-menu > .active > a:hover,
 .body-green .dropdown-menu > .active > a:focus {
-  background-color: #94BA65;
+  background-color: #428400;
 }
 .body-blue .dropdown-menu > .active > a,
 .body-blue .dropdown-menu > .active > a:hover,
@@ -157,7 +157,7 @@ Last change:    20/06/2016
 
 .body-green .btn-color,
 .btn-green {
-  background-color: #94BA65;
+  background-color: #428400;
   border-color: #749B46;
 }
 .body-green .btn-color:hover,
@@ -226,7 +226,7 @@ Last change:    20/06/2016
 .body-green .not-found-p,
 .body-green .alt-p,
 .body-green .color-jumbotron{
-  background: #94BA65;
+  background: #428400;
   background-image: radial-gradient(#A6C680, #749B46);
 }
 .body-blue .not-found-p,
