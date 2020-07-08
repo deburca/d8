@@ -1,6 +1,6 @@
 use_format_specific_options: false
 default_highlighting: php
-default_line_numbering: 0
+default_line_numbering: 1
 use_highlight_string_for_php: false
 enable_keyword_urls: true
 decode_entities: false
@@ -13,16 +13,14 @@ tag_styles:
   8: 8
   4: 0
   16: 0
-tab_width: 8
+tab_width: 2
 language:
   php:
     enabled: true
     tags: php
   cpp:
-    enabled: true
     tags: cpp
   java:
-    enabled: true
     tags: java
   css:
     enabled: true
