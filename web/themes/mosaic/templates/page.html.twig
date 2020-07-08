@@ -54,7 +54,7 @@
 {% set container = theme.settings.fluid_container ? 'container-fluid' : 'container' %}
 {% if page.tools %}
     {% block tools %}
-        <div class="mini-navbar mini-navbar-dark hidden-xs" role="aria-contentinfo">
+        <div class="mini-navbar mini-navbar-dark hidden-xs" role="aria-heading">
             {% if not navbar_attributes.hasClass(container) %}
                 <div class="{{ container }}">
             {% endif %}
@@ -75,7 +75,7 @@
         theme.settings.navbar_position ? 'navbar-' ~ theme.settings.navbar_position|clean_class : container,
       ]
     %}
-    <header{{ navbar_attributes.addClass(navbar_classes).removeClass('container') }} id="navbar" role="banner">
+    <header{{ navbar_attributes.addClass(navbar_classes).removeClass('container') }} id="navbar" role="aria-banner">
       <div class="{{ container }}">
           <div class="navbar-header">
             {{ page.navigation }}
@@ -103,7 +103,7 @@
 {% if page.breadcrumb %}
     {% block breadcrumb %}
         <div class="wrapper">
-        <div class="topic" role="aria-contentinfo">
+        <div class="topic" role="aria-heading">
             {% if not navbar_attributes.hasClass(container) %}
                 <div class="{{ container }}">
             {% endif %}

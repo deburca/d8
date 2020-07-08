@@ -70,6 +70,7 @@ final class Versions
   'drupal/jquery_ui' => '1.4.0@8.x-1.4',
   'drupal/jquery_ui_accordion' => '1.1.0@8.x-1.1',
   'drupal/link_attributes' => '1.10.0@8.x-1.10',
+  'drupal/metatag' => '1.13.0@8.x-1.13',
   'drupal/olivero' => '1.0.0-alpha3@8.x-1.0-alpha3',
   'drupal/pathauto' => '1.8.0@8.x-1.8',
   'drupal/redirect' => '1.6.0@8.x-1.6',
@@ -234,7 +235,7 @@ final class Versions
   'vlucas/phpdotenv' => 'v2.6.5@2e977311ffb17b2f82028a9c36824647789c6365',
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'deburca/www' => 'dev-master@81a310865b2f02f32aadd15e482075330a99aa3c',
+  'deburca/www' => 'dev-master@10463ba3035b2f26cdcf6698e48ce12e74588be4',
 );
 
     private function __construct()
