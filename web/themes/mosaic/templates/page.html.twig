@@ -54,7 +54,7 @@
 {% set container = theme.settings.fluid_container ? 'container-fluid' : 'container' %}
 {% if page.tools %}
     {% block tools %}
-        <div class="mini-navbar mini-navbar-dark hidden-xs" role="contentinfo">
+        <div class="mini-navbar mini-navbar-dark hidden-xs" role="aria-contentinfo">
             {% if not navbar_attributes.hasClass(container) %}
                 <div class="{{ container }}">
             {% endif %}
@@ -103,7 +103,7 @@
 {% if page.breadcrumb %}
     {% block breadcrumb %}
         <div class="wrapper">
-        <div class="topic" role="contentinfo">
+        <div class="topic" role="aria-contentinfo">
             {% if not navbar_attributes.hasClass(container) %}
                 <div class="{{ container }}">
             {% endif %}
@@ -137,7 +137,7 @@
       {# Header #}
       {% if page.header %}
         {% block header %}
-          <div class="col-sm-12" role="heading">
+          <div class="col-sm-12" role="aria-heading">
             {{ page.header }}
           </div>
         {% endblock %}
@@ -146,7 +146,7 @@
       {# Sidebar First #}
       {% if page.sidebar_first %}
         {% block sidebar_first %}
-          <aside class="col-sm-3" role="complementary">
+          <aside class="col-sm-3" role="aria-complementary">
             {{ page.sidebar_first }}
           </aside>
         {% endblock %}
@@ -187,7 +187,7 @@
       {# Sidebar Second #}
       {% if page.sidebar_second %}
         {% block sidebar_second %}
-          <aside class="col-sm-3" role="complementary">
+          <aside class="col-sm-3" role="aria-complementary">
             {{ page.sidebar_second }}
           </aside>
         {% endblock %}
