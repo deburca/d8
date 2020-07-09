@@ -2394,16 +2394,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "9.0.1",
+            "version": "9.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "1cd5f38665c789df215b0f145798b44bd88fdab2"
+                "reference": "ea6e0cef3240dc8e48f797698226467de121e9c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/1cd5f38665c789df215b0f145798b44bd88fdab2",
-                "reference": "1cd5f38665c789df215b0f145798b44bd88fdab2",
+                "url": "https://api.github.com/repos/drupal/core/zipball/ea6e0cef3240dc8e48f797698226467de121e9c9",
+                "reference": "ea6e0cef3240dc8e48f797698226467de121e9c9",
                 "shasum": ""
             },
             "require": {
@@ -2634,11 +2634,11 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
-            "time": "2020-06-17T17:56:46+00:00"
+            "time": "2020-07-08T18:31:41+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "9.0.1",
+            "version": "9.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -2685,16 +2685,16 @@
         },
         {
             "name": "drupal/core-recommended",
-            "version": "9.0.1",
+            "version": "9.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-recommended.git",
-                "reference": "032550bef2acd2c356a47e98065ce11969facd69"
+                "reference": "c39d02c45dbc26088a2ff004b52fd3aedf2620fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/032550bef2acd2c356a47e98065ce11969facd69",
-                "reference": "032550bef2acd2c356a47e98065ce11969facd69",
+                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/c39d02c45dbc26088a2ff004b52fd3aedf2620fe",
+                "reference": "c39d02c45dbc26088a2ff004b52fd3aedf2620fe",
                 "shasum": ""
             },
             "require": {
@@ -2703,7 +2703,7 @@
                 "doctrine/annotations": "1.10.3",
                 "doctrine/lexer": "1.2.1",
                 "doctrine/reflection": "1.2.1",
-                "drupal/core": "9.0.1",
+                "drupal/core": "9.0.2",
                 "egulias/email-validator": "2.1.17",
                 "guzzlehttp/guzzle": "6.5.4",
                 "guzzlehttp/promises": "v1.3.1",
@@ -2763,7 +2763,7 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Locked core dependencies; require this project INSTEAD OF drupal/core.",
-            "time": "2020-06-17T17:56:46+00:00"
+            "time": "2020-07-08T18:31:41+00:00"
         },
         {
             "name": "drupal/ctools",
@@ -8372,20 +8372,20 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.9.0",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "9dc4f203e36f2b486149058bade43c851dd97451"
+                "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/9dc4f203e36f2b486149058bade43c851dd97451",
-                "reference": "9dc4f203e36f2b486149058bade43c851dd97451",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0",
+                "php": "^5.3.3 || ^7.0 || ^8.0",
                 "symfony/polyfill-ctype": "^1.8"
             },
             "conflict": {
@@ -8417,7 +8417,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2020-06-16T10:16:42+00:00"
+            "time": "2020-07-08T17:02:28+00:00"
         },
         {
             "name": "webmozart/path-util",
@@ -9232,7 +9232,7 @@
         },
         {
             "name": "drupal/core-dev",
-            "version": "9.0.1",
+            "version": "9.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-dev.git",
@@ -11056,16 +11056,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.11.0",
+            "version": "1.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "8ff0384cd5d87e038297e79d85c99e4b2dcf0e61"
+                "reference": "b20034be5efcdab4fb60ca3a29cba2949aead160"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/8ff0384cd5d87e038297e79d85c99e4b2dcf0e61",
-                "reference": "8ff0384cd5d87e038297e79d85c99e4b2dcf0e61",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b20034be5efcdab4fb60ca3a29cba2949aead160",
+                "reference": "b20034be5efcdab4fb60ca3a29cba2949aead160",
                 "shasum": ""
             },
             "require": {
@@ -11115,7 +11115,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2020-07-07T16:07:38+00:00"
+            "time": "2020-07-08T12:44:21+00:00"
         },
         {
             "name": "phpstan/extension-installer",

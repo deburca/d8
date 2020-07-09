@@ -54,7 +54,7 @@
 {% set container = theme.settings.fluid_container ? 'container-fluid' : 'container' %}
 {% if page.tools %}
     {% block tools %}
-        <div class="mini-navbar mini-navbar-dark hidden-xs" role="aria-heading">
+        <div class="mini-navbar mini-navbar-dark hidden-xs" role="heading">
             {% if not navbar_attributes.hasClass(container) %}
                 <div class="{{ container }}">
             {% endif %}
@@ -75,7 +75,7 @@
         theme.settings.navbar_position ? 'navbar-' ~ theme.settings.navbar_position|clean_class : container,
       ]
     %}
-    <header{{ navbar_attributes.addClass(navbar_classes).removeClass('container') }} id="navbar" role="aria-banner">
+    <header{{ navbar_attributes.addClass(navbar_classes).removeClass('container') }} id="navbar" role="banner">
       <div class="{{ container }}">
           <div class="navbar-header">
             {{ page.navigation }}
@@ -103,7 +103,7 @@
 {% if page.breadcrumb %}
     {% block breadcrumb %}
         <div class="wrapper">
-        <div class="topic" role="aria-heading">
+        <div class="topic" role="complementary">
             {% if not navbar_attributes.hasClass(container) %}
                 <div class="{{ container }}">
             {% endif %}
@@ -137,7 +137,7 @@
       {# Header #}
       {% if page.header %}
         {% block header %}
-          <div class="col-sm-12" role="aria-heading">
+          <div class="col-sm-12" role="heading">
             {{ page.header }}
           </div>
         {% endblock %}
@@ -146,7 +146,7 @@
       {# Sidebar First #}
       {% if page.sidebar_first %}
         {% block sidebar_first %}
-          <aside class="col-sm-3" role="aria-complementary">
+          <aside class="col-sm-3" role="complementary">
             {{ page.sidebar_first }}
           </aside>
         {% endblock %}
@@ -187,7 +187,7 @@
       {# Sidebar Second #}
       {% if page.sidebar_second %}
         {% block sidebar_second %}
-          <aside class="col-sm-3" role="aria-complementary">
+          <aside class="col-sm-3" role="complementary">
             {{ page.sidebar_second }}
           </aside>
         {% endblock %}
