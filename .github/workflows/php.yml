@@ -37,6 +37,7 @@ jobs:
           --prefer-dist \
           --no-progress \
           --no-suggest
+      continue-on-error: true
       env:
         CONFIG_SYNC_DIRECTORY: web/sites/default/files/config_DtRpaidPppUTmimR2RrHuX-k0MsGJEYawvbf8N00mZ6lRwD6hWEPjIG00rRp8NI8JmqaSLcYYg/sync
 
