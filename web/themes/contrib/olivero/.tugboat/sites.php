@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Define Tugboat QA site settings.
+ */
+
 // Set preloaded as the default.
 $sites['localhost'] = 'preloaded';
 $sites['preloaded'] = 'preloaded';
