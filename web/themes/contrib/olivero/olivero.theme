@@ -30,7 +30,7 @@ function olivero_preprocess_html(&$variables) {
     $variables['#attached']['library'][] = 'olivero/debug';
   }
 
-  // So fonts can be preloaded from base theme in the event Olivero is subthemed.
+  // Fonts can be preloaded from base theme in the event Olivero is subthemed.
   $variables['olivero_path'] = drupal_get_path('theme', 'olivero');
 }
 
@@ -531,7 +531,7 @@ function olivero_preprocess_field__comment(&$variables) {
   // Add a comment_count.
   $variables['comment_count'] = count(array_filter($variables['comments'], 'is_numeric', ARRAY_FILTER_USE_KEY));
 
-  // Add user.compact to field-comment if profile's avatar of current user exist.
+  // Add user.compact to field-comment if profile's avatar of user exists.
   $uid = \Drupal::currentUser()->id();
   if ($uid) {
     $user = \Drupal::load($uid);
