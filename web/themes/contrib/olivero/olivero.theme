@@ -534,7 +534,7 @@ function olivero_preprocess_field__comment(&$variables) {
   // Add user.compact to field-comment if profile's avatar of current user exist.
   $uid = \Drupal::currentUser()->id();
   if ($uid) {
-    $user = \Drupal\User\Entity\User::load($uid);
+    $user = \Drupal::load($uid);
     if (!empty($user->user_picture) && $user->user_picture->isEmpty() === FALSE) {
       $variables['user_picture'] = \Drupal::entityTypeManager()
         ->getViewBuilder('user')
