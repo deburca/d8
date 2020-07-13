@@ -3,7 +3,7 @@
     <description>project PHP_CodeSniffer standards overrides.</description>
 
     <!-- Set installed_paths. -->
-    <config name="installed_paths" value="web/modules/contrib/coder/coder_sniffer"/>
+    <config name="installed_paths" value="vendor/drupal/coder/coder_sniffer"/>
 
     <!-- Set default extensions. -->
     <arg name="extensions" value="module,install,profile,php,theme,inc,test"/>

@@ -55,6 +55,7 @@ final class Versions
   'drupal/bootstrap_barrio' => '5.0.1@5.0.1',
   'drupal/bootstrap_layouts' => '5.2.0@8.x-5.2',
   'drupal/bootstrap_library' => '1.13.0@8.x-1.13',
+  'drupal/coder' => '8.3.9@d51e0b8c6561e21c0545d04b5410a7bed7ee7c6b',
   'drupal/core' => '9.0.2@ea6e0cef3240dc8e48f797698226467de121e9c9',
   'drupal/core-composer-scaffold' => '9.0.2@fb112a238577589311395099324ddec7fb4176d7',
   'drupal/core-recommended' => '9.0.2@c39d02c45dbc26088a2ff004b52fd3aedf2620fe',
@@ -108,6 +109,7 @@ final class Versions
   'psr/log' => '1.1.3@0f73288fd15629204f9d42b7055f72dacbe811fc',
   'psy/psysh' => 'v0.10.4@a8aec1b2981ab66882a01cce36a49b6317dc3560',
   'ralouphie/getallheaders' => '3.0.3@120b605dfeb996808c31b6477290a714d356e822',
+  'squizlabs/php_codesniffer' => '3.5.5@73e2e7f57d958e7228fce50dc0c61f58f017f9f6',
   'stack/builder' => 'v1.0.6@a4faaa6f532c6086bc66c29e1bc6c29593e1ca7c',
   'symfony-cmf/routing' => '2.3.2@e073c3b6db0e9a5f4c8d7a7bb8a092cd5e191fba',
   'symfony/console' => 'v4.4.9@326b064d804043005526f5a0494cfb49edb59bb0',
@@ -155,7 +157,6 @@ final class Versions
   'composer/spdx-licenses' => '1.5.3@0c3e51e1880ca149682332770e25977c70cf9dae',
   'composer/xdebug-handler' => '1.4.2@fa2aaf99e2087f013a14f7432c1cd2dd7d8f1f51',
   'doctrine/instantiator' => '1.3.1@f350df0268e904597e3bd9c4685c53e0e333feea',
-  'drupal/coder' => '8.3.9@d51e0b8c6561e21c0545d04b5410a7bed7ee7c6b',
   'drupal/core-dev' => '9.0.2@34ab35ef70eb772c38178ad626e99e11267a7022',
   'easyrdf/easyrdf' => '0.9.1@acd09dfe0555fbcfa254291e433c45fdd4652566',
   'edgedesign/phpqa' => 'v1.23.3@a1ecc21a181f0ba6fd830afadb336e55e4f67e9f',
@@ -216,7 +217,6 @@ final class Versions
   'seld/jsonlint' => '1.8.0@ff2aa5420bfbc296cf6a0bc785fa5b35736de7c1',
   'seld/phar-utils' => '1.1.1@8674b1d84ffb47cc59a101f5d5a3b61e87d23796',
   'sensiolabs/security-checker' => 'v6.0.3@a576c01520d9761901f269c4934ba55448be4a54',
-  'squizlabs/php_codesniffer' => '3.5.5@73e2e7f57d958e7228fce50dc0c61f58f017f9f6',
   'symfony/browser-kit' => 'v4.4.10@f53310646af9901292488b2ff36e26ea10f545f5',
   'symfony/config' => 'v4.4.10@395f6e09e1dc6ac9c1a5eea3b7f44f7a820a5504',
   'symfony/css-selector' => 'v4.4.10@afc26133a6fbdd4f8842e38893e0ee4685c7c94b',
@@ -235,7 +235,7 @@ final class Versions
   'vlucas/phpdotenv' => 'v2.6.5@2e977311ffb17b2f82028a9c36824647789c6365',
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'deburca/www' => 'dev-master@70c4702f5675365669e1bf3fa33c48b85a747397',
+  'deburca/www' => 'dev-master@1f84080e997a563ea89f67b93428484db3835950',
 );
 
     private function __construct()

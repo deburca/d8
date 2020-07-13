@@ -27,6 +27,7 @@
         "drupal/bootstrap_barrio": "^5.0",
         "drupal/bootstrap_layouts": "^5.1",
         "drupal/bootstrap_library": "^1.11",
+        "drupal/coder": "^8.3",
         "drupal/core": "^8.7.0 || ^9",
         "drupal/core-composer-scaffold": "^9.0.0",
         "drupal/core-recommended": "^9.0.0",
