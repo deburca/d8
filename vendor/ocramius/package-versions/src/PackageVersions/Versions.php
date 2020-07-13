@@ -52,7 +52,7 @@ final class Versions
   'drupal/advagg' => '4.1.0@8.x-4.1',
   'drupal/backup_migrate' => '5.0.0-rc1@5.0.0-rc1',
   'drupal/block_class' => '1.2.0@8.x-1.2',
-  'drupal/bootstrap_barrio' => '5.0.0-beta2@5.0.0-beta2',
+  'drupal/bootstrap_barrio' => '5.0.1@5.0.1',
   'drupal/bootstrap_layouts' => '5.2.0@8.x-5.2',
   'drupal/bootstrap_library' => '1.13.0@8.x-1.13',
   'drupal/core' => '9.0.2@ea6e0cef3240dc8e48f797698226467de121e9c9',
@@ -230,12 +230,12 @@ final class Versions
   'symfony/polyfill-php70' => 'v1.17.1@471b096aede7025bace8eb356b9ac801aaba7e2d',
   'symfony/stopwatch' => 'v5.1.2@0f7c58cf81dbb5dd67d423a89d577524a2ec0323',
   'theseer/fdomdocument' => '1.6.6@6e8203e40a32a9c770bcb62fe37e68b948da6dca',
-  'theseer/tokenizer' => '1.1.3@11336f6f84e16a720dae9d8e6ed5019efa85a0f9',
+  'theseer/tokenizer' => '1.2.0@75a63c33a8577608444246075ea0af0d052e452a',
   'vimeo/psalm' => '3.12.2@7c7ebd068f8acaba211d4a2c707c4ba90874fa26',
   'vlucas/phpdotenv' => 'v2.6.5@2e977311ffb17b2f82028a9c36824647789c6365',
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'deburca/www' => 'dev-master@77039494d3d57213fba443673ece3154a0c7dbdd',
+  'deburca/www' => 'dev-master@70c4702f5675365669e1bf3fa33c48b85a747397',
 );
 
     private function __construct()
