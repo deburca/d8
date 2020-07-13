@@ -9,8 +9,8 @@ use Drupal\olivero\OliveroPreRender;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Template\Attribute;
+// Use Drupal\User\Entity;.
 use Drupal\Core\Render\Element;
-use Drupal\User\Entity;
 
 /**
  * Implements hook_preprocess_HOOK() for HTML document templates.
