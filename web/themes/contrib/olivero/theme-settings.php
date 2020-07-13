@@ -6,14 +6,11 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Theme\ThemeSettings;
-use Drupal\system\Form\ThemeSettingsForm;
-use Drupal\Core\Form;
 
 /**
  * Implements hook_form_system_theme_settings_alter().
  */
-function olivero_form_system_theme_settings_alter(&$form, Drupal\Core\Form\FormStateInterface $form_state) {
+function olivero_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
   $form['olivero_settings']['olivero_utilities'] = [
     '#type' => 'fieldset',
     '#title' => t('Olivero Utilities'),
@@ -28,9 +25,9 @@ function olivero_form_system_theme_settings_alter(&$form, Drupal\Core\Form\FormS
     '#type' => 'select',
     '#title' => t('Header site branding background color'),
     '#options' => [
-      'default' => 'Blue',
-      'gray' => 'Gray',
-      'white' => 'White',
+      'default' => t('Blue'),
+      'gray' => t('Gray'),
+      'white' => t('White'),
     ],
     '#default_value' => theme_get_setting('site_branding_bg_color'),
   ];

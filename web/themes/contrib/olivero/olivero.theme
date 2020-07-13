@@ -10,6 +10,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Render\Element;
+use Drupal\User\Entity;
 
 /**
  * Implements hook_preprocess_HOOK() for HTML document templates.
@@ -533,7 +534,7 @@ function olivero_preprocess_field__comment(&$variables) {
   // Add user.compact to field-comment if profile's avatar of current user exist.
   $uid = \Drupal::currentUser()->id();
   if ($uid) {
-    $user = \Drupal\user\Entity\User::load($uid);
+    $user = \Drupal\User\Entity\User::load($uid);
     if (!empty($user->user_picture) && $user->user_picture->isEmpty() === FALSE) {
       $variables['user_picture'] = \Drupal::entityTypeManager()
         ->getViewBuilder('user')
