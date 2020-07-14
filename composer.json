@@ -120,6 +120,13 @@
             "drush/Commands/{$name}": ["type:drupal-drush"]
         },
         "drupal-scaffold": {
+            "locations": {
+                "project-root": "./",
+                "web-root": "web/"
+            },
+            "file-mapping": {
+                "[web-root]/.htaccess": false
+            },
             "initial": {
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
