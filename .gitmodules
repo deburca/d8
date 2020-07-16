@@ -4,3 +4,6 @@
 [submodule "devel"]
 	path = web/modules/contrib/devel
 	url = https://git.drupalcode.org/project/devel.git
+[submodule "mosaic"]
+	path = web/themes/mosaic
+	url = https://github.com/deburca/mosaic.git
