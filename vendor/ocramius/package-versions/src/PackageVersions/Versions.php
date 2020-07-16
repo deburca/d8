@@ -22,7 +22,7 @@ final class Versions
      */
     public const VERSIONS          = array (
   'asm89/stack-cors' => '1.3.0@b9c31def6a83f84b4d4a40d35996d375755f0e08',
-  'chi-teck/drupal-code-generator' => '1.32.0@0e045f7a7e747af3d8f603156bf4d73be5768246',
+  'chi-teck/drupal-code-generator' => '1.32.1@8abba7131ed4c89c1e8fc6dca0d05a4b6d0b2749',
   'composer/installers' => 'v1.9.0@b93bcf0fa1fccb0b7d176b0967d969691cd74cca',
   'composer/semver' => '1.5.1@c6bea70230ef4dd483e6bbcab6005f682ed3a8de',
   'consolidation/annotated-command' => '4.1.1@efc58dc0f34a45539787c5190b41b5d2a50a08da',
@@ -146,7 +146,7 @@ final class Versions
   'webflo/drupal-finder' => '1.2.0@123e248e14ee8dd3fbe89fb5a733a6cf91f5820e',
   'webmozart/assert' => '1.9.1@bafc69caeb4d49c39fd0779086c03a3738cbb389',
   'webmozart/path-util' => '2.3.0@d939f7edc24c9a1bb9c0dee5cb05d8e859490725',
-  'amphp/amp' => 'v2.4.4@1e58d53e4af390efc7813e36cd215bd82cba4b06',
+  'amphp/amp' => 'v2.5.0@f220a51458bf4dd0dedebb171ac3457813c72bbc',
   'amphp/byte-stream' => 'v1.7.3@b867505edb79dda8f253ca3c3a2bbadae4b16592',
   'behat/mink' => 'v1.8.1@07c6a9fe3fa98c2de074b25d9ed26c22904e3887',
   'behat/mink-browserkit-driver' => 'v1.3.4@e3b90840022ebcd544c7b394a3c9597ae242cbee',
@@ -154,7 +154,7 @@ final class Versions
   'behat/mink-selenium2-driver' => 'v1.4.0@312a967dd527f28980cce40850339cd5316da092',
   'composer/ca-bundle' => '1.2.7@95c63ab2117a72f48f5a55da9740a3273d45b7fd',
   'composer/composer' => '1.10.8@56e0e094478f30935e9128552188355fa9712291',
-  'composer/spdx-licenses' => '1.5.3@0c3e51e1880ca149682332770e25977c70cf9dae',
+  'composer/spdx-licenses' => '1.5.4@6946f785871e2314c60b4524851f3702ea4f2223',
   'composer/xdebug-handler' => '1.4.2@fa2aaf99e2087f013a14f7432c1cd2dd7d8f1f51',
   'doctrine/instantiator' => '1.3.1@f350df0268e904597e3bd9c4685c53e0e333feea',
   'drupal/core-dev' => '9.0.2@34ab35ef70eb772c38178ad626e99e11267a7022',
@@ -227,15 +227,15 @@ final class Versions
   'symfony/lock' => 'v4.4.10@b2c6895cf282cfc11fae859e8b418c95dbb5d6f8',
   'symfony/options-resolver' => 'v5.1.2@663f5dd5e14057d1954fe721f9709d35837f2447',
   'symfony/phpunit-bridge' => 'v4.4.10@84cb4467ca3ea127f636806e2f6f27c5c1de4eb9',
-  'symfony/polyfill-php70' => 'v1.17.1@471b096aede7025bace8eb356b9ac801aaba7e2d',
+  'symfony/polyfill-php70' => 'v1.18.0@0dd93f2c578bdc9c72697eaa5f1dd25644e618d3',
   'symfony/stopwatch' => 'v5.1.2@0f7c58cf81dbb5dd67d423a89d577524a2ec0323',
   'theseer/fdomdocument' => '1.6.6@6e8203e40a32a9c770bcb62fe37e68b948da6dca',
   'theseer/tokenizer' => '1.2.0@75a63c33a8577608444246075ea0af0d052e452a',
   'vimeo/psalm' => '3.12.2@7c7ebd068f8acaba211d4a2c707c4ba90874fa26',
-  'vlucas/phpdotenv' => 'v2.6.5@2e977311ffb17b2f82028a9c36824647789c6365',
+  'vlucas/phpdotenv' => 'v2.6.6@e1d57f62db3db00d9139078cbedf262280701479',
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'deburca/www' => 'dev-master@e20e7f6595f3ada71173ad69b1532b7349e96d17',
+  'deburca/www' => 'dev-master@05466ede9ffb4ac8059eb709d05af0db350a6bab',
 );
 
     private function __construct()
