@@ -267,7 +267,11 @@ class PdoStore implements StoreInterface
             $table->setPrimaryKey([$this->idCol]);
 
             foreach ($schema->toSql($conn->getDatabasePlatform()) as $sql) {
-                $conn->exec($sql);
+                if (method_exists($conn, 'executeStatement')) {
+                    $conn->executeStatement($sql);
+                } else {
+                    $conn->exec($sql);
+                }
             }
 
             return;
@@ -293,7 +297,11 @@ class PdoStore implements StoreInterface
                 throw new \DomainException(sprintf('Creating the lock table is currently not implemented for PDO driver "%s".', $driver));
         }
 
-        $conn->exec($sql);
+        if (method_exists($conn, 'executeStatement')) {
+            $conn->executeStatement($sql);
+        } else {
+            $conn->exec($sql);
+        }
     }
 
     /**
@@ -303,7 +311,12 @@ class PdoStore implements StoreInterface
     {
         $sql = "DELETE FROM $this->table WHERE $this->expirationCol <= {$this->getCurrentTimestampStatement()}";
 
-        $this->getConnection()->exec($sql);
+        $conn = $this->getConnection();
+        if (method_exists($conn, 'executeStatement')) {
+            $conn->executeStatement($sql);
+        } else {
+            $conn->exec($sql);
+        }
     }
 
     private function getDriver(): string
@@ -316,25 +329,35 @@ class PdoStore implements StoreInterface
         if ($con instanceof \PDO) {
             $this->driver = $con->getAttribute(\PDO::ATTR_DRIVER_NAME);
         } else {
-            switch ($this->driver = $con->getDriver()->getName()) {
-                case 'mysqli':
-                    throw new NotSupportedException(sprintf('The store "%s" does not support the mysqli driver, use pdo_mysql instead.', static::class));
-                case 'pdo_mysql':
-                case 'drizzle_pdo_mysql':
+            $driver = $con->getDriver();
+
+            switch (true) {
+                case $driver instanceof \Doctrine\DBAL\Driver\Mysqli\Driver:
+                    throw new \LogicException(sprintf('The adapter "%s" does not support the mysqli driver, use pdo_mysql instead.', static::class));
+
+                case $driver instanceof \Doctrine\DBAL\Driver\AbstractMySQLDriver:
                     $this->driver = 'mysql';
                     break;
-                case 'pdo_sqlite':
+                case $driver instanceof \Doctrine\DBAL\Driver\PDOSqlite\Driver:
+                case $driver instanceof \Doctrine\DBAL\Driver\PDO\SQLite\Driver:
                     $this->driver = 'sqlite';
                     break;
-                case 'pdo_pgsql':
+                case $driver instanceof \Doctrine\DBAL\Driver\PDOPgSql\Driver:
+                case $driver instanceof \Doctrine\DBAL\Driver\PDO\PgSQL\Driver:
                     $this->driver = 'pgsql';
                     break;
-                case 'oci8':
-                case 'pdo_oracle':
+                case $driver instanceof \Doctrine\DBAL\Driver\OCI8\Driver:
+                case $driver instanceof \Doctrine\DBAL\Driver\PDOOracle\Driver:
+                case $driver instanceof \Doctrine\DBAL\Driver\PDO\OCI\Driver:
                     $this->driver = 'oci';
                     break;
-                case 'pdo_sqlsrv':
+                case $driver instanceof \Doctrine\DBAL\Driver\SQLSrv\Driver:
+                case $driver instanceof \Doctrine\DBAL\Driver\PDOSqlsrv\Driver:
+                case $driver instanceof \Doctrine\DBAL\Driver\PDO\SQLSrv\Driver:
                     $this->driver = 'sqlsrv';
+                    break;
+                default:
+                    $this->driver = \get_class($driver);
                     break;
             }
         }

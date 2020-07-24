@@ -3506,6 +3506,14 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   padding-bottom: 10px;
   line-height: 20px;
 }
+.navbar.navbar-default .nav-item .is-active,
+.navbar.navbar-white .nav-item .is-active {
+  background-color: #dddddd;
+}
+.navbar.navbar-dark .nav-item .is-active {
+  background-color: #353432;
+}
+
 @media (max-width: 767px) {
   .navbar-nav .open .dropdown-menu {
     position: static;
@@ -3724,6 +3732,11 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   background-color: #e7e7e7;
   color: #555;
 }
+.navbar-expand-lg .navbar-nav a.nav-link {
+  padding-right: 2rem;
+  padding-left: 2rem;
+}
+
 @media (max-width: 767px) {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
     color: #444444;
@@ -6200,6 +6213,9 @@ body.navbar-is-fixed-bottom {
     padding-left: 0;
   }
 }
+#navbar-main {
+  padding: 0;
+}
 /**
  * Node styling.
  */
@@ -6518,4 +6534,50 @@ p:last-child,
 .help-block:first-child,
 .control-group .help-inline:first-child {
   margin-top: 0;
+}
+
+/* Slideshow controls */
+
+a.carousel-control-prev,
+a.carousel-control-next {
+  position: absolute;
+  display: block;
+  height: 100px;
+  width: 75px;
+  top: 50%;
+  margin-top: -60px;
+  background: transparent;
+  color: transparent;
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 100px;
+  text-align: center;
+  cursor: pointer;
+  -webkit-transition: background 500ms, color 500ms;
+  transition: background 500ms, color 500ms;
+}
+
+.carousel:hover a.carousel-control-prev,
+.carousel:hover a.carousel-control-next {
+  background: rgba(0, 0, 0, 0.5);
+  color: #FFF;
+}
+
+a.carousel-control-prev:hover,
+a.carousel-control-next:hover,
+a.carousel-control-prev:active,
+a.carousel-control-next:active {
+  text-decoration: none;
+}
+
+a.carousel-control-prev {
+  left: 0;
+  right: auto;
+  padding-right: 5px;
+}
+
+a.carousel-control-next {
+  right: 0;
+  left: auto;
+  padding-left: 5px;
 }
