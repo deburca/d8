@@ -1,8 +1,41 @@
 <?php
 
+namespace Psalm;
+
 use Composer\Autoload\ClassLoader;
+use Phar;
 use Psalm\Config;
-use Psalm\Exception\ConfigException;
+use function dirname;
+use function strpos;
+use function realpath;
+use const DIRECTORY_SEPARATOR;
+use function file_exists;
+use function in_array;
+use const PHP_EOL;
+use function fwrite;
+use const STDERR;
+use function implode;
+use function define;
+use function json_decode;
+use function file_get_contents;
+use function is_array;
+use function is_string;
+use function count;
+use function strlen;
+use function substr;
+use function stream_get_meta_data;
+use const STDIN;
+use function stream_set_blocking;
+use function fgets;
+use function preg_split;
+use function trim;
+use function is_dir;
+use function preg_replace;
+use function substr_replace;
+use function file_put_contents;
+use function ini_get;
+use function preg_match;
+use function strtoupper;
 
 /**
  * @param  string $current_dir
@@ -102,7 +135,7 @@ function requireAutoloaders($current_dir, $has_explicit_root, $vendor_dir)
         exit(1);
     }
 
-    define('PSALM_VERSION', \PackageVersions\Versions::getVersion('vimeo/psalm'));
+    define('PSALM_VERSION', (string)\PackageVersions\Versions::getVersion('vimeo/psalm'));
     define('PHP_PARSER_VERSION', \PackageVersions\Versions::getVersion('nikic/php-parser'));
 
     return $first_autoloader;
@@ -359,8 +392,8 @@ Output:
 Reports:
     --report=PATH
         The path where to output report file. The output format is based on the file extension.
-        (Currently supported formats: ".json", ".xml", ".txt", ".emacs", ".pylint", "checkstyle.xml", "sonarqube.json",
-        "summary.json", "junit.xml")
+        (Currently supported formats: ".json", ".xml", ".txt", ".emacs", ".pylint", ".console",
+        "checkstyle.xml", "sonarqube.json", "summary.json", "junit.xml")
 
     --report-show-info[=BOOLEAN]
         Whether the report should include non-errors in its output (defaults to true)
@@ -436,7 +469,7 @@ function initialiseConfig(
         } else {
             $config = Config::getConfigForPath($current_dir, $current_dir, $output_format);
         }
-    } catch (Psalm\Exception\ConfigException $e) {
+    } catch (\Psalm\Exception\ConfigException $e) {
         fwrite(STDERR, $e->getMessage() . PHP_EOL);
         exit(1);
     }

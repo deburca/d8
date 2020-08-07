@@ -12,7 +12,7 @@ use Psalm\Internal\Analyzer\Statements\Expression\Call\ClassTemplateParamCollect
 use Psalm\Internal\Analyzer\Statements\Expression\Call\ArgumentsAnalyzer;
 use Psalm\Internal\Analyzer\Statements\Expression\ExpressionIdentifier;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
-use Psalm\Internal\Analyzer\TypeAnalyzer;
+use Psalm\Internal\Type\Comparator\UnionTypeComparator;
 use Psalm\Internal\Codebase\InternalCallMapHandler;
 use Psalm\Codebase;
 use Psalm\CodeLocation;
@@ -623,9 +623,6 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
 
         $can_memoize = false;
 
-        $class_storage_for_method = $codebase->methods->getClassLikeStorageForMethod($method_id);
-        $plain_getter_property = null;
-
         $return_type_candidate = MethodCallReturnTypeFetcher::fetch(
             $statements_analyzer,
             $codebase,
@@ -671,6 +668,7 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
                 $codebase,
                 $context,
                 $method_id,
+                $statements_analyzer->getNamespace(),
                 $name_code_location,
                 $statements_analyzer->getSuppressedIssues()
             );
@@ -707,26 +705,6 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
                     $context,
                     $config
                 );
-            }
-
-            if (!$can_memoize) {
-                if ($lhs_var_id !== '$this'
-                    && (isset($class_storage_for_method->methods[$method_name_lc]))
-                    && !$class_storage_for_method->methods[$method_name_lc]->overridden_somewhere
-                    && !$class_storage_for_method->methods[$method_name_lc]->overridden_downstream
-                ) {
-                    $plain_getter_property = $class_storage_for_method->methods[$method_name_lc]->plain_getter;
-
-                    if ($plain_getter_property) {
-                        $getter_var_id = $lhs_var_id . '->' . $plain_getter_property;
-
-                        if (isset($context->vars_in_scope[$getter_var_id])) {
-                            $return_type_candidate = clone $context->vars_in_scope[$getter_var_id];
-                        } else {
-                            $plain_getter_property = null;
-                        }
-                    }
-                }
             }
 
             $has_packed_arg = false;
@@ -816,7 +794,7 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
         }
 
         if (!$args && $lhs_var_id) {
-            if (($config->memoize_method_calls || $can_memoize) && !$plain_getter_property) {
+            if ($config->memoize_method_calls || $can_memoize) {
                 $method_var_id = $lhs_var_id . '->' . $method_name_lc . '()';
 
                 if (isset($context->vars_in_scope[$method_var_id])) {
@@ -867,7 +845,7 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
                         (string) $appearing_method_id,
                         (string) $declaring_method_id,
                         $context,
-                        $source,
+                        $statements_analyzer,
                         $codebase,
                         $file_manipulations,
                         $return_type_candidate
@@ -1090,9 +1068,9 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
                         $class_storage->parent_class
                     );
 
-                    $union_comparison_results = new \Psalm\Internal\Analyzer\TypeComparisonResult();
+                    $union_comparison_results = new \Psalm\Internal\Type\Comparator\TypeComparisonResult();
 
-                    $type_match_found = TypeAnalyzer::isContainedBy(
+                    $type_match_found = UnionTypeComparator::isContainedBy(
                         $codebase,
                         $second_arg_type,
                         $pseudo_set_type,
@@ -1130,7 +1108,7 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
                     }
 
                     if (!$type_match_found && !$union_comparison_results->type_coerced_from_mixed) {
-                        if (TypeAnalyzer::canBeContainedBy(
+                        if (UnionTypeComparator::canBeContainedBy(
                             $codebase,
                             $second_arg_type,
                             $pseudo_set_type

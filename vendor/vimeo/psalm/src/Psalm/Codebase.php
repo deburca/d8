@@ -19,7 +19,7 @@ use PhpParser;
 use function preg_match;
 use Psalm\Internal\Analyzer\ProjectAnalyzer;
 use Psalm\Internal\Analyzer\Statements\Block\ForeachAnalyzer;
-use Psalm\Internal\Analyzer\TypeAnalyzer;
+use Psalm\Internal\Type\Comparator\UnionTypeComparator;
 use Psalm\Internal\Codebase\InternalCallMapHandler;
 use Psalm\Internal\Provider\ClassLikeStorageProvider;
 use Psalm\Internal\Provider\FileProvider;
@@ -1217,8 +1217,8 @@ class Codebase
             return null;
         }
 
-        $start_pos = null;
-        $end_pos = null;
+        $reference_start_pos = null;
+        $reference_end_pos = null;
 
         ksort($reference_map);
 
@@ -1230,17 +1230,18 @@ class Codebase
             if ($offset > $end_pos) {
                 continue;
             }
-
+            $reference_start_pos = $start_pos;
+            $reference_end_pos = $end_pos;
             $reference = $possible_reference;
         }
 
-        if ($reference === null || $start_pos === null || $end_pos === null) {
+        if ($reference === null || $reference_start_pos === null || $reference_end_pos === null) {
             return null;
         }
 
         $range = new Range(
-            self::getPositionFromOffset($start_pos, $file_contents),
-            self::getPositionFromOffset($end_pos, $file_contents)
+            self::getPositionFromOffset($reference_start_pos, $file_contents),
+            self::getPositionFromOffset($reference_end_pos, $file_contents)
         );
 
         return [$reference, $range];
@@ -1666,7 +1667,7 @@ class Codebase
         Type\Union $input_type,
         Type\Union $container_type
     ): bool {
-        return TypeAnalyzer::isContainedBy($this, $input_type, $container_type);
+        return UnionTypeComparator::isContainedBy($this, $input_type, $container_type);
     }
 
     /**
@@ -1686,7 +1687,7 @@ class Codebase
         Type\Union $input_type,
         Type\Union $container_type
     ): bool {
-        return TypeAnalyzer::canBeContainedBy($this, $input_type, $container_type);
+        return UnionTypeComparator::canBeContainedBy($this, $input_type, $container_type);
     }
 
     /**
@@ -1757,5 +1758,30 @@ class Codebase
         $expr_type->parent_nodes = [
             $source,
         ];
+    }
+
+    /**
+     * @param array<string> $taints
+     *
+     * @psalm-suppress PossiblyUnusedMethod
+     */
+    public function addTaintSink(
+        string $taint_id,
+        array $taints = \Psalm\Type\TaintKindGroup::ALL_INPUT,
+        ?CodeLocation $code_location = null
+    ) : void {
+        if (!$this->taint) {
+            return;
+        }
+
+        $sink = new \Psalm\Internal\Taint\Sink(
+            $taint_id,
+            $taint_id,
+            $code_location,
+            null,
+            $taints
+        );
+
+        $this->taint->addSink($sink);
     }
 }

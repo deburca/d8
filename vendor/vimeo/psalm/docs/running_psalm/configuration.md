@@ -107,6 +107,15 @@ If not using all docblock types, you can still use docblock property types. Defa
 ```
 The PHPDoc `@method` annotation normally only applies to classes with a `__call` method. Setting this to `true` allows you to use the `@method` annotation to override inherited method return types. Defaults to `false`.
 
+#### usePhpDocPropertiesWithoutMagicCall
+
+```xml
+<psalm
+  usePhpDocPropertiesWithoutMagicCall="[bool]"
+>
+```
+The PHPDoc `@property`, `@property-read` and `@property-write` annotations normally only apply to classes with `__get`/`__set` methods. Setting this to `true` allows you to use the `@property`, `@property-read` and `@property-write` annotations to override property existance checks and resulting property types. Defaults to `false`.
+
 #### strictBinaryOperands
 
 ```xml
@@ -220,7 +229,7 @@ When `true`, Psalm will check that the developer has caught every exception in g
   ignoreInternalFunctionFalseReturn="[bool]"
 >
 ```
-When `true`, Psalm ignores possibly-false issues stemming from return values of internal functions (like `preg_split`) that may return false, but do so rarely). Defaults to `true`.
+When `true`, Psalm ignores possibly-false issues stemming from return values of internal functions (like `preg_split`) that may return false, but do so rarely. Defaults to `true`.
 
 #### ignoreInternalFunctionNullReturn
 
@@ -296,6 +305,16 @@ For backwards compatibility, this defaults to `true`, but if you do not rely on 
 
 When `true`, Psalm will treat all classes as if they had sealed methods, meaning that if you implement the magic method `__call`, you also have to add `@method` for each magic method. Defaults to false.
 
+#### runTaintAnalysis
+
+```xml
+<psalm
+  runTaintAnalysis="[bool]"
+>
+```
+
+When `true`, Psalm will run [Taint Analysis](../security_analysis/index.md) on your codebase. This config is the same as if you were running Psalm with `--taint-analysis`.
+
 ### Running Psalm
 
 #### autoloader
@@ -304,7 +323,7 @@ When `true`, Psalm will treat all classes as if they had sealed methods, meaning
   autoloader="[string]"
 >
 ```
-if your application registers one or more custom autoloaders, and/or declares universal constants/functions, this autoloader script will be executed by Psalm before scanning starts. Psalm always registers composer's autoloader by default.
+If your application registers one or more custom autoloaders, and/or declares universal constants/functions, this autoloader script will be executed by Psalm before scanning starts. Psalm always registers composer's autoloader by default.
 
 #### throwExceptionOnError
 ```xml
@@ -312,7 +331,7 @@ if your application registers one or more custom autoloaders, and/or declares un
   throwExceptionOnError="[bool]"
 >
 ```
-Useful in testing, things makes Psalm throw a regular-old exception when it encounters an error. Defaults to `false`.
+Useful in testing, this makes Psalm throw a regular-old exception when it encounters an error. Defaults to `false`.
 
 #### hideExternalErrors
 ```xml
@@ -320,7 +339,7 @@ Useful in testing, things makes Psalm throw a regular-old exception when it enco
   hideExternalErrors="[bool]"
 >
 ```
-whether or not to show issues in files that are used by your project files, but which are not included in `<projectFiles>`. Defaults to `false`.
+Whether or not to show issues in files that are used by your project files, but which are not included in `<projectFiles>`. Defaults to `false`.
 
 #### cacheDirectory
 ```xml
@@ -346,7 +365,7 @@ Whether or not to allow `require`/`include` calls in your PHP. Defaults to `true
   serializer="['igbinary'|'default']"
 >
 ```
-Allows you to hard-code a serializer for Psalm to use when caching data. By default, Psalm uses `ext-igbinary` *if* the version is greater or equal to 2.0.5, otherwise it defaults to PHP's built-in serializer.
+Allows you to hard-code a serializer for Psalm to use when caching data. By default, Psalm uses `ext-igbinary` *if* the version is greater than or equal to 2.0.5, otherwise it defaults to PHP's built-in serializer.
 
 
 ## Project settings

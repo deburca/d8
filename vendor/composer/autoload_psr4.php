@@ -70,7 +70,7 @@ return array(
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'PhpCsFixer\\' => array($vendorDir . '/friendsofphp/php-cs-fixer/src'),
     'PhpAssumptions\\' => array($vendorDir . '/rskuipers/php-assumptions/src/PhpAssumptions'),
-    'PackageVersions\\' => array($vendorDir . '/ocramius/package-versions/src/PackageVersions'),
+    'PackageVersions\\' => array($vendorDir . '/composer/package-versions-deprecated/src/PackageVersions'),
     'PHPStan\\ExtensionInstaller\\' => array($vendorDir . '/phpstan/extension-installer/src'),
     'PHPStan\\' => array($vendorDir . '/mglaman/phpstan-drupal/src', $vendorDir . '/phpstan/phpstan-deprecation-rules/src', $vendorDir . '/phpstan/phpstan-strict-rules/src'),
     'PDepend\\' => array($vendorDir . '/pdepend/pdepend/src/main/php/PDepend'),

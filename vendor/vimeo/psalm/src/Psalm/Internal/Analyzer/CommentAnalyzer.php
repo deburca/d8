@@ -9,7 +9,6 @@ use Psalm\Exception\IncorrectDocblockException;
 use Psalm\Exception\TypeParseTreeException;
 use Psalm\FileSource;
 use Psalm\Internal\Scanner\ClassLikeDocblockComment;
-use Psalm\Internal\Scanner\DocblockParser;
 use Psalm\Internal\Scanner\FunctionDocblockComment;
 use Psalm\Internal\Scanner\VarDocblockComment;
 use Psalm\Internal\Scanner\ParsedDocblock;
@@ -19,7 +18,6 @@ use Psalm\Internal\Type\TypeAlias;
 use Psalm\Internal\Type\TypeParser;
 use Psalm\Internal\Type\TypeTokenizer;
 use Psalm\Type;
-use function array_column;
 use function array_unique;
 use function trim;
 use function substr_count;
@@ -239,10 +237,7 @@ class CommentAnalyzer
             }
 
             $var_comment->psalm_internal = reset($parsed_docblock->tags['psalm-internal']);
-
-            if (!$var_comment->internal) {
-                throw new DocblockParseException('@psalm-internal annotation used without @internal');
-            }
+            $var_comment->internal = true;
         }
     }
 
@@ -531,10 +526,8 @@ class CommentAnalyzer
                     $info->taint_source_types[] = $param_parts[0];
                 }
             }
-        }
-
-        // support for MediaWiki taint plugin
-        if (isset($parsed_docblock->tags['return-taint'])) {
+        } elseif (isset($parsed_docblock->tags['return-taint'])) {
+            // support for MediaWiki taint plugin
             foreach ($parsed_docblock->tags['return-taint'] as $param) {
                 $param_parts = preg_split('/\s+/', trim($param));
 
@@ -631,10 +624,7 @@ class CommentAnalyzer
                 throw new DocblockParseException('@psalm-internal annotation used without specifying namespace');
             }
             $info->psalm_internal = reset($parsed_docblock->tags['psalm-internal']);
-
-            if (! $info->internal) {
-                throw new DocblockParseException('@psalm-internal annotation used without @internal');
-            }
+            $info->internal = true;
         }
 
         if (isset($parsed_docblock->tags['psalm-suppress'])) {
@@ -930,9 +920,7 @@ class CommentAnalyzer
                 throw new DocblockParseException('psalm-internal annotation used without specifying namespace');
             }
 
-            if (! $info->internal) {
-                throw new DocblockParseException('@psalm-internal annotation used without @internal');
-            }
+            $info->internal = true;
         }
 
         if (isset($parsed_docblock->tags['mixin'])) {

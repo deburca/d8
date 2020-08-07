@@ -510,7 +510,7 @@ class ComposerStaticInit31a8170917c10deb136a171e47314ea8
         ),
         'PackageVersions\\' => 
         array (
-            0 => __DIR__ . '/..' . '/ocramius/package-versions/src/PackageVersions',
+            0 => __DIR__ . '/..' . '/composer/package-versions-deprecated/src/PackageVersions',
         ),
         'PHPStan\\ExtensionInstaller\\' => 
         array (

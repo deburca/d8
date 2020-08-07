@@ -566,17 +566,17 @@
     },
     {
         "name": "composer/composer",
-        "version": "1.10.9",
-        "version_normalized": "1.10.9.0",
+        "version": "1.10.10",
+        "version_normalized": "1.10.10.0",
         "source": {
             "type": "git",
             "url": "https://github.com/composer/composer.git",
-            "reference": "83c3250093d5491600a822e176b107a945baf95a"
+            "reference": "32966a3b1d48bc01472a8321fd6472b44fad033a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/composer/zipball/83c3250093d5491600a822e176b107a945baf95a",
-            "reference": "83c3250093d5491600a822e176b107a945baf95a",
+            "url": "https://api.github.com/repos/composer/composer/zipball/32966a3b1d48bc01472a8321fd6472b44fad033a",
+            "reference": "32966a3b1d48bc01472a8321fd6472b44fad033a",
             "shasum": ""
         },
         "require": {
@@ -606,7 +606,7 @@
             "ext-zip": "Enabling the zip extension allows you to unzip archives",
             "ext-zlib": "Allow gzip compression of HTTP requests"
         },
-        "time": "2020-07-16T10:57:00+00:00",
+        "time": "2020-08-03T09:35:19+00:00",
         "bin": [
             "bin/composer"
         ],
@@ -787,6 +787,77 @@
             "yawik",
             "zend",
             "zikula"
+        ]
+    },
+    {
+        "name": "composer/package-versions-deprecated",
+        "version": "1.10.99",
+        "version_normalized": "1.10.99.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/composer/package-versions-deprecated.git",
+            "reference": "dd51b4443d58b34b6d9344cf4c288e621c9a826f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/dd51b4443d58b34b6d9344cf4c288e621c9a826f",
+            "reference": "dd51b4443d58b34b6d9344cf4c288e621c9a826f",
+            "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "^1.1.0 || ^2.0",
+            "php": "^7"
+        },
+        "replace": {
+            "ocramius/package-versions": "1.10.99"
+        },
+        "require-dev": {
+            "composer/composer": "^1.9.3 || ^2.0@dev",
+            "ext-zip": "^1.13",
+            "phpunit/phpunit": "^6.5 || ^7"
+        },
+        "time": "2020-07-15T08:39:18+00:00",
+        "type": "composer-plugin",
+        "extra": {
+            "class": "PackageVersions\\Installer",
+            "branch-alias": {
+                "dev-master": "1.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PackageVersions\\": "src/PackageVersions"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Marco Pivetta",
+                "email": "ocramius@gmail.com"
+            },
+            {
+                "name": "Jordi Boggiano",
+                "email": "j.boggiano@seld.be"
+            }
+        ],
+        "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
+        "funding": [
+            {
+                "url": "https://packagist.com",
+                "type": "custom"
+            },
+            {
+                "url": "https://github.com/composer",
+                "type": "github"
+            },
+            {
+                "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                "type": "tidelift"
+            }
         ]
     },
     {
@@ -2056,17 +2127,17 @@
     },
     {
         "name": "doctrine/collections",
-        "version": "1.6.6",
-        "version_normalized": "1.6.6.0",
+        "version": "1.6.7",
+        "version_normalized": "1.6.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/collections.git",
-            "reference": "5f0470363ff042d0057006ae7acabc5d7b5252d5"
+            "reference": "55f8b799269a1a472457bd1a41b4f379d4cfba4a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/collections/zipball/5f0470363ff042d0057006ae7acabc5d7b5252d5",
-            "reference": "5f0470363ff042d0057006ae7acabc5d7b5252d5",
+            "url": "https://api.github.com/repos/doctrine/collections/zipball/55f8b799269a1a472457bd1a41b4f379d4cfba4a",
+            "reference": "55f8b799269a1a472457bd1a41b4f379d4cfba4a",
             "shasum": ""
         },
         "require": {
@@ -2078,7 +2149,7 @@
             "phpunit/phpunit": "^7.0",
             "vimeo/psalm": "^3.8.1"
         },
-        "time": "2020-06-22T19:14:02+00:00",
+        "time": "2020-07-27T17:53:49+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2119,20 +2190,6 @@
             "collections",
             "iterators",
             "php"
-        ],
-        "funding": [
-            {
-                "url": "https://www.doctrine-project.org/sponsorship.html",
-                "type": "custom"
-            },
-            {
-                "url": "https://www.patreon.com/phpdoctrine",
-                "type": "patreon"
-            },
-            {
-                "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fcollections",
-                "type": "tidelift"
-            }
         ]
     },
     {
@@ -2236,21 +2293,21 @@
     },
     {
         "name": "doctrine/event-manager",
-        "version": "1.1.0",
-        "version_normalized": "1.1.0.0",
+        "version": "1.1.1",
+        "version_normalized": "1.1.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/event-manager.git",
-            "reference": "629572819973f13486371cb611386eb17851e85c"
+            "reference": "41370af6a30faa9dc0368c4a6814d596e81aba7f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/event-manager/zipball/629572819973f13486371cb611386eb17851e85c",
-            "reference": "629572819973f13486371cb611386eb17851e85c",
+            "url": "https://api.github.com/repos/doctrine/event-manager/zipball/41370af6a30faa9dc0368c4a6814d596e81aba7f",
+            "reference": "41370af6a30faa9dc0368c4a6814d596e81aba7f",
             "shasum": ""
         },
         "require": {
-            "php": "^7.1"
+            "php": "^7.1 || ^8.0"
         },
         "conflict": {
             "doctrine/common": "<2.9@dev"
@@ -2259,7 +2316,7 @@
             "doctrine/coding-standard": "^6.0",
             "phpunit/phpunit": "^7.0"
         },
-        "time": "2019-11-10T09:48:07+00:00",
+        "time": "2020-05-29T18:28:51+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2310,6 +2367,20 @@
             "event manager",
             "event system",
             "events"
+        ],
+        "funding": [
+            {
+                "url": "https://www.doctrine-project.org/sponsorship.html",
+                "type": "custom"
+            },
+            {
+                "url": "https://www.patreon.com/phpdoctrine",
+                "type": "patreon"
+            },
+            {
+                "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fevent-manager",
+                "type": "tidelift"
+            }
         ]
     },
     {
@@ -2558,17 +2629,17 @@
     },
     {
         "name": "doctrine/persistence",
-        "version": "1.3.7",
-        "version_normalized": "1.3.7.0",
+        "version": "1.3.8",
+        "version_normalized": "1.3.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/persistence.git",
-            "reference": "0af483f91bada1c9ded6c2cfd26ab7d5ab2094e0"
+            "reference": "7a6eac9fb6f61bba91328f15aa7547f4806ca288"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/persistence/zipball/0af483f91bada1c9ded6c2cfd26ab7d5ab2094e0",
-            "reference": "0af483f91bada1c9ded6c2cfd26ab7d5ab2094e0",
+            "url": "https://api.github.com/repos/doctrine/persistence/zipball/7a6eac9fb6f61bba91328f15aa7547f4806ca288",
+            "reference": "7a6eac9fb6f61bba91328f15aa7547f4806ca288",
             "shasum": ""
         },
         "require": {
@@ -2577,7 +2648,7 @@
             "doctrine/collections": "^1.0",
             "doctrine/event-manager": "^1.0",
             "doctrine/reflection": "^1.2",
-            "php": "^7.1"
+            "php": "^7.1 || ^8.0"
         },
         "conflict": {
             "doctrine/common": "<2.10@dev"
@@ -2585,9 +2656,10 @@
         "require-dev": {
             "doctrine/coding-standard": "^6.0",
             "phpstan/phpstan": "^0.11",
-            "phpunit/phpunit": "^7.0"
+            "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
+            "vimeo/psalm": "^3.11"
         },
-        "time": "2020-03-21T15:13:52+00:00",
+        "time": "2020-06-20T12:56:16+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -3263,17 +3335,17 @@
     },
     {
         "name": "drupal/core",
-        "version": "9.0.2",
-        "version_normalized": "9.0.2.0",
+        "version": "9.0.3",
+        "version_normalized": "9.0.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drupal/core.git",
-            "reference": "ea6e0cef3240dc8e48f797698226467de121e9c9"
+            "reference": "883018fe0aa16cee450bb043fcb4893c05438283"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drupal/core/zipball/ea6e0cef3240dc8e48f797698226467de121e9c9",
-            "reference": "ea6e0cef3240dc8e48f797698226467de121e9c9",
+            "url": "https://api.github.com/repos/drupal/core/zipball/883018fe0aa16cee450bb043fcb4893c05438283",
+            "reference": "883018fe0aa16cee450bb043fcb4893c05438283",
             "shasum": ""
         },
         "require": {
@@ -3435,7 +3507,7 @@
             "drupal/workflows": "self.version",
             "drupal/workspaces": "self.version"
         },
-        "time": "2020-07-08T18:31:41+00:00",
+        "time": "2020-08-05T21:47:03+00:00",
         "type": "drupal-core",
         "extra": {
             "drupal-scaffold": {
@@ -3509,8 +3581,8 @@
     },
     {
         "name": "drupal/core-composer-scaffold",
-        "version": "9.0.2",
-        "version_normalized": "9.0.2.0",
+        "version": "9.0.3",
+        "version_normalized": "9.0.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -3558,8 +3630,8 @@
     },
     {
         "name": "drupal/core-dev",
-        "version": "9.0.2",
-        "version_normalized": "9.0.2.0",
+        "version": "9.0.3",
+        "version_normalized": "9.0.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drupal/core-dev.git",
@@ -3604,17 +3676,17 @@
     },
     {
         "name": "drupal/core-recommended",
-        "version": "9.0.2",
-        "version_normalized": "9.0.2.0",
+        "version": "9.0.3",
+        "version_normalized": "9.0.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drupal/core-recommended.git",
-            "reference": "c39d02c45dbc26088a2ff004b52fd3aedf2620fe"
+            "reference": "50da17643f7192fb2771f9fbb7b55fc2b22d8be1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drupal/core-recommended/zipball/c39d02c45dbc26088a2ff004b52fd3aedf2620fe",
-            "reference": "c39d02c45dbc26088a2ff004b52fd3aedf2620fe",
+            "url": "https://api.github.com/repos/drupal/core-recommended/zipball/50da17643f7192fb2771f9fbb7b55fc2b22d8be1",
+            "reference": "50da17643f7192fb2771f9fbb7b55fc2b22d8be1",
             "shasum": ""
         },
         "require": {
@@ -3623,7 +3695,7 @@
             "doctrine/annotations": "1.10.3",
             "doctrine/lexer": "1.2.1",
             "doctrine/reflection": "1.2.1",
-            "drupal/core": "9.0.2",
+            "drupal/core": "9.0.3",
             "egulias/email-validator": "2.1.17",
             "guzzlehttp/guzzle": "6.5.4",
             "guzzlehttp/promises": "v1.3.1",
@@ -3677,7 +3749,7 @@
         "conflict": {
             "webflo/drupal-core-strict": "*"
         },
-        "time": "2020-07-08T18:31:41+00:00",
+        "time": "2020-08-05T21:47:03+00:00",
         "type": "metapackage",
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -5016,18 +5088,18 @@
     },
     {
         "name": "drupal/viewsreference",
-        "version": "2.0.0-alpha7",
-        "version_normalized": "2.0.0.0-alpha7",
+        "version": "2.0.0-beta1",
+        "version_normalized": "2.0.0.0-beta1",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/viewsreference.git",
-            "reference": "8.x-2.0-alpha7"
+            "reference": "8.x-2.0-beta1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/viewsreference-8.x-2.0-alpha7.zip",
-            "reference": "8.x-2.0-alpha7",
-            "shasum": "c4c95e9f90608e0acd780bd1d6ca000465976389"
+            "url": "https://ftp.drupal.org/files/projects/viewsreference-8.x-2.0-beta1.zip",
+            "reference": "8.x-2.0-beta1",
+            "shasum": "ce652d813d83dd3121227325cd443b9e28bbccea"
         },
         "require": {
             "drupal/core": "^8 || ^9"
@@ -5038,18 +5110,18 @@
         "type": "drupal-module",
         "extra": {
             "drupal": {
-                "version": "8.x-2.0-alpha7",
-                "datestamp": "1588510059",
+                "version": "8.x-2.0-beta1",
+                "datestamp": "1595873106",
                 "security-coverage": {
                     "status": "not-covered",
-                    "message": "Alpha releases are not covered by Drupal security advisories."
+                    "message": "Beta releases are not covered by Drupal security advisories."
                 }
             }
         },
         "installation-source": "dist",
         "notification-url": "https://packages.drupal.org/8/downloads",
         "license": [
-            "GPL-2.0+"
+            "GPL-2.0-or-later"
         ],
         "authors": [
             {
@@ -5075,27 +5147,27 @@
             "Drupal"
         ],
         "support": {
-            "source": "http://cgit.drupalcode.org/viewsreference",
-            "issues": "http://drupal.org/project/issues/viewsreference"
+            "source": "https://git.drupalcode.org/project/viewsreference",
+            "issues": "https://www.drupal.org/project/issues/viewsreference"
         }
     },
     {
         "name": "drush/drush",
-        "version": "10.3.1",
-        "version_normalized": "10.3.1.0",
+        "version": "10.3.2",
+        "version_normalized": "10.3.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drush-ops/drush.git",
-            "reference": "aad2b17ad34801d9b55cff903e3e7db65d754b80"
+            "reference": "0904ee08d4af9007eb15a0947af3ba27fe6b3408"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drush-ops/drush/zipball/aad2b17ad34801d9b55cff903e3e7db65d754b80",
-            "reference": "aad2b17ad34801d9b55cff903e3e7db65d754b80",
+            "url": "https://api.github.com/repos/drush-ops/drush/zipball/0904ee08d4af9007eb15a0947af3ba27fe6b3408",
+            "reference": "0904ee08d4af9007eb15a0947af3ba27fe6b3408",
             "shasum": ""
         },
         "require": {
-            "chi-teck/drupal-code-generator": "^1.30.5",
+            "chi-teck/drupal-code-generator": "^1.32.1",
             "composer/semver": "^1.4",
             "consolidation/config": "^1.2",
             "consolidation/filter-via-dot-access-data": "^1",
@@ -5127,7 +5199,7 @@
             "squizlabs/php_codesniffer": "^2.7 || ^3",
             "vlucas/phpdotenv": "^2.4"
         },
-        "time": "2020-06-30T19:43:45+00:00",
+        "time": "2020-08-04T19:20:10+00:00",
         "bin": [
             "drush"
         ],
@@ -6731,17 +6803,17 @@
     },
     {
         "name": "mglaman/phpstan-drupal",
-        "version": "0.12.4",
-        "version_normalized": "0.12.4.0",
+        "version": "0.12.5",
+        "version_normalized": "0.12.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/mglaman/phpstan-drupal.git",
-            "reference": "4a74b797251562081715bb086a49d460c61a8783"
+            "reference": "f7676482b39184270eaba25cbd5e491144814a93"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/4a74b797251562081715bb086a49d460c61a8783",
-            "reference": "4a74b797251562081715bb086a49d460c61a8783",
+            "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/f7676482b39184270eaba25cbd5e491144814a93",
+            "reference": "f7676482b39184270eaba25cbd5e491144814a93",
             "shasum": ""
         },
         "require": {
@@ -6763,7 +6835,7 @@
         "suggest": {
             "phpstan/phpstan-deprecation-rules": "For catching deprecations, especially in Drupal core."
         },
-        "time": "2020-06-10T21:05:10+00:00",
+        "time": "2020-07-26T17:10:56+00:00",
         "type": "phpstan-extension",
         "extra": {
             "branch-alias": {
@@ -6815,8 +6887,12 @@
                 "type": "github"
             },
             {
-                "url": "https://liberapay.com/mglaman",
-                "type": "liberapay"
+                "url": "https://ko-fi.com/mglaman",
+                "type": "ko_fi"
+            },
+            {
+                "url": "https://tidelift.com/funding/github/packagist/mglaman/phpstan-drupal",
+                "type": "tidelift"
             }
         ]
     },
@@ -7039,17 +7115,17 @@
     },
     {
         "name": "nette/utils",
-        "version": "v3.1.2",
-        "version_normalized": "3.1.2.0",
+        "version": "v3.1.3",
+        "version_normalized": "3.1.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/nette/utils.git",
-            "reference": "488f58378bba71767e7831c83f9e0fa808bf83b9"
+            "reference": "c09937fbb24987b2a41c6022ebe84f4f1b8eec0f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/nette/utils/zipball/488f58378bba71767e7831c83f9e0fa808bf83b9",
-            "reference": "488f58378bba71767e7831c83f9e0fa808bf83b9",
+            "url": "https://api.github.com/repos/nette/utils/zipball/c09937fbb24987b2a41c6022ebe84f4f1b8eec0f",
+            "reference": "c09937fbb24987b2a41c6022ebe84f4f1b8eec0f",
             "shasum": ""
         },
         "require": {
@@ -7069,7 +7145,7 @@
             "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()",
             "ext-xml": "to use Strings::length() etc. when mbstring is not available"
         },
-        "time": "2020-05-27T09:58:51+00:00",
+        "time": "2020-08-07T10:34:21+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -7170,59 +7246,6 @@
             "parser",
             "php"
         ]
-    },
-    {
-        "name": "ocramius/package-versions",
-        "version": "1.5.1",
-        "version_normalized": "1.5.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Ocramius/PackageVersions.git",
-            "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/1d32342b8c1eb27353c8887c366147b4c2da673c",
-            "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c",
-            "shasum": ""
-        },
-        "require": {
-            "composer-plugin-api": "^1.0.0",
-            "php": "^7.3.0"
-        },
-        "require-dev": {
-            "composer/composer": "^1.8.6",
-            "doctrine/coding-standard": "^6.0.0",
-            "ext-zip": "*",
-            "infection/infection": "^0.13.4",
-            "phpunit/phpunit": "^8.2.5",
-            "vimeo/psalm": "^3.4.9"
-        },
-        "time": "2019-07-17T15:49:50+00:00",
-        "type": "composer-plugin",
-        "extra": {
-            "class": "PackageVersions\\Installer",
-            "branch-alias": {
-                "dev-master": "1.6.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "PackageVersions\\": "src/PackageVersions"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Marco Pivetta",
-                "email": "ocramius@gmail.com"
-            }
-        ],
-        "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)"
     },
     {
         "name": "openlss/lib-array2xml",
@@ -8423,17 +8446,17 @@
     },
     {
         "name": "phpstan/phpstan",
-        "version": "0.12.33",
-        "version_normalized": "0.12.33.0",
+        "version": "0.12.36",
+        "version_normalized": "0.12.36.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phpstan/phpstan.git",
-            "reference": "46e698a0452526a05c4a351d7c47c4b8c37a548d"
+            "reference": "eaeff985e395ff4e7aebf3251a43fca6c9be1af3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpstan/phpstan/zipball/46e698a0452526a05c4a351d7c47c4b8c37a548d",
-            "reference": "46e698a0452526a05c4a351d7c47c4b8c37a548d",
+            "url": "https://api.github.com/repos/phpstan/phpstan/zipball/eaeff985e395ff4e7aebf3251a43fca6c9be1af3",
+            "reference": "eaeff985e395ff4e7aebf3251a43fca6c9be1af3",
             "shasum": ""
         },
         "require": {
@@ -8442,7 +8465,7 @@
         "conflict": {
             "phpstan/phpstan-shim": "*"
         },
-        "time": "2020-07-19T22:10:11+00:00",
+        "time": "2020-08-05T09:29:40+00:00",
         "bin": [
             "phpstan",
             "phpstan.phar"
@@ -12352,8 +12375,8 @@
     },
     {
         "name": "symfony/polyfill-php70",
-        "version": "v1.18.0",
-        "version_normalized": "1.18.0.0",
+        "version": "v1.18.1",
+        "version_normalized": "1.18.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-php70.git",
@@ -13646,23 +13669,23 @@
     },
     {
         "name": "twbs/bootstrap",
-        "version": "v4.5.0",
-        "version_normalized": "4.5.0.0",
+        "version": "v4.5.2",
+        "version_normalized": "4.5.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/twbs/bootstrap.git",
-            "reference": "7a6da5e3e7ad7c749dde806546a35d4d4259d965"
+            "reference": "5f2480a90ab911babc53039835fe78c6fc12646d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twbs/bootstrap/zipball/7a6da5e3e7ad7c749dde806546a35d4d4259d965",
-            "reference": "7a6da5e3e7ad7c749dde806546a35d4d4259d965",
+            "url": "https://api.github.com/repos/twbs/bootstrap/zipball/5f2480a90ab911babc53039835fe78c6fc12646d",
+            "reference": "5f2480a90ab911babc53039835fe78c6fc12646d",
             "shasum": ""
         },
         "replace": {
             "twitter/bootstrap": "self.version"
         },
-        "time": "2020-05-12T17:44:42+00:00",
+        "time": "2020-08-06T16:22:43+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -13824,22 +13847,23 @@
     },
     {
         "name": "vimeo/psalm",
-        "version": "3.12.2",
-        "version_normalized": "3.12.2.0",
+        "version": "3.13.1",
+        "version_normalized": "3.13.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/vimeo/psalm.git",
-            "reference": "7c7ebd068f8acaba211d4a2c707c4ba90874fa26"
+            "reference": "afd8874a9e4562eac42a02de90e42e430c3a1db1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/vimeo/psalm/zipball/7c7ebd068f8acaba211d4a2c707c4ba90874fa26",
-            "reference": "7c7ebd068f8acaba211d4a2c707c4ba90874fa26",
+            "url": "https://api.github.com/repos/vimeo/psalm/zipball/afd8874a9e4562eac42a02de90e42e430c3a1db1",
+            "reference": "afd8874a9e4562eac42a02de90e42e430c3a1db1",
             "shasum": ""
         },
         "require": {
             "amphp/amp": "^2.1",
             "amphp/byte-stream": "^1.5",
+            "composer/package-versions-deprecated": "^1.8.0",
             "composer/semver": "^1.4 || ^2.0 || ^3.0",
             "composer/xdebug-handler": "^1.1",
             "ext-dom": "*",
@@ -13849,9 +13873,8 @@
             "ext-tokenizer": "*",
             "felixfbecker/advanced-json-rpc": "^3.0.3",
             "felixfbecker/language-server-protocol": "^1.4",
-            "netresearch/jsonmapper": "^1.0 || ^2.0",
-            "nikic/php-parser": "^4.3",
-            "ocramius/package-versions": "^1.2",
+            "netresearch/jsonmapper": "^1.0 || ^2.0 || ^3.0",
+            "nikic/php-parser": "4.3.* || 4.4.* || 4.5.* || 4.6.*",
             "openlss/lib-array2xml": "^1.0",
             "php": "^7.1.3|^8",
             "sebastian/diff": "^3.0 || ^4.0",
@@ -13867,7 +13890,6 @@
             "bamarni/composer-bin-plugin": "^1.2",
             "brianium/paratest": "^4.0.0",
             "ext-curl": "*",
-            "php-coveralls/php-coveralls": "^2.2",
             "phpmyadmin/sql-parser": "5.1.0",
             "phpspec/prophecy": ">=1.9.0",
             "phpunit/phpunit": "^7.5.16 || ^8.5 || ^9.0",
@@ -13879,7 +13901,7 @@
         "suggest": {
             "ext-igbinary": "^2.0.5"
         },
-        "time": "2020-07-03T16:59:07+00:00",
+        "time": "2020-07-30T19:42:34+00:00",
         "bin": [
             "psalm",
             "psalm-language-server",

@@ -44,8 +44,8 @@ bootstrap_barrio_library: cdn
 bootstrap_barrio_fluid_container: 0
 bootstrap_barrio_region_clean_tools: 0
 bootstrap_barrio_region_class_tools: row
-bootstrap_barrio_region_clean_navigation: 0
-bootstrap_barrio_region_class_navigation: row
+bootstrap_barrio_region_clean_navigation: 1
+bootstrap_barrio_region_class_navigation: ''
 bootstrap_barrio_region_clean_navigation_collapsible: 0
 bootstrap_barrio_region_class_navigation_collapsible: row
 bootstrap_barrio_region_clean_breadcrumb: 1

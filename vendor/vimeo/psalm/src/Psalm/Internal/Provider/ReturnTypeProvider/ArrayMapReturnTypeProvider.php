@@ -9,13 +9,10 @@ use PhpParser;
 use Psalm\CodeLocation;
 use Psalm\Context;
 use Psalm\Internal\Analyzer\Statements\Expression\CallAnalyzer;
-use Psalm\Internal\Analyzer\Statements\ExpressionAnalyzer;
-use Psalm\Internal\Codebase\InternalCallMapHandler;
 use Psalm\Internal\Type\ArrayType;
 use Psalm\StatementsSource;
 use Psalm\Type;
 use function strpos;
-use function strtolower;
 
 class ArrayMapReturnTypeProvider implements \Psalm\Plugin\Hook\FunctionReturnTypeProviderInterface
 {
@@ -182,6 +179,7 @@ class ArrayMapReturnTypeProvider implements \Psalm\Plugin\Hook\FunctionReturnTyp
                     )
                 );
                 $atomic_type->is_list = $array_arg_atomic_type->is_list;
+                $atomic_type->sealed = $array_arg_atomic_type->sealed;
 
                 return new Type\Union([$atomic_type]);
             }

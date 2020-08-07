@@ -15,7 +15,6 @@ use Psalm\Storage\FunctionStorage;
 use function strpos;
 use function strtolower;
 use function substr;
-use Closure;
 use Psalm\Type\Atomic\TNamedObject;
 use Psalm\Internal\MethodIdentifier;
 
@@ -299,7 +298,8 @@ class Functions
     ) : bool {
         $impure_functions = [
             // file io
-            'chdir', 'chgrp', 'chmod', 'chown', 'chroot', 'closedir', 'copy', 'file_put_contents',
+            'chdir', 'chgrp', 'chmod', 'chown', 'chroot', 'copy', 'file_put_contents',
+            'opendir', 'readdir', 'closedir', 'rewinddir', 'scandir',
             'fopen', 'fread', 'fwrite', 'fclose', 'touch', 'fpassthru', 'fputs', 'fscanf', 'fseek',
             'ftruncate', 'fprintf', 'symlink', 'mkdir', 'unlink', 'rename', 'rmdir', 'popen', 'pclose',
             'fgetcsv', 'fputcsv', 'umask', 'finfo_close', 'readline_add_history', 'stream_set_timeout',
@@ -448,7 +448,7 @@ class Functions
         foreach ($function_callable->params as $i => $param) {
             if ($param->type && $param->type->hasCallableType() && isset($args[$i])) {
                 foreach ($param->type->getAtomicTypes() as $possible_callable) {
-                    $possible_callable = \Psalm\Internal\Analyzer\TypeAnalyzer::getCallableFromAtomic(
+                    $possible_callable = \Psalm\Internal\Type\Comparator\CallableTypeComparator::getCallableFromAtomic(
                         $codebase,
                         $possible_callable
                     );

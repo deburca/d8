@@ -1,12 +1,8 @@
 <?php
+
+namespace Psalm;
+
 require_once('command_functions.php');
-
-use Psalm\Internal\Analyzer\ProjectAnalyzer;
-use Psalm\Config;
-use Psalm\IssueBuffer;
-use Psalm\Progress\DebugProgress;
-use Psalm\Progress\DefaultProgress;
-
 // show all errors
 error_reporting(-1);
 ini_set('display_errors', '1');
@@ -17,6 +13,39 @@ gc_collect_cycles();
 gc_disable();
 
 require_once __DIR__ . '/Psalm/Internal/exception_handler.php';
+
+use Psalm\Internal\Analyzer\ProjectAnalyzer;
+use Psalm\Internal\IncludeCollector;
+use Psalm\IssueBuffer;
+use Psalm\Progress\DebugProgress;
+use Psalm\Progress\DefaultProgress;
+use function error_reporting;
+use function ini_set;
+use function gc_collect_cycles;
+use function gc_disable;
+use function array_slice;
+use function getopt;
+use function implode;
+use function array_map;
+use function substr;
+use function preg_replace;
+use function in_array;
+use function fwrite;
+use const STDERR;
+use const PHP_EOL;
+use function array_key_exists;
+use function is_array;
+use function getcwd;
+use const DIRECTORY_SEPARATOR;
+use function is_string;
+use function realpath;
+use function preg_split;
+use function strpos;
+use function explode;
+use function end;
+use function chdir;
+use function max;
+use function microtime;
 
 $args = array_slice($argv, 1);
 
@@ -55,17 +84,6 @@ array_map(
                 );
                 exit(1);
             }
-        } elseif (substr($arg, 0, 2) === '-' && $arg !== '-' && $arg !== '--') {
-            $arg_name = preg_replace('/=.*$/', '', substr($arg, 1));
-
-            if (!in_array($arg_name, $valid_short_options) && !in_array($arg_name . ':', $valid_short_options)) {
-                fwrite(
-                    STDERR,
-                    'Unrecognised argument "-' . $arg_name . '"' . PHP_EOL
-                    . 'Type --help to see a list of supported arguments'. PHP_EOL
-                );
-                exit(1);
-            }
         }
     },
     $args
@@ -84,7 +102,7 @@ if (isset($options['c']) && is_array($options['c'])) {
 }
 
 if (array_key_exists('h', $options)) {
-    echo <<< HELP
+    echo <<<HELP
 Usage:
     psalm-refactor [options] [symbol1] into [symbol2]
 
@@ -136,9 +154,15 @@ if (isset($options['r']) && is_string($options['r'])) {
     $current_dir = $root_path . DIRECTORY_SEPARATOR;
 }
 
-$vendor_dir = getVendorDir($current_dir);
+$vendor_dir = \Psalm\getVendorDir($current_dir);
 
-$first_autoloader = requireAutoloaders($current_dir, isset($options['r']), $vendor_dir);
+require_once __DIR__ . '/Psalm/Internal/IncludeCollector.php';
+$include_collector = new IncludeCollector();
+$first_autoloader = $include_collector->runAndCollect(
+    function () use ($current_dir, $options, $vendor_dir) {
+        return requireAutoloaders($current_dir, isset($options['r']), $vendor_dir);
+    }
+);
 
 // If Xdebug is enabled, restart without it
 (new \Composer\XdebugHandler\XdebugHandler('PSALTER'))->check();
@@ -228,6 +252,7 @@ if (!$to_refactor) {
 }
 
 $config = initialiseConfig($path_to_config, $current_dir, \Psalm\Report::TYPE_CONSOLE, $first_autoloader);
+$config->setIncludeCollector($include_collector);
 
 if ($config->resolve_from_config_file) {
     $current_dir = $config->base_dir;
@@ -238,13 +263,13 @@ $threads = isset($options['threads'])
     ? (int)$options['threads']
     : max(1, ProjectAnalyzer::getCpuCount() - 2);
 
-$providers = new Psalm\Internal\Provider\Providers(
-    new Psalm\Internal\Provider\FileProvider(),
-    new Psalm\Internal\Provider\ParserCacheProvider($config, false),
-    new Psalm\Internal\Provider\FileStorageCacheProvider($config),
-    new Psalm\Internal\Provider\ClassLikeStorageCacheProvider($config),
+$providers = new \Psalm\Internal\Provider\Providers(
+    new \Psalm\Internal\Provider\FileProvider(),
+    new \Psalm\Internal\Provider\ParserCacheProvider($config, false),
+    new \Psalm\Internal\Provider\FileStorageCacheProvider($config),
+    new \Psalm\Internal\Provider\ClassLikeStorageCacheProvider($config),
     null,
-    new Psalm\Internal\Provider\ProjectCacheProvider($current_dir . DIRECTORY_SEPARATOR . 'composer.lock')
+    new \Psalm\Internal\Provider\ProjectCacheProvider($current_dir . DIRECTORY_SEPARATOR . 'composer.lock')
 );
 
 $debug = array_key_exists('debug', $options) || array_key_exists('debug-by-line', $options);

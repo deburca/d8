@@ -5,9 +5,13 @@ dependencies:
   config:
     - system.menu.main
   module:
+    - block_class
     - system
   theme:
     - mosaic
+third_party_settings:
+  block_class:
+    classes: w-100
 _core:
   default_config_hash: GT_zYl7I9VAILH8OxMRe-VDvFadCDHxRcnmBc5xEmf0
 id: mosaic_main_menu

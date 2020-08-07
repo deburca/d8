@@ -2,50 +2,25 @@
 namespace Psalm\Internal\Analyzer\Statements\Expression\Assignment;
 
 use PhpParser;
-use PhpParser\Node\Expr\PropertyFetch;
-use PhpParser\Node\Stmt\PropertyProperty;
+use Psalm\Internal\Analyzer\ClassAnalyzer;
 use Psalm\Internal\Analyzer\ClassLikeAnalyzer;
-use Psalm\Internal\Analyzer\NamespaceAnalyzer;
 use Psalm\Internal\Analyzer\Statements\ExpressionAnalyzer;
 use Psalm\Internal\Analyzer\Statements\Expression\ExpressionIdentifier;
-use Psalm\Internal\Analyzer\Statements\Expression\Fetch\InstancePropertyFetchAnalyzer;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
-use Psalm\Internal\Analyzer\TypeAnalyzer;
+use Psalm\Internal\Type\Comparator\UnionTypeComparator;
 use Psalm\Internal\FileManipulation\FileManipulationBuffer;
 use Psalm\CodeLocation;
 use Psalm\Context;
-use Psalm\Issue\DeprecatedProperty;
 use Psalm\Issue\ImplicitToStringCast;
-use Psalm\Issue\InaccessibleProperty;
-use Psalm\Issue\InternalProperty;
-use Psalm\Issue\InvalidPropertyAssignment;
 use Psalm\Issue\InvalidPropertyAssignmentValue;
-use Psalm\Issue\LoopInvalidation;
-use Psalm\Issue\MixedAssignment;
-use Psalm\Issue\MixedPropertyAssignment;
 use Psalm\Issue\MixedPropertyTypeCoercion;
-use Psalm\Issue\NoInterfaceProperties;
-use Psalm\Issue\NullPropertyAssignment;
-use Psalm\Issue\PossiblyFalsePropertyAssignmentValue;
-use Psalm\Issue\PossiblyInvalidPropertyAssignment;
 use Psalm\Issue\PossiblyInvalidPropertyAssignmentValue;
-use Psalm\Issue\PossiblyNullPropertyAssignment;
-use Psalm\Issue\PossiblyNullPropertyAssignmentValue;
 use Psalm\Issue\PropertyTypeCoercion;
-use Psalm\Issue\UndefinedClass;
 use Psalm\Issue\UndefinedPropertyAssignment;
-use Psalm\Issue\UndefinedMagicPropertyAssignment;
-use Psalm\Issue\UndefinedThisPropertyAssignment;
 use Psalm\IssueBuffer;
 use Psalm\Type;
-use Psalm\Type\Atomic\TNamedObject;
-use Psalm\Type\Atomic\TNull;
-use Psalm\Type\Atomic\TObject;
-use function count;
-use function in_array;
 use function strtolower;
 use function explode;
-use Psalm\Internal\Taint\TaintNode;
 
 /**
  * @internal
@@ -173,8 +148,6 @@ class StaticPropertyAssignmentAnalyzer
 
         $class_storage = $codebase->classlike_storage_provider->get($declaring_property_class);
 
-        $property_storage = $class_storage->properties[$prop_name->name];
-
         if ($var_id) {
             $context->vars_in_scope[$var_id] = $assignment_value_type;
         }
@@ -189,17 +162,20 @@ class StaticPropertyAssignmentAnalyzer
         if (!$class_property_type) {
             $class_property_type = Type::getMixed();
 
-            if (!$assignment_value_type->hasMixed()) {
-                if ($property_storage->suggested_type) {
-                    $property_storage->suggested_type = Type::combineUnionTypes(
+            $source_analyzer = $statements_analyzer->getSource()->getSource();
+
+            $prop_name_name = $prop_name->name;
+
+            if ($source_analyzer instanceof ClassAnalyzer
+                && $fq_class_name === $source_analyzer->getFQCLN()
+            ) {
+                if (isset($source_analyzer->inferred_property_types[$prop_name_name])) {
+                    $source_analyzer->inferred_property_types[$prop_name_name] = Type::combineUnionTypes(
                         $assignment_value_type,
-                        $property_storage->suggested_type
+                        $source_analyzer->inferred_property_types[$prop_name_name]
                     );
                 } else {
-                    $property_storage->suggested_type = Type::combineUnionTypes(
-                        Type::getNull(),
-                        $assignment_value_type
-                    );
+                    $source_analyzer->inferred_property_types[$prop_name_name] = $assignment_value_type;
                 }
             }
         } else {
@@ -222,9 +198,9 @@ class StaticPropertyAssignmentAnalyzer
             $class_storage->parent_class
         );
 
-        $union_comparison_results = new \Psalm\Internal\Analyzer\TypeComparisonResult();
+        $union_comparison_results = new \Psalm\Internal\Type\Comparator\TypeComparisonResult();
 
-        $type_match_found = TypeAnalyzer::isContainedBy(
+        $type_match_found = UnionTypeComparator::isContainedBy(
             $codebase,
             $assignment_value_type,
             $class_property_type,
@@ -287,7 +263,7 @@ class StaticPropertyAssignmentAnalyzer
         }
 
         if (!$type_match_found && !$union_comparison_results->type_coerced) {
-            if (TypeAnalyzer::canBeContainedBy($codebase, $assignment_value_type, $class_property_type)) {
+            if (UnionTypeComparator::canBeContainedBy($codebase, $assignment_value_type, $class_property_type)) {
                 if (IssueBuffer::accepts(
                     new PossiblyInvalidPropertyAssignmentValue(
                         $var_id . ' with declared type \''

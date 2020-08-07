@@ -9,8 +9,8 @@ use Psalm\Internal\Analyzer\Statements\Expression\CallAnalyzer;
 use Psalm\Internal\Analyzer\Statements\Expression\ExpressionIdentifier;
 use Psalm\Internal\Analyzer\Statements\Expression\Fetch\ArrayFetchAnalyzer;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
-use Psalm\Internal\Analyzer\TypeAnalyzer;
 use Psalm\Internal\Codebase\InternalCallMapHandler;
+use Psalm\Internal\Type\Comparator\UnionTypeComparator;
 use Psalm\Internal\MethodIdentifier;
 use Psalm\Internal\Type\TemplateResult;
 use Psalm\Internal\Type\UnionTemplateHandler;
@@ -255,7 +255,7 @@ class ArgumentsAnalyzer
                                         continue;
                                     }
 
-                                    $type_match_found = TypeAnalyzer::isContainedBy(
+                                    $type_match_found = UnionTypeComparator::isContainedBy(
                                         $codebase,
                                         $replaced_type_part->params[$closure_param_offset]->type,
                                         $param_storage->type
@@ -460,7 +460,9 @@ class ArgumentsAnalyzer
 
         if ($function_storage) {
             $template_types = CallAnalyzer::getTemplateTypesForCall(
+                $codebase,
                 $class_storage,
+                $self_fq_class_name,
                 $calling_class_storage,
                 $function_storage->template_types ?: []
             );
@@ -1022,7 +1024,12 @@ class ArgumentsAnalyzer
             )
         ) {
             if (in_array($method_id, ['array_pop', 'array_shift'], true)) {
-                ArrayFunctionArgumentsAnalyzer::handleByRefArrayAdjustment($statements_analyzer, $arg, $context);
+                ArrayFunctionArgumentsAnalyzer::handleByRefArrayAdjustment(
+                    $statements_analyzer,
+                    $arg,
+                    $context,
+                    $method_id === 'array_shift'
+                );
 
                 return;
             }
