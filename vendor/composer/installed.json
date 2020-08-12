@@ -4653,18 +4653,18 @@
     },
     {
         "name": "drupal/metatag",
-        "version": "1.13.0",
-        "version_normalized": "1.13.0.0",
+        "version": "1.14.0",
+        "version_normalized": "1.14.0.0",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/metatag.git",
-            "reference": "8.x-1.13"
+            "reference": "8.x-1.14"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/metatag-8.x-1.13.zip",
-            "reference": "8.x-1.13",
-            "shasum": "c471d9982a6540fd7baccc94572947923634fb6b"
+            "url": "https://ftp.drupal.org/files/projects/metatag-8.x-1.14.zip",
+            "reference": "8.x-1.14",
+            "shasum": "9bf9f1517ad015d0c93ca1460e284c557624aa90"
         },
         "require": {
             "drupal/core": "^8 || ^9",
@@ -4674,13 +4674,14 @@
             "drupal/metatag_dc": "*",
             "drupal/metatag_open_graph": "*",
             "drupal/page_manager": "4.x-dev",
+            "drupal/panelizer": "4.x-dev",
             "drupal/redirect": "1.x-dev"
         },
         "type": "drupal-module",
         "extra": {
             "drupal": {
-                "version": "8.x-1.13",
-                "datestamp": "1587550202",
+                "version": "8.x-1.14",
+                "datestamp": "1597183852",
                 "security-coverage": {
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
@@ -4690,7 +4691,7 @@
         "installation-source": "dist",
         "notification-url": "https://packages.drupal.org/8/downloads",
         "license": [
-            "GPL-2.0+"
+            "GPL-2.0-or-later"
         ],
         "authors": [
             {
@@ -5088,18 +5089,18 @@
     },
     {
         "name": "drupal/viewsreference",
-        "version": "2.0.0-beta1",
-        "version_normalized": "2.0.0.0-beta1",
+        "version": "2.0.0-beta2",
+        "version_normalized": "2.0.0.0-beta2",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/viewsreference.git",
-            "reference": "8.x-2.0-beta1"
+            "reference": "8.x-2.0-beta2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/viewsreference-8.x-2.0-beta1.zip",
-            "reference": "8.x-2.0-beta1",
-            "shasum": "ce652d813d83dd3121227325cd443b9e28bbccea"
+            "url": "https://ftp.drupal.org/files/projects/viewsreference-8.x-2.0-beta2.zip",
+            "reference": "8.x-2.0-beta2",
+            "shasum": "146bf8c68e6cbb3805b4368b508d43931fe77c67"
         },
         "require": {
             "drupal/core": "^8 || ^9"
@@ -5110,8 +5111,8 @@
         "type": "drupal-module",
         "extra": {
             "drupal": {
-                "version": "8.x-2.0-beta1",
-                "datestamp": "1595873106",
+                "version": "8.x-2.0-beta2",
+                "datestamp": "1597241500",
                 "security-coverage": {
                     "status": "not-covered",
                     "message": "Beta releases are not covered by Drupal security advisories."
@@ -8446,17 +8447,17 @@
     },
     {
         "name": "phpstan/phpstan",
-        "version": "0.12.36",
-        "version_normalized": "0.12.36.0",
+        "version": "0.12.37",
+        "version_normalized": "0.12.37.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phpstan/phpstan.git",
-            "reference": "eaeff985e395ff4e7aebf3251a43fca6c9be1af3"
+            "reference": "5e16d83e6eb2dd784fbdaeaece5e2bca72e4f68a"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpstan/phpstan/zipball/eaeff985e395ff4e7aebf3251a43fca6c9be1af3",
-            "reference": "eaeff985e395ff4e7aebf3251a43fca6c9be1af3",
+            "url": "https://api.github.com/repos/phpstan/phpstan/zipball/5e16d83e6eb2dd784fbdaeaece5e2bca72e4f68a",
+            "reference": "5e16d83e6eb2dd784fbdaeaece5e2bca72e4f68a",
             "shasum": ""
         },
         "require": {
@@ -8465,7 +8466,7 @@
         "conflict": {
             "phpstan/phpstan-shim": "*"
         },
-        "time": "2020-08-05T09:29:40+00:00",
+        "time": "2020-08-09T14:32:41+00:00",
         "bin": [
             "phpstan",
             "phpstan.phar"
@@ -10279,17 +10280,17 @@
     },
     {
         "name": "squizlabs/php_codesniffer",
-        "version": "3.5.5",
-        "version_normalized": "3.5.5.0",
+        "version": "3.5.6",
+        "version_normalized": "3.5.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-            "reference": "73e2e7f57d958e7228fce50dc0c61f58f017f9f6"
+            "reference": "e97627871a7eab2f70e59166072a6b767d5834e0"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/73e2e7f57d958e7228fce50dc0c61f58f017f9f6",
-            "reference": "73e2e7f57d958e7228fce50dc0c61f58f017f9f6",
+            "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/e97627871a7eab2f70e59166072a6b767d5834e0",
+            "reference": "e97627871a7eab2f70e59166072a6b767d5834e0",
             "shasum": ""
         },
         "require": {
@@ -10301,7 +10302,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
         },
-        "time": "2020-04-17T01:09:41+00:00",
+        "time": "2020-08-10T04:50:15+00:00",
         "bin": [
             "bin/phpcs",
             "bin/phpcbf"
