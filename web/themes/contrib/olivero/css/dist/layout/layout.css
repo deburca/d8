@@ -34,22 +34,16 @@
 
 .layout-main{
     display:flex;
-    flex-direction:row-reverse
-}
-  }
-
-[dir] .main-content{
-  padding-top:54px;
-}
-
-@media (min-width: 700px){
-
-[dir] .main-content{
-    padding-top:90px
+    flex-direction:row-reverse;
+    flex-wrap:wrap
 }
   }
 
 @media (min-width: 1200px){
+
+.main-content{
+    width:calc(100% - 90px)
+}
 
 [dir=ltr] .main-content{
     margin-right:auto
@@ -57,5 +51,16 @@
 
 [dir=rtl] .main-content{
     margin-left:auto
+}
+  }
+
+[dir] .main-content__container{
+  padding-top:54px;
+}
+
+@media (min-width: 700px){
+
+[dir] .main-content__container{
+    padding-top:90px
 }
   }

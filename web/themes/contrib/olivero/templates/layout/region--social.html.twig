@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * Olivero's theme override to display the "Featured Bottom" region.
+ * Olivero's theme override to display the social region.
  *
  * Available variables:
  * - content: The content for this region, typically blocks.
@@ -13,18 +13,8 @@
  */
 #}
 
-{%
-  set classes = [
-    'region',
-    'region--' ~ region,
-    'grid-full',
-    'layout--pass--content-medium',
-    'ie11-autorow',
-  ]
-%}
-
-{% if content %}
-  <div{{ attributes.addClass(classes) }}>
+<aside class="social-bar__inner fixable">
+  <div class="rotate">
     {{ content }}
   </div>
-{% endif %}
+</aside>

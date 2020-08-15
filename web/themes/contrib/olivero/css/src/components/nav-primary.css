@@ -45,10 +45,14 @@
   flex-grow: 1;
   text-decoration: none;
   letter-spacing: -1px;
-  color: var(--black-1);
+  color: var(--color--gray-0);
   font-size: 28px;
   font-weight: bold;
   line-height: var(--sp2);
+
+  &:hover {
+    color: inherit;
+  }
 
   @media (--nav) {
     body:not(.is-always-mobile-nav) & {

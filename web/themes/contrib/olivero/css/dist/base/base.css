@@ -39,8 +39,12 @@ body.js-fixed{
   }
 
 a{
-  color:inherit;
+  color:#0d77b5;
 }
+
+a:hover{
+    color:#2494db;
+  }
 
 img,
 audio,

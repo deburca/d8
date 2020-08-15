@@ -5,11 +5,11 @@
  * Functions to support theming in the Olivero theme.
  */
 
+use Drupal\user\Entity\User;
 use Drupal\olivero\OliveroPreRender;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Template\Attribute;
-// Use Drupal\User\Entity;.
 use Drupal\Core\Render\Element;
 
 /**
@@ -30,7 +30,8 @@ function olivero_preprocess_html(&$variables) {
     $variables['#attached']['library'][] = 'olivero/debug';
   }
 
-  // Fonts can be preloaded from base theme in the event Olivero is subthemed.
+  // So fonts can be preloaded from base theme in the event Olivero is
+  // subthemed.
   $variables['olivero_path'] = drupal_get_path('theme', 'olivero');
 }
 
@@ -75,7 +76,7 @@ function olivero_preprocess_maintenance_page(&$variables) {
     $variables['site_name'] = '';
   }
 
-  // Theme olivero has custom styling for the maintenance page.
+  // Olivero has custom styling for the maintenance page.
   $variables['#attached']['library'][] = 'olivero/maintenance_page';
 }
 
@@ -106,19 +107,23 @@ function olivero_preprocess_block(&$variables) {
       ->load($variables['elements']['#id']);
     if ($block) {
       $region = $block->getRegion();
-
       if ($region == 'primary_menu') {
         if ($variables['base_plugin_id'] == 'system_menu_block') {
           $variables['content']['#attributes']['region'] = $region;
         }
         elseif ($variables['base_plugin_id'] == 'search_form_block') {
-          // Attach library for search block if present at primary menu region.
+          // Attaching library for search block if present at primary menu
+          // region.
           $variables['#attached']['library'][] = 'olivero/search-narrow';
         }
       }
       elseif ($region == 'secondary_menu' && $variables['base_plugin_id'] == 'search_form_block') {
-        // Attach library for search block if present at secondary menu region.
+        // Attaching library for search block if present at secondary menu
+        // region.
         $variables['#attached']['library'][] = 'olivero/search-wide';
+      }
+      if ($variables['base_plugin_id'] == 'search_form_block' && in_array($region, ['primary_menu', 'secondary_menu'])) {
+        $variables['content']['actions']['submit']['#olivero_is_header_search_submit'] = TRUE;
       }
     }
   }
@@ -158,9 +163,7 @@ function olivero_theme_suggestions_field_alter(array &$suggestions, array $varia
 }
 
 /**
- * Implements hook_form_alter().
- *
- * Add classes and placeholder text to the search forms.
+ * Implements hook_form_alter() for adding classes and placeholder text to the search forms.
  */
 function olivero_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if (isset($form['actions']) && (count($form['actions'])) <= 2) {
@@ -174,7 +177,6 @@ function olivero_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
       // Add classes to the search form submit input.
       $form['actions']['submit']['#attributes']['class'][] = 'search-form__submit';
-      $form['actions']['submit']['#olivero_is_header_search_submit'] = TRUE;
       break;
 
     case 'search_form':
@@ -531,10 +533,11 @@ function olivero_preprocess_field__comment(&$variables) {
   // Add a comment_count.
   $variables['comment_count'] = count(array_filter($variables['comments'], 'is_numeric', ARRAY_FILTER_USE_KEY));
 
-  // Add user.compact to field-comment if profile's avatar of user exists.
+  // Add user.compact to field-comment if profile's avatar of current user
+  // exist.
   $uid = \Drupal::currentUser()->id();
   if ($uid) {
-    $user = \Drupal::load($uid);
+    $user = User::load($uid);
     if (!empty($user->user_picture) && $user->user_picture->isEmpty() === FALSE) {
       $variables['user_picture'] = \Drupal::entityTypeManager()
         ->getViewBuilder('user')

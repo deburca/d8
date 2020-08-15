@@ -64,7 +64,6 @@ html:not(.js) .tabs__tab,
   transition:background-color 0.2s;
   text-decoration:none;
   letter-spacing:1px;
-  text-transform:uppercase;
   color:#6e7172;
   font-size:14px;
 }

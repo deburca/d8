@@ -18,9 +18,9 @@
 }
 
 .secondary-nav {
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  font-size: 14px;
+  letter-spacing: 0.02em;
+  font-size: var(--font-size-s);
+  font-weight: 600;
 
   ul.menu {
     display: flex;
@@ -56,6 +56,7 @@
       align-items: center;
       height: var(--sp2);
       text-decoration: none;
+      color: inherit;
 
       &:after {
         position: absolute;

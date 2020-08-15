@@ -1,11 +1,12 @@
 /**
  * @file
- * Tables.
+ * User generated tables.
  */
 
 @import "../base/variables.css";
 
-table {
+.text-content table,
+.views-table {
   margin: var(--sp2) 0;
   border-spacing: 0;
   color: var(--color--gray-10);
@@ -42,12 +43,31 @@ table {
   th {
     margin: 0;
     text-align: left;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
     color: var(--color--gray-0);
     border-bottom: 2px solid var(--color--blue-50);
     font-family: var(--font-sans);
     font-size: 14px;
+    line-height: var(--sp);
+
+    /**
+     * Fixes for styles injected by CKEditor
+     */
+    &.text-align-left {
+      text-align: left;
+    }
+
+    &.text-align-right {
+      text-align: right;
+    }
+
+    &.text-align-center {
+      text-align: center;
+    }
+
+    &.text-align-justify {
+      text-align: justify;
+    }
   }
 
   td {
@@ -56,7 +76,12 @@ table {
   }
 }
 
+.tablesort {
+  vertical-align: middle;
+}
+
 .sticky-header {
+  z-index: 0;
   margin: 0;
   border-bottom: 4px solid var(--color--blue-50);
 }

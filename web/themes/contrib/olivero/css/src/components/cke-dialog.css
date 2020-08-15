@@ -96,8 +96,6 @@
       cursor: pointer;
       text-align: center;
       text-decoration: none;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
       color: var(--color--blue-20);
       border: var(--form-element-border-size-base) solid var(--color--blue-20);
       border-radius: var(--border-radius-base);

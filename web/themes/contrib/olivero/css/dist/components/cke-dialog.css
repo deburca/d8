@@ -106,8 +106,6 @@ transparent;
     .cke_dialog .cke_dialog_footer_buttons .acke_dialog_ui_button{
       display:inline-block;
       text-decoration:none;
-      letter-spacing:0.07em;
-      text-transform:uppercase;
       color:#0d77b5;
       font-family:inherit;
       font-size:14px;

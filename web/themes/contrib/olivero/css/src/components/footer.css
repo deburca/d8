@@ -7,7 +7,7 @@
 
 .site-footer {
   position: relative; /* stack above left social bar */
-  color: var(--color--gray-95);
+  color: var(--color--gray-50);
   background: linear-gradient(180deg, #0c0d0e 0%, #171e23 100%);
 
   .menu {
@@ -24,6 +24,8 @@
   }
 
   a {
+    color: inherit;
+
     &:focus,
     &:hover {
       text-decoration: none;

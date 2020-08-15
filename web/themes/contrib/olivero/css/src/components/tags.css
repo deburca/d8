@@ -16,10 +16,9 @@
 
 .field--tag-ref__label {
   margin: 0 calc(var(--sp1-5) - (var(--sp0-5) / 2)) 0 0;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--color--gray-20);
-  font-size: var(--font-size-xxs);
+  font-size: var(--font-size-s);
   font-weight: 600;
   line-height: 2;
 

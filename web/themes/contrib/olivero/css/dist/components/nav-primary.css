@@ -37,11 +37,15 @@
   flex-grow:1;
   text-decoration:none;
   letter-spacing:-1px;
-  color:var(--black-1);
+  color:#0d1214;
   font-size:28px;
   font-weight:bold;
   line-height:36px;
 }
+
+.primary-nav__menu-link:hover{
+    color:inherit;
+  }
 
 @media (min-width: 1200px){
     body:not(.is-always-mobile-nav) .primary-nav__menu-link{

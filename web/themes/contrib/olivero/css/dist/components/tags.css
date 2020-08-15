@@ -10,10 +10,9 @@ sans-serif;
 }
 
 .field--tag-ref__label{
-  letter-spacing:0.2em;
-  text-transform:uppercase;
+  letter-spacing:0.02em;
   color:#6e7172;
-  font-size:12px;
+  font-size:14px;
   font-weight:600;
   line-height:2;
 }

@@ -7,46 +7,47 @@
 
 .region--sidebar {
   .menu {
-    margin-left: 0;
     list-style: none;
+  }
 
-    li:last-child {
-      a:after {
-        content: none;
-      }
-    }
+  .menu--level-1 {
+    margin: 0;
+  }
 
-    li li:last-child a:after {
+  .menu__link {
+    position: relative;
+    display: block;
+    padding: var(--sp0-75) 0;
+    font-family: var(--font-serif);
+    font-size: 18px;
+
+    /* Bottom divider line. */
+    &:after {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: var(--sp4);
+      height: 0;
       content: "";
+      border-top: solid 2px var(--color--gray-80);
     }
+  }
 
-    a {
-      position: relative;
-      display: block;
-      padding: var(--sp) 0;
-      text-decoration: none;
-      color: var(--color--gray-0);
-      font-family: var(--font-serif);
-      font-size: 18px;
-      font-weight: 600;
+  .menu__link--link {
+    text-decoration: none;
+    color: var(--color--gray-0);
+    font-weight: 600;
 
-      &:hover {
-        color: var(--color--blue-50);
-      }
-
-      &:after {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: var(--sp4);
-        height: 0;
-        content: "";
-        border-top: solid 2px var(--color--gray-80);
-      }
+    &:hover {
+      color: var(--color--blue-50);
     }
+  }
 
-    .menu {
-      margin: 0 var(--sp);
+  /* No bottom divider line for last menu item. */
+  .menu__item--level-1:last-child > .menu__link:last-child,
+  .menu__item--level-1:last-child > .menu__item--level-2:last-child > .menu__link:last-child {
+    &:after {
+      content: none;
     }
   }
 }

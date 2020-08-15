@@ -108,9 +108,13 @@
   function init() {
     var debugElement = document.createElement('div');
     debugElement.classList.add('olivero-debug');
-    debugElement.innerHTML = '\n      <h2 class="visually-hidden">Theme debug options</h2>\n      <div><input id="logo-toggle" type="checkbox"><label for="logo-toggle">Logo</label></div>\n      <div><input id="edit-name-toggle" type="checkbox"><label for="edit-name-toggle">Editable Site Name</label></div>\n      <div><input id="rtl-toggle" type="checkbox"><label for="rtl-toggle">RTL</label></div>\n      <div><input id="nav-toggle" type="checkbox"><label for="nav-toggle">Always on mobile nav</label></div>\n      <div><input id="required-toggle" type="checkbox"><label for="required-toggle">Clear required attribute on form elements</label></div>\n      <div class="description">Disable debug in <a href="' + window.drupalSettings.path.baseUrl + 'admin/appearance/settings/olivero">Theme Settings</a>.</div>\n    ';
+    debugElement.innerHTML = '\n      <button class="olivero-debug__close">Close</button>\n      <h2 class="visually-hidden">Theme debug options</h2>\n      <div class="olivero-debug__row"><input id="logo-toggle" type="checkbox"><label for="logo-toggle">Logo</label></div>\n      <div class="olivero-debug__row"><input id="edit-name-toggle" type="checkbox"><label for="edit-name-toggle">Editable Site Name</label></div>\n      <div class="olivero-debug__row"><input id="rtl-toggle" type="checkbox"><label for="rtl-toggle">RTL</label></div>\n      <div class="olivero-debug__row"><input id="nav-toggle" type="checkbox"><label for="nav-toggle">Always on mobile nav</label></div>\n      <div class="olivero-debug__row"><input id="required-toggle" type="checkbox"><label for="required-toggle">Clear required attribute on form elements</label></div>\n      <div class="description">Disable debug in <a href="' + window.drupalSettings.path.baseUrl + 'admin/appearance/settings/olivero">Theme Settings</a>.</div>\n    ';
     document.querySelector('body').appendChild(debugElement);
     document.querySelector('.olivero-debug').addEventListener('change', handleChange);
+
+    document.querySelector('.olivero-debug__close').addEventListener('click', function () {
+      document.querySelector('.olivero-debug').remove();
+    });
 
     if (sessionStorage.getItem('olivero.debug.toggleLogo') != null) {
       toggleLogo(sessionStorage.getItem('olivero.debug.toggleLogo') === 'true');

@@ -62,6 +62,10 @@
   padding-top:3px;
 }
 
+.messages__content *{
+    color:inherit;
+  }
+
 .messages__button{
   flex-shrink:0;
 }

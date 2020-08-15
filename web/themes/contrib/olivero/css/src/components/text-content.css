@@ -11,15 +11,27 @@
   font-family: var(--font-serif);
   line-height: var(--sp1-5);
 
-  .lead {
-    letter-spacing: -0.02em;
-    color: var(--color--gray-0);
-    font-weight: bold;
-    line-height: var(--sp1-5);
+  /**
+   * Special colors for footer that has a dark background.
+   */
+  .site-footer & {
+    color: inherit;
 
-    @media (--md) {
-      font-size: 24px;
-      line-height: var(--sp2-5);
+    * {
+      color: inherit;
+    }
+
+    a {
+      text-decoration: underline;
+      color: var(--color--white);
+      box-shadow: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: none;
+        color: var(--color--white);
+        box-shadow: none;
+      }
     }
   }
 

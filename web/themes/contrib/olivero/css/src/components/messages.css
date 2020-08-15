@@ -55,6 +55,10 @@
   flex: 1;
   padding-top: 3px;
   color: var(--color--white);
+
+  * {
+    color: inherit;
+  }
 }
 
 .messages__button {

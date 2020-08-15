@@ -90,6 +90,10 @@
 .site-branding__inner{
     height:108px
 }
+
+[dir] .site-branding__inner{
+    padding:9px 0
+}
   }
 
 .site-branding__logo{
@@ -120,7 +124,7 @@
 @media (min-width: 1200px){
 
 .site-branding__logo img{
-      max-height:108px
+      max-height:90px
   }
     }
 
@@ -141,6 +145,10 @@
 
 [dir=rtl] .site-branding__logo + .site-branding__text{
     margin-right:12px;
+  }
+
+.site-branding__text a{
+    color:inherit;
   }
 
 @media (min-width: 700px){

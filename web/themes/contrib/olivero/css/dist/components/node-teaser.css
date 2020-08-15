@@ -75,18 +75,8 @@
 @media (min-width: 1000px){
 
 .node--view-mode-teaser .field--name-field-image img{
-        position:absolute;
-        top:0;
         width:calc((100vw - 519px)/14);
         height:calc((100vw - 519px)/14)
-    }
-
-[dir=ltr] .node--view-mode-teaser .field--name-field-image img{
-    left:calc(-1*((100vw - 519px)/14 + 36px))
-    }
-
-[dir=rtl] .node--view-mode-teaser .field--name-field-image img{
-        right:calc(-1*((100vw - 519px)/14 + 36px))
     }
       }
 
@@ -96,14 +86,6 @@
         width:calc((100vw - 645px)/14);
         height:calc((100vw - 645px)/14)
     }
-
-[dir=ltr] .node--view-mode-teaser .field--name-field-image img{
-    left:calc(-1*((100vw - 645px)/14 + 36px))
-    }
-
-[dir=rtl] .node--view-mode-teaser .field--name-field-image img{
-        right:calc(-1*((100vw - 645px)/14 + 36px))
-    }
       }
 
 @media (min-width: 1440px){
@@ -112,15 +94,45 @@
         width:57.85714px;
         height:57.85714px
     }
-
-[dir=ltr] .node--view-mode-teaser .field--name-field-image img{
-    left:-93.85714px
-    }
-
-[dir=rtl] .node--view-mode-teaser .field--name-field-image img{
-        right:-93.85714px
-    }
       }
+
+@media (min-width: 1000px){
+
+.node--view-mode-teaser .field--name-field-image{
+      position:absolute;
+      top:0
+  }
+
+[dir=ltr] .node--view-mode-teaser .field--name-field-image{
+    left:calc(-1*((100vw - 519px)/14 + 36px))
+  }
+
+[dir=rtl] .node--view-mode-teaser .field--name-field-image{
+      right:calc(-1*((100vw - 519px)/14 + 36px))
+  }
+    }
+
+@media (min-width: 1200px){
+
+[dir=ltr] .node--view-mode-teaser .field--name-field-image{
+    left:calc(-1*((100vw - 645px)/14 + 36px))
+  }
+
+[dir=rtl] .node--view-mode-teaser .field--name-field-image{
+      right:calc(-1*((100vw - 645px)/14 + 36px))
+  }
+    }
+
+@media (min-width: 1440px){
+
+[dir=ltr] .node--view-mode-teaser .field--name-field-image{
+    left:-93.85714px
+  }
+
+[dir=rtl] .node--view-mode-teaser .field--name-field-image{
+      right:-93.85714px
+  }
+    }
 
 @media (min-width: 1000px){
 

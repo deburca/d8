@@ -6,28 +6,34 @@
 **/
 
 (function (Drupal) {
-  var messages = document.querySelectorAll('.messages');
+  Drupal.behaviors.messages = {
+    attach: function attach(context) {
+      var messages = context.querySelectorAll('.messages:not(.messages-processed)');
 
-  messages.forEach(function (el) {
-    var messageContainer = el.querySelector('.messages__container');
+      messages.forEach(function (el) {
+        var messageContainer = el.querySelector('.messages__container');
 
-    var closeBtnWrapper = document.createElement('div');
-    closeBtnWrapper.setAttribute('class', 'messages__button');
+        var closeBtnWrapper = document.createElement('div');
+        closeBtnWrapper.setAttribute('class', 'messages__button');
 
-    var closeBtn = document.createElement('button');
-    closeBtn.setAttribute('type', 'button');
-    closeBtn.setAttribute('class', 'messages__close');
+        var closeBtn = document.createElement('button');
+        closeBtn.setAttribute('type', 'button');
+        closeBtn.setAttribute('class', 'messages__close');
 
-    var closeBtnText = document.createElement('span');
-    closeBtnText.setAttribute('class', 'visually-hidden');
-    closeBtnText.innerText = Drupal.t('Close message');
+        var closeBtnText = document.createElement('span');
+        closeBtnText.setAttribute('class', 'visually-hidden');
+        closeBtnText.innerText = Drupal.t('Close message');
 
-    messageContainer.appendChild(closeBtnWrapper);
-    closeBtnWrapper.appendChild(closeBtn);
-    closeBtn.appendChild(closeBtnText);
+        messageContainer.appendChild(closeBtnWrapper);
+        closeBtnWrapper.appendChild(closeBtn);
+        closeBtn.appendChild(closeBtnText);
 
-    closeBtn.addEventListener('click', function () {
-      el.classList.add('hidden');
-    });
-  });
+        el.classList.add('messages-processed');
+
+        closeBtn.addEventListener('click', function () {
+          el.classList.add('hidden');
+        });
+      });
+    }
+  };
 })(Drupal);

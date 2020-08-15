@@ -9,20 +9,34 @@ serif;
   line-height:27px;
 }
 
-.text-content .lead, .cke_editable .lead{
-    letter-spacing:-0.02em;
-    color:#0d1214;
-    font-weight:bold;
-    line-height:27px;
+.site-footer .text-content, .site-footer .cke_editable{
+    color:inherit;
   }
 
-@media (min-width: 700px){
-
-.text-content .lead, .cke_editable .lead{
-      font-size:24px;
-      line-height:45px
-  }
+.site-footer .text-content *, .site-footer .cke_editable *{
+      color:inherit;
     }
+
+.site-footer .text-content a, .site-footer .cke_editable a{
+      text-decoration:underline;
+      color:#fff;
+    }
+
+[dir] .site-footer .text-content a, [dir] .site-footer .cke_editable a{
+      box-shadow:none;
+    }
+
+.site-footer .text-content a:hover,
+      .site-footer .text-content a:focus,
+      .site-footer .cke_editable a:hover,
+      .site-footer .cke_editable a:focus{
+        text-decoration:none;
+        color:#fff;
+      }
+
+[dir] .site-footer .text-content a:hover, [dir] .site-footer .text-content a:focus, [dir] .site-footer .cke_editable a:hover, [dir] .site-footer .cke_editable a:focus{
+        box-shadow:none;
+      }
 
 .text-content h2, .cke_editable h2{
     letter-spacing:0.12em;

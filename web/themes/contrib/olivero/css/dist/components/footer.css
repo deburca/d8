@@ -1,6 +1,6 @@
 .site-footer{
   position:relative;
-  color:#f7f9fa;
+  color:#9ea0a1;
 }[dir=ltr] .site-footer{
   background:linear-gradient(180deg, #0c0d0e 0%, #171e23 100%);
 }[dir=rtl] .site-footer{
@@ -30,6 +30,10 @@
 [dir] .site-footer .menu li{
       margin-bottom:9px;
     }
+
+.site-footer a{
+    color:inherit;
+  }
 
 .site-footer a:focus,
     .site-footer a:hover{

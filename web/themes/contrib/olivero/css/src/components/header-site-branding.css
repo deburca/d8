@@ -59,6 +59,7 @@
 
   @media (--nav) {
     height: var(--header-height-wide-when-fixed);
+    padding: var(--sp0-5) 0;
   }
 }
 
@@ -80,7 +81,7 @@
     }
 
     @media (--nav) {
-      max-height: var(--header-height-wide-when-fixed);
+      max-height: calc(var(--header-height-wide-when-fixed) - var(--sp));
     }
   }
 }
@@ -97,6 +98,10 @@
 
   .site-branding__logo + & {
     margin-left: 12px;
+  }
+
+  a {
+    color: inherit;
   }
 
   @media (--md) {
