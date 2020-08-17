@@ -114,7 +114,7 @@ The PHPDoc `@method` annotation normally only applies to classes with a `__call`
   usePhpDocPropertiesWithoutMagicCall="[bool]"
 >
 ```
-The PHPDoc `@property`, `@property-read` and `@property-write` annotations normally only apply to classes with `__get`/`__set` methods. Setting this to `true` allows you to use the `@property`, `@property-read` and `@property-write` annotations to override property existance checks and resulting property types. Defaults to `false`.
+The PHPDoc `@property`, `@property-read` and `@property-write` annotations normally only apply to classes with `__get`/`__set` methods. Setting this to `true` allows you to use the `@property`, `@property-read` and `@property-write` annotations to override property existence checks and resulting property types. Defaults to `false`.
 
 #### strictBinaryOperands
 
@@ -160,15 +160,6 @@ Setting this to `false` means that any function calls will cause Psalm to forget
 >
 ```
 Allows you to specify whether or not to use the typed iterator docblock format supported by PHP Storm e.g. `ArrayIterator|string[]`, which Psalm transforms to `ArrayIterator<string>`. Defaults to `false`.
-
-#### allowCoercionFromStringToClassConst
-
-```xml
-<psalm
-  allowCoercionFromStringToClassConst="[bool]"
->
-```
-When `true`, strings can be coerced to [`class-string`](../annotating_code/templated_annotations.md#param-class-stringt), with Psalm emitting a `TypeCoercion` issue. If disabled, that issue changes to a more serious one. Defaults to `false`.
 
 #### allowStringToStandInForClass
 

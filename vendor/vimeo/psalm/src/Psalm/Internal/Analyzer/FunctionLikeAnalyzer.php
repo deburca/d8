@@ -249,7 +249,6 @@ abstract class FunctionLikeAnalyzer extends SourceAnalyzer
             );
 
             if ($overridden_method_ids
-                && $this->function->name->name !== '__construct'
                 && !$context->collect_initializations
                 && !$context->collect_mutations
             ) {
@@ -259,6 +258,12 @@ abstract class FunctionLikeAnalyzer extends SourceAnalyzer
                     $overridden_fq_class_name = $overridden_method_id->fq_class_name;
 
                     $parent_storage = $classlike_storage_provider->get($overridden_fq_class_name);
+
+                    if ($this->function->name->name === '__construct'
+                        && !$parent_storage->preserve_constructor_signature
+                    ) {
+                        continue;
+                    }
 
                     $implementer_visibility = $storage->visibility;
 
@@ -293,6 +298,7 @@ abstract class FunctionLikeAnalyzer extends SourceAnalyzer
                     if (!isset($appearing_class_storage->class_implements[strtolower($overridden_fq_class_name)])) {
                         MethodComparator::compare(
                             $codebase,
+                            \count($overridden_method_ids) === 1 ? $this->function : null,
                             $declaring_class_storage,
                             $parent_storage,
                             $storage,

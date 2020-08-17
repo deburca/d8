@@ -35,6 +35,7 @@ use function explode;
 use function count;
 use function array_filter;
 use function assert;
+use Psalm\Internal\Type\TypeExpander;
 
 /**
  * @internal
@@ -507,19 +508,19 @@ class ArrayFunctionArgumentsAnalyzer
                             \array_shift($array_properties);
 
                             if (!$array_properties) {
-                                $array_properties = [
-                                    $array_atomic_type->previous_value_type
-                                        ? clone $array_atomic_type->previous_value_type
-                                        : Type::getMixed()
-                                ];
+                                $array_atomic_type = new Type\Atomic\TList(
+                                    $array_atomic_type->previous_value_type ?: Type::getMixed()
+                                );
 
-                                $array_properties[0]->possibly_undefined = true;
+                                $array_type->addType($array_atomic_type);
+                            } else {
+                                $array_atomic_type->properties = $array_properties;
                             }
-
-                            $array_atomic_type->properties = $array_properties;
                         }
 
-                        $array_atomic_type = $array_atomic_type->getGenericArrayType();
+                        if ($array_atomic_type instanceof ObjectLike) {
+                            $array_atomic_type = $array_atomic_type->getGenericArrayType();
+                        }
                     }
 
                     if ($array_atomic_type instanceof TNonEmptyArray) {
@@ -863,6 +864,14 @@ class ArrayFunctionArgumentsAnalyzer
                     $codebase
                 );
             }
+
+            $closure_param_type = TypeExpander::expandUnion(
+                $codebase,
+                $closure_param_type,
+                $context->self,
+                null,
+                $statements_analyzer->getParentFQCLN()
+            );
 
             $union_comparison_results = new \Psalm\Internal\Type\Comparator\TypeComparisonResult();
 

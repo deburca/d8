@@ -501,39 +501,47 @@ class InstancePropertyFetchAnalyzer
             $get_method_id = new \Psalm\Internal\MethodIdentifier($fq_class_name, '__get');
 
             if (!$naive_property_exists
-                && $class_storage->mixin instanceof Type\Atomic\TNamedObject
+                && $class_storage->namedMixins
             ) {
-                $new_property_id = $class_storage->mixin->value . '::$' . $prop_name;
+                foreach ($class_storage->namedMixins as $mixin) {
+                    $new_property_id = $mixin->value . '::$' . $prop_name;
 
-                try {
-                    $new_class_storage = $codebase->classlike_storage_provider->get($class_storage->mixin->value);
-                } catch (\InvalidArgumentException $e) {
-                    $new_class_storage = null;
-                }
-
-                if ($new_class_storage
-                    && ($codebase->properties->propertyExists(
-                        $new_property_id,
-                        true,
-                        $statements_analyzer,
-                        $context,
-                        $codebase->collect_locations
-                            ? new CodeLocation($statements_analyzer->getSource(), $stmt)
-                            : null
-                    )
-                        || isset($new_class_storage->pseudo_property_get_types['$' . $prop_name]))
-                ) {
-                    $fq_class_name = $class_storage->mixin->value;
-                    $lhs_type_part = clone $class_storage->mixin;
-                    $class_storage = $new_class_storage;
-
-                    if (!isset($new_class_storage->pseudo_property_get_types['$' . $prop_name])) {
-                        $naive_property_exists = true;
+                    try {
+                        $new_class_storage = $codebase->classlike_storage_provider->get($mixin->value);
+                    } catch (\InvalidArgumentException $e) {
+                        $new_class_storage = null;
                     }
 
-                    $property_id = $new_property_id;
+                    if ($new_class_storage
+                        && ($codebase->properties->propertyExists(
+                            $new_property_id,
+                            true,
+                            $statements_analyzer,
+                            $context,
+                            $codebase->collect_locations
+                                    ? new CodeLocation($statements_analyzer->getSource(), $stmt)
+                                    : null
+                        )
+                            || isset($new_class_storage->pseudo_property_get_types['$' . $prop_name]))
+                    ) {
+                        $fq_class_name = $mixin->value;
+                        $lhs_type_part = clone $mixin;
+                        $class_storage = $new_class_storage;
+
+                        if (!isset($new_class_storage->pseudo_property_get_types['$' . $prop_name])) {
+                            $naive_property_exists = true;
+                        }
+
+                        $property_id = $new_property_id;
+                    }
                 }
             }
+
+            $declaring_property_class = $codebase->properties->getDeclaringClassForProperty(
+                $property_id,
+                true,
+                $statements_analyzer
+            );
 
             if ((!$naive_property_exists
                     || ($stmt_var_id !== '$this'
@@ -564,6 +572,29 @@ class InstancePropertyFetchAnalyzer
 
                 if (isset($class_storage->pseudo_property_get_types['$' . $prop_name])) {
                     $stmt_type = clone $class_storage->pseudo_property_get_types['$' . $prop_name];
+
+                    if ($class_storage->template_types) {
+                        if (!$lhs_type_part instanceof TGenericObject) {
+                            $type_params = [];
+
+                            foreach ($class_storage->template_types as $type_map) {
+                                $type_params[] = clone array_values($type_map)[0][0];
+                            }
+
+                            $lhs_type_part = new TGenericObject($lhs_type_part->value, $type_params);
+                        }
+
+                        $stmt_type = self::localizePropertyType(
+                            $codebase,
+                            $stmt_type,
+                            $lhs_type_part,
+                            $class_storage,
+                            $declaring_property_class
+                                ? $codebase->classlike_storage_provider->get(
+                                    $declaring_property_class
+                                ) : $class_storage
+                        );
+                    }
 
                     $statements_analyzer->node_data->setType($stmt, $stmt_type);
 
@@ -676,6 +707,29 @@ class InstancePropertyFetchAnalyzer
                     && isset($class_storage->pseudo_property_get_types['$' . $prop_name])
                 ) {
                     $stmt_type = clone $class_storage->pseudo_property_get_types['$' . $prop_name];
+
+                    if ($class_storage->template_types) {
+                        if (!$lhs_type_part instanceof TGenericObject) {
+                            $type_params = [];
+
+                            foreach ($class_storage->template_types as $type_map) {
+                                $type_params[] = clone array_values($type_map)[0][0];
+                            }
+
+                            $lhs_type_part = new TGenericObject($lhs_type_part->value, $type_params);
+                        }
+
+                        $stmt_type = self::localizePropertyType(
+                            $codebase,
+                            $stmt_type,
+                            $lhs_type_part,
+                            $class_storage,
+                            $declaring_property_class
+                                ? $codebase->classlike_storage_provider->get(
+                                    $declaring_property_class
+                                ) : $class_storage
+                        );
+                    }
 
                     $statements_analyzer->node_data->setType($stmt, $stmt_type);
 

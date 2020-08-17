@@ -756,6 +756,10 @@ class CommentAnalyzer
             $info->external_mutation_free = true;
         }
 
+        if (isset($parsed_docblock->tags['no-named-arguments'])) {
+            $info->no_named_args = true;
+        }
+
         $info->ignore_nullable_return = isset($parsed_docblock->tags['psalm-ignore-nullable-return']);
         $info->ignore_falsable_return = isset($parsed_docblock->tags['psalm-ignore-falsable-return']);
 
@@ -912,6 +916,10 @@ class CommentAnalyzer
             $info->final = true;
         }
 
+        if (isset($parsed_docblock->tags['psalm-consistent-constructor'])) {
+            $info->consistent_constructor = true;
+        }
+
         if (isset($parsed_docblock->tags['psalm-internal'])) {
             $psalm_internal = reset($parsed_docblock->tags['psalm-internal']);
             if ($psalm_internal) {
@@ -924,14 +932,22 @@ class CommentAnalyzer
         }
 
         if (isset($parsed_docblock->tags['mixin'])) {
-            $mixin = trim(reset($parsed_docblock->tags['mixin']));
-            $doc_line_parts = self::splitDocLine($mixin);
-            $mixin = $doc_line_parts[0];
+            foreach ($parsed_docblock->tags['mixin'] as $rawMixin) {
+                $mixin = trim($rawMixin);
+                $doc_line_parts = self::splitDocLine($mixin);
+                $mixin = $doc_line_parts[0];
 
-            if ($mixin) {
-                $info->mixin = $mixin;
-            } else {
-                throw new DocblockParseException('@mixin annotation used without specifying class');
+                if ($mixin) {
+                    $info->mixins[] = $mixin;
+                } else {
+                    throw new DocblockParseException('@mixin annotation used without specifying class');
+                }
+            }
+
+            // backwards compatibility
+            if ($info->mixins) {
+                /** @psalm-suppress DeprecatedProperty */
+                $info->mixin = reset($info->mixins);
             }
         }
 
@@ -974,9 +990,13 @@ class CommentAnalyzer
         }
 
         if (isset($parsed_docblock->tags['psalm-import-type'])) {
-            foreach ($parsed_docblock->tags['psalm-import-type'] as $imported_type_entry) {
-                /** @psalm-suppress InvalidPropertyAssignmentValue */
-                $info->imported_types[] = preg_split('/[\s]+/', $imported_type_entry);
+            foreach ($parsed_docblock->tags['psalm-import-type'] as $offset => $imported_type_entry) {
+                $info->imported_types[] = [
+                    'line_number' => $comment->getLine() + substr_count($comment->getText(), "\n", 0, $offset),
+                    'start_offset' => $comment->getFilePos() + $offset,
+                    'end_offset' => $comment->getFilePos() + $offset + strlen($imported_type_entry),
+                    'parts' => self::splitDocLine($imported_type_entry) ?: []
+                ];
             }
         }
 
@@ -1102,7 +1122,10 @@ class CommentAnalyzer
                 $php_string = '<?php class A { ' . $function_docblock . ' public ' . $function_string . '{} }';
 
                 try {
-                    $statements = \Psalm\Internal\Provider\StatementsProvider::parseStatements($php_string);
+                    $statements = \Psalm\Internal\Provider\StatementsProvider::parseStatements(
+                        $php_string,
+                        $codebase->php_major_version . '.' . $codebase->php_minor_version
+                    );
                 } catch (\Exception $e) {
                     throw new DocblockParseException('Badly-formatted @method string ' . $method_entry);
                 }
@@ -1217,7 +1240,7 @@ class CommentAnalyzer
      *
      * @throws DocblockParseException if an invalid string is found
      *
-     * @return array<string>
+     * @return list<string>
      */
     public static function splitDocLine($return_block)
     {
@@ -1328,7 +1351,6 @@ class CommentAnalyzer
                 $remaining = trim(preg_replace('@^[ \t]*\* *@m', ' ', substr($return_block, $i + 1)));
 
                 if ($remaining) {
-                    /** @var array<string> */
                     return array_merge([rtrim($type)], preg_split('/[ \s]+/', $remaining));
                 }
 

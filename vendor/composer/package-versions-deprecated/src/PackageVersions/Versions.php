@@ -64,7 +64,7 @@ final class Versions
   'drupal/advagg' => '4.1.0@8.x-4.1',
   'drupal/backup_migrate' => '5.0.0-rc1@5.0.0-rc1',
   'drupal/block_class' => '1.2.0@8.x-1.2',
-  'drupal/bootstrap_barrio' => '5.0.1@5.0.1',
+  'drupal/bootstrap_barrio' => '5.1.0@5.1.0',
   'drupal/bootstrap_layouts' => '5.2.0@8.x-5.2',
   'drupal/bootstrap_library' => '1.14.0@8.x-1.14',
   'drupal/coder' => '8.3.9@d51e0b8c6561e21c0545d04b5410a7bed7ee7c6b',
@@ -107,7 +107,7 @@ final class Versions
   'laminas/laminas-zendframework-bridge' => '1.0.4@fcd87520e4943d968557803919523772475e8ea3',
   'league/container' => '2.4.1@43f35abd03a12977a60ffd7095efd6a7808488c0',
   'masterminds/html5' => '2.7.0@104443ad663d15981225f99532ba73c2f1d6b6f2',
-  'nikic/php-parser' => 'v4.6.0@c346bbfafe2ff60680258b631afb730d186ed864',
+  'nikic/php-parser' => 'v4.8.0@8c58eb4cd4f3883f82611abeac2efbc3dbed787e',
   'paragonie/random_compat' => 'v9.99.99@84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95',
   'pear/archive_tar' => '1.4.9@c5b00053770e1d72128252c62c2c1a12c26639f0',
   'pear/console_getopt' => 'v1.4.3@a41f8d3e668987609178c7c4a9fe48fecac53fa0',
@@ -243,11 +243,11 @@ final class Versions
   'symfony/stopwatch' => 'v5.1.3@0f7c58cf81dbb5dd67d423a89d577524a2ec0323',
   'theseer/fdomdocument' => '1.6.6@6e8203e40a32a9c770bcb62fe37e68b948da6dca',
   'theseer/tokenizer' => '1.2.0@75a63c33a8577608444246075ea0af0d052e452a',
-  'vimeo/psalm' => '3.13.1@afd8874a9e4562eac42a02de90e42e430c3a1db1',
+  'vimeo/psalm' => '3.14.0@f48a362fcd5665f3938adc6ea1b5f50d2c925262',
   'vlucas/phpdotenv' => 'v2.6.6@e1d57f62db3db00d9139078cbedf262280701479',
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'deburca/www' => 'dev-master@57bdf0af1e73d09e2e13aef30f0094f4507df58e',
+  'deburca/www' => 'dev-master@879d66fad86b6e6ecf600c0d3b2542a5958850e6',
 );
 
     private function __construct()

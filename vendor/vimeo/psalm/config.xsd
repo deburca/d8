@@ -32,7 +32,6 @@
         <xs:attribute name="serializer" type="xs:string" />
 
         <xs:attribute name="addParamDefaultToDocblockType" type="xs:boolean" default="false" />
-        <xs:attribute name="allowCoercionFromStringToClassConst" type="xs:boolean" default="false" />
         <xs:attribute name="allowFileIncludes" type="xs:boolean" default="true" />
         <xs:attribute name="allowPhpStormGenerics" type="xs:boolean" default="false" />
         <xs:attribute name="allowStringToStandInForClass" type="xs:boolean" default="false" />
@@ -74,6 +73,8 @@
         <xs:attribute name="sealAllMethods" type="xs:boolean" default="false" />
         <xs:attribute name="runTaintAnalysis" type="xs:boolean" default="false" />
         <xs:attribute name="usePhpStormMetaPath" type="xs:boolean" default="true" />
+        <xs:attribute name="allowInternalNamedArgumentCalls" type="xs:boolean" default="true" />
+        <xs:attribute name="allowNamedArgumentCalls" type="xs:boolean" default="true" />
     </xs:complexType>
 
     <xs:complexType name="ProjectFilesType">
@@ -174,6 +175,7 @@
             <xs:element name="CircularReference" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="ContinueOutsideLoop" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="ConflictingReferenceConstraint" type="IssueHandlerType" minOccurs="0" />
+            <xs:element name="ConstructorSignatureMismatch" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="DeprecatedClass" type="ClassIssueHandlerType" minOccurs="0" />
             <xs:element name="DeprecatedConstant" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="DeprecatedFunction" type="FunctionIssueHandlerType" minOccurs="0" />
@@ -242,6 +244,7 @@
             <xs:element name="InvalidTemplateParam" type="FunctionIssueHandlerType" minOccurs="0" />
             <xs:element name="InvalidThrow" type="ClassIssueHandlerType" minOccurs="0" />
             <xs:element name="InvalidToString" type="IssueHandlerType" minOccurs="0" />
+            <xs:element name="InvalidTypeImport" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="LessSpecificImplementedReturnType" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="LessSpecificReturnStatement" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="LessSpecificReturnType" type="IssueHandlerType" minOccurs="0" />
@@ -299,6 +302,7 @@
             <xs:element name="NullReference" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="OverriddenMethodAccess" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="OverriddenPropertyAccess" type="PropertyIssueHandlerType" minOccurs="0" />
+            <xs:element name="ParamNameMismatch" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="ParadoxicalCondition" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="ParentNotFound" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="PossibleRawObjectIteration" type="IssueHandlerType" minOccurs="0" />
@@ -385,6 +389,7 @@
             <xs:element name="UnresolvableInclude" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="UnevaluatedCode" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="UnnecessaryVarAnnotation" type="IssueHandlerType" minOccurs="0" />
+            <xs:element name="UnsafeInstantiation" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="UnusedClosureParam" type="IssueHandlerType" minOccurs="0" />
             <xs:element name="UnusedFunctionCall" type="FunctionIssueHandlerType" minOccurs="0" />
             <xs:element name="UnusedMethodCall" type="MethodIssueHandlerType" minOccurs="0" />

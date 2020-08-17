@@ -1,16 +1,20 @@
 <?php
 namespace Psalm\Internal\Analyzer;
 
+use PhpParser\Node\Stmt\ClassMethod;
 use Psalm\Codebase;
 use Psalm\CodeLocation;
 use Psalm\Internal\MethodIdentifier;
+use Psalm\Internal\PhpVisitor\ParamReplacementVisitor;
 use Psalm\Internal\Type\Comparator\TypeComparisonResult;
 use Psalm\Internal\Type\Comparator\UnionTypeComparator;
 use Psalm\Issue\ImplementedParamTypeMismatch;
 use Psalm\Issue\ImplementedReturnTypeMismatch;
+use Psalm\Issue\ConstructorSignatureMismatch;
 use Psalm\Issue\MethodSignatureMismatch;
 use Psalm\Issue\MoreSpecificImplementedParamType;
 use Psalm\Issue\LessSpecificImplementedReturnType;
+use Psalm\Issue\ParamNameMismatch;
 use Psalm\Issue\OverriddenMethodAccess;
 use Psalm\Issue\TraitMethodSignatureMismatch;
 use Psalm\IssueBuffer;
@@ -22,6 +26,8 @@ use function strtolower;
 use function is_string;
 use function in_array;
 use Psalm\Issue\MissingImmutableAnnotation;
+use function count;
+use function substr;
 
 class MethodComparator
 {
@@ -39,6 +45,7 @@ class MethodComparator
      */
     public static function compare(
         Codebase $codebase,
+        ?ClassMethod $stmt,
         ClassLikeStorage $implementer_classlike_storage,
         ClassLikeStorage $guide_classlike_storage,
         MethodStorage $implementer_method_storage,
@@ -47,8 +54,8 @@ class MethodComparator
         int $implementer_visibility,
         CodeLocation $code_location,
         array $suppressed_issues,
-        $prevent_abstract_override = true,
-        $prevent_method_signature_mismatch = true
+        bool $prevent_abstract_override = true,
+        bool $prevent_method_signature_mismatch = true
     ) {
         $implementer_declaring_method_id = $codebase->methods->getDeclaringMethodId(
             new MethodIdentifier(
@@ -137,6 +144,7 @@ class MethodComparator
 
             self::compareMethodParams(
                 $codebase,
+                $stmt,
                 $implementer_classlike_storage,
                 $guide_classlike_storage,
                 $implementer_called_class_name,
@@ -154,18 +162,33 @@ class MethodComparator
         }
 
         if ($guide_classlike_storage->user_defined
-            && ($guide_classlike_storage->is_interface || $implementer_method_storage->cased_name !== '__construct')
+            && ($guide_classlike_storage->is_interface
+                || $guide_classlike_storage->preserve_constructor_signature
+                || $implementer_method_storage->cased_name !== '__construct')
             && $implementer_method_storage->required_param_count > $guide_method_storage->required_param_count
         ) {
-            if (IssueBuffer::accepts(
-                new MethodSignatureMismatch(
-                    'Method ' . $cased_implementer_method_id . ' has more required parameters than parent method ' .
-                        $cased_guide_method_id,
-                    $code_location
-                )
-            )) {
-                return false;
+            if ($implementer_method_storage->cased_name !== '__construct') {
+                if (IssueBuffer::accepts(
+                    new MethodSignatureMismatch(
+                        'Method ' . $cased_implementer_method_id . ' has more required parameters than parent method ' .
+                            $cased_guide_method_id,
+                        $code_location
+                    )
+                )) {
+                    return false;
+                }
+            } else {
+                if (IssueBuffer::accepts(
+                    new ConstructorSignatureMismatch(
+                        'Method ' . $cased_implementer_method_id . ' has more required parameters than parent method ' .
+                            $cased_guide_method_id,
+                        $code_location
+                    )
+                )) {
+                    return false;
+                }
             }
+
 
             return null;
         }
@@ -271,6 +294,7 @@ class MethodComparator
      */
     private static function compareMethodParams(
         Codebase $codebase,
+        ?ClassMethod $stmt,
         ClassLikeStorage $implementer_classlike_storage,
         ClassLikeStorage $guide_classlike_storage,
         string $implementer_called_class_name,
@@ -320,24 +344,101 @@ class MethodComparator
                             || strtolower($implementer_param_type->getId())
                                 !== strtolower($or_null_guide_param_signature_type->getId()))
                     ) {
+                        if ($implementer_method_storage->cased_name === '__construct') {
+                            if (IssueBuffer::accepts(
+                                new ConstructorSignatureMismatch(
+                                    'Argument ' . ($i + 1) . ' of '
+                                        . $cased_implementer_method_id . ' has wrong type \''
+                                        . $implementer_param_type . '\', expecting \''
+                                        . $guide_param_signature_type . '\' as defined by '
+                                        . $cased_guide_method_id,
+                                    $implementer_param->location
+                                        && $config->isInProjectDirs(
+                                            $implementer_param->location->file_path
+                                        )
+                                        ? $implementer_param->location
+                                        : $code_location
+                                )
+                            )) {
+                                // fall through
+                            }
+                        } else {
+                            if (IssueBuffer::accepts(
+                                new MethodSignatureMismatch(
+                                    'Argument ' . ($i + 1) . ' of '
+                                        . $cased_implementer_method_id . ' has wrong type \''
+                                        . $implementer_param_type . '\', expecting \''
+                                        . $guide_param_signature_type . '\' as defined by '
+                                        . $cased_guide_method_id,
+                                    $implementer_param->location
+                                        && $config->isInProjectDirs(
+                                            $implementer_param->location->file_path
+                                        )
+                                        ? $implementer_param->location
+                                        : $code_location
+                                )
+                            )) {
+                                // fall through
+                            }
+                        }
+
+
+                        return;
+                    }
+                }
+            }
+
+            $config = \Psalm\Config::getInstance();
+
+            if ($guide_param->name !== $implementer_param->name
+                && $guide_method_storage->allow_named_arg_calls
+                && count($implementer_method_storage->params) > 1
+                && $guide_classlike_storage->user_defined
+                && $implementer_classlike_storage->user_defined
+                && $implementer_param->location
+                && $guide_method_storage->cased_name
+                && substr($guide_method_storage->cased_name, 0, 2) !== '__'
+                && $config->isInProjectDirs(
+                    $implementer_param->location->file_path
+                )
+            ) {
+                if ($config->allow_named_arg_calls
+                    || ($guide_classlike_storage->location
+                        && !$config->isInProjectDirs($guide_classlike_storage->location->file_path)
+                    )
+                ) {
+                    if ($codebase->alter_code) {
+                        $project_analyzer = \Psalm\Internal\Analyzer\ProjectAnalyzer::getInstance();
+
+                        if ($stmt && isset($project_analyzer->getIssuesToFix()['ParamNameMismatch'])) {
+                            $param_replacer = new ParamReplacementVisitor(
+                                $implementer_param->name,
+                                $guide_param->name
+                            );
+
+                            $traverser = new \PhpParser\NodeTraverser();
+                            $traverser->addVisitor($param_replacer);
+                            $traverser->traverse([$stmt]);
+
+                            if ($replacements = $param_replacer->getReplacements()) {
+                                \Psalm\Internal\FileManipulation\FileManipulationBuffer::add(
+                                    $implementer_param->location->file_path,
+                                    $replacements
+                                );
+                            }
+                        }
+                    } else {
                         if (IssueBuffer::accepts(
-                            new MethodSignatureMismatch(
-                                'Argument ' . ($i + 1) . ' of ' . $cased_implementer_method_id . ' has wrong type \'' .
-                                    $implementer_param_type . '\', expecting \'' .
-                                    $guide_param_signature_type . '\' as defined by ' .
-                                    $cased_guide_method_id,
+                            new ParamNameMismatch(
+                                'Argument ' . ($i + 1) . ' of ' . $cased_implementer_method_id . ' has wrong name $'
+                                    . $implementer_param->name . ', expecting $'
+                                    . $guide_param->name . ' as defined by '
+                                    . $cased_guide_method_id,
                                 $implementer_param->location
-                                    && $config->isInProjectDirs(
-                                        $implementer_param->location->file_path
-                                    )
-                                    ? $implementer_param->location
-                                    : $code_location
                             )
                         )) {
                             // fall through
                         }
-
-                        return;
                     }
                 }
             }
@@ -466,21 +567,44 @@ class MethodComparator
                 || (!$implementer_method_storage->abstract
                     && !$guide_method_storage->abstract)
             ) {
-                if (IssueBuffer::accepts(
-                    new MethodSignatureMismatch(
-                        'Argument ' . ($i + 1) . ' of ' . $cased_implementer_method_id . ' has wrong type \'' .
-                            $implementer_param_signature_type . '\', expecting \'' .
-                            $guide_param_signature_type . '\' as defined by ' .
-                            $cased_guide_method_id,
-                        $implementer_method_storage->params[$i]->location
-                            && $config->isInProjectDirs(
-                                $implementer_method_storage->params[$i]->location->file_path
-                            )
-                            ? $implementer_method_storage->params[$i]->location
-                            : $code_location
-                    )
-                )) {
-                    // fall through
+                if ($implementer_method_storage->cased_name === '__construct') {
+                    if (IssueBuffer::accepts(
+                        new ConstructorSignatureMismatch(
+                            'Argument ' . ($i + 1) . ' of '
+                                . $cased_implementer_method_id
+                                . ' has wrong type \''
+                                . $implementer_param_signature_type . '\', expecting \''
+                                . $guide_param_signature_type . '\' as defined by '
+                                . $cased_guide_method_id,
+                            $implementer_method_storage->params[$i]->location
+                                && $config->isInProjectDirs(
+                                    $implementer_method_storage->params[$i]->location->file_path
+                                )
+                                ? $implementer_method_storage->params[$i]->location
+                                : $code_location
+                        )
+                    )) {
+                        // fall through
+                    }
+                } else {
+                    if (IssueBuffer::accepts(
+                        new MethodSignatureMismatch(
+                            'Argument ' . ($i + 1) . ' of '
+                                . $cased_implementer_method_id
+                                . ' has wrong type \''
+                                . $implementer_param_signature_type . '\', expecting \''
+                                . $guide_param_signature_type . '\' as defined by '
+                                . $cased_guide_method_id,
+                            $implementer_method_storage->params[$i]->location
+                                && $config->isInProjectDirs(
+                                    $implementer_method_storage->params[$i]->location->file_path
+                                )
+                                ? $implementer_method_storage->params[$i]->location
+                                : $code_location
+                        )
+                    )) {
+                        // fall through
+                    }
                 }
             } else {
                 if (IssueBuffer::accepts(

@@ -729,7 +729,7 @@ class ClassLikes
             throw new \UnexpectedValueException('Storage should exist for ' . $fq_trait_name);
         }
 
-        $file_statements = $this->statements_provider->getStatementsForFile($storage->location->file_path);
+        $file_statements = $this->statements_provider->getStatementsForFile($storage->location->file_path, '7.4');
 
         $trait_finder = new \Psalm\Internal\PhpVisitor\TraitFinder($fq_trait_name);
 
@@ -1164,7 +1164,7 @@ class ClassLikes
                 unset($uses_flipped[$old_fq_class_name]);
                 $old_class_name_parts = explode('\\', $old_fq_class_name);
                 $old_class_name = end($old_class_name_parts);
-                if (strtolower($old_class_name) === strtolower($alias)) {
+                if ($old_class_name === strtolower($alias)) {
                     $new_class_name_parts = explode('\\', $new_fq_class_name);
                     $new_class_name = end($new_class_name_parts);
                     $uses_flipped[strtolower($new_fq_class_name)] = $new_class_name;
@@ -1321,7 +1321,7 @@ class ClassLikes
                     unset($uses_flipped[$old_fq_class_name]);
                     $old_class_name_parts = explode('\\', $old_fq_class_name);
                     $old_class_name = end($old_class_name_parts);
-                    if (strtolower($old_class_name) === strtolower($alias)) {
+                    if ($old_class_name === strtolower($alias)) {
                         $new_class_name_parts = explode('\\', $new_fq_class_name);
                         $new_class_name = end($new_class_name_parts);
                         $uses_flipped[strtolower($new_fq_class_name)] = $new_class_name;

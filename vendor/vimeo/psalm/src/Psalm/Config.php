@@ -83,6 +83,7 @@ use const SCANDIR_SORT_NONE;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
+ * @psalm-consistent-constructor
  */
 class Config
 {
@@ -514,10 +515,26 @@ class Config
     public $after_analysis = [];
 
     /**
-     * Static methods to be called after codebase has been populated
-     * @var class-string<Hook\BeforeAnalyzeFileInterface>[]
+     * Static methods to be called after a file has been analyzed
+     * @var class-string<Hook\AfterFileAnalysisInterface>[]
      */
-    public $before_analyze_file = [];
+    public $after_file_checks = [];
+
+    /**
+     * Static methods to be called before a file is analyzed
+     * @var class-string<Hook\BeforeFileAnalysisInterface>[]
+     */
+    public $before_file_checks = [];
+
+    /**
+     * @var bool
+     */
+    public $allow_internal_named_arg_calls = true;
+
+    /**
+     * @var bool
+     */
+    public $allow_named_arg_calls = true;
 
     /**
      * Static methods to be called after functionlike checks have completed
@@ -817,6 +834,8 @@ class Config
             'sealAllMethods' => 'seal_all_methods',
             'runTaintAnalysis' => 'run_taint_analysis',
             'usePhpStormMetaPath' => 'use_phpstorm_meta_path',
+            'allowInternalNamedArgumentsCalls' => 'allow_internal_named_arg_calls',
+            'allowNamedArgumentCalls' => 'allow_named_arg_calls',
         ];
 
         foreach ($booleanAttributes as $xmlName => $internalName) {
@@ -1905,9 +1924,6 @@ class Config
             throw new LogicException("IncludeCollector should be set at this point");
         }
 
-        $this->collectPredefinedConstants();
-        $this->collectPredefinedFunctions();
-
         $vendor_autoload_files_path
             = $this->base_dir . DIRECTORY_SEPARATOR . 'vendor'
                 . DIRECTORY_SEPARATOR . 'composer' . DIRECTORY_SEPARATOR . 'autoload_files.php';
@@ -1926,6 +1942,8 @@ class Config
 
         $codebase = $project_analyzer->getCodebase();
 
+        $this->collectPredefinedFunctions();
+
         if ($this->autoloader) {
             // somee classes that we think are missing may not actually be missing
             // as they might be autoloadable once we require the autoloader below
@@ -1939,6 +1957,8 @@ class Config
                 }
             );
         }
+
+        $this->collectPredefinedConstants();
 
         $autoload_included_files = $this->include_collector->getFilteredIncludedFiles();
 
