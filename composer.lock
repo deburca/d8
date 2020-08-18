@@ -2247,17 +2247,17 @@
         },
         {
             "name": "drupal/bootstrap_barrio",
-            "version": "5.1.0",
+            "version": "5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/bootstrap_barrio.git",
-                "reference": "5.1.0"
+                "reference": "5.1.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/bootstrap_barrio-5.1.0.zip",
-                "reference": "5.1.0",
-                "shasum": "2a0ac73c2cc3285226ffc2cf2b4fc2354c4af241"
+                "url": "https://ftp.drupal.org/files/projects/bootstrap_barrio-5.1.1.zip",
+                "reference": "5.1.1",
+                "shasum": "d3b5ea7cc1580e6e9260fa99713ae951912d573c"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -2266,8 +2266,8 @@
             "type": "drupal-theme",
             "extra": {
                 "drupal": {
-                    "version": "5.1.0",
-                    "datestamp": "1597668835",
+                    "version": "5.1.1",
+                    "datestamp": "1597692591",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -13582,16 +13582,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.14.0",
+            "version": "3.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "f48a362fcd5665f3938adc6ea1b5f50d2c925262"
+                "reference": "9822043ca46d6682b76097bfa97d7c450eef9e90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/f48a362fcd5665f3938adc6ea1b5f50d2c925262",
-                "reference": "f48a362fcd5665f3938adc6ea1b5f50d2c925262",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/9822043ca46d6682b76097bfa97d7c450eef9e90",
+                "reference": "9822043ca46d6682b76097bfa97d7c450eef9e90",
                 "shasum": ""
             },
             "require": {
@@ -13675,7 +13675,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2020-08-17T15:58:30+00:00"
+            "time": "2020-08-17T19:48:48+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
