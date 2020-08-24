@@ -166,7 +166,7 @@ final class Versions
   'behat/mink-browserkit-driver' => 'v1.3.4@e3b90840022ebcd544c7b394a3c9597ae242cbee',
   'behat/mink-goutte-driver' => 'v1.2.1@8b9ad6d2d95bc70b840d15323365f52fcdaea6ca',
   'behat/mink-selenium2-driver' => 'v1.4.0@312a967dd527f28980cce40850339cd5316da092',
-  'composer/ca-bundle' => '1.2.7@95c63ab2117a72f48f5a55da9740a3273d45b7fd',
+  'composer/ca-bundle' => '1.2.8@8a7ecad675253e4654ea05505233285377405215',
   'composer/composer' => '1.10.10@32966a3b1d48bc01472a8321fd6472b44fad033a',
   'composer/package-versions-deprecated' => '1.10.99.1@68c9b502036e820c33445ff4d174327f6bb87486',
   'composer/spdx-licenses' => '1.5.4@6946f785871e2314c60b4524851f3702ea4f2223',
@@ -245,11 +245,11 @@ final class Versions
   'symfony/stopwatch' => 'v5.1.3@0f7c58cf81dbb5dd67d423a89d577524a2ec0323',
   'theseer/fdomdocument' => '1.6.6@6e8203e40a32a9c770bcb62fe37e68b948da6dca',
   'theseer/tokenizer' => '1.2.0@75a63c33a8577608444246075ea0af0d052e452a',
-  'vimeo/psalm' => '3.14.1@9822043ca46d6682b76097bfa97d7c450eef9e90',
+  'vimeo/psalm' => '3.14.2@3538fe1955d47f6ee926c0769d71af6db08aa488',
   'vlucas/phpdotenv' => 'v2.6.6@e1d57f62db3db00d9139078cbedf262280701479',
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'deburca/www' => 'dev-master@2c60a55ceb4a90353d81ca832f2e48a8e0f49509',
+  'deburca/www' => 'dev-master@ce5d89bd70c0c4274c218dc72f161f67b783e333',
 );
 
     private function __construct()
