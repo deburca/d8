@@ -241,7 +241,7 @@ class CallAnalyzer
      * @param  CodeLocation                     $code_location
      * @param  StatementsAnalyzer               $statements_analyzer
      */
-    protected static function checkMethodArgs(
+    public static function checkMethodArgs(
         ?\Psalm\Internal\MethodIdentifier $method_id,
         array $args,
         ?TemplateResult $class_template_result,
@@ -703,7 +703,8 @@ class CallAnalyzer
                     );
 
                     $assert_clauses = \Psalm\Type\Algebra::getFormula(
-                        \spl_object_id($conditional),
+                        \mt_rand(0, 1000000),
+                        \mt_rand(0, 1000000),
                         $conditional,
                         $context->self,
                         $statements_analyzer,
@@ -711,6 +712,7 @@ class CallAnalyzer
                     );
                 } else {
                     $assert_clauses = \Psalm\Type\Algebra::getFormula(
+                        \spl_object_id($arg_value),
                         \spl_object_id($arg_value),
                         $arg_value,
                         $context->self,
@@ -731,6 +733,7 @@ class CallAnalyzer
             } elseif ($arg_value && $assertion->rule === [['falsy']]) {
                 $assert_clauses = \Psalm\Type\Algebra::negateFormula(
                     \Psalm\Type\Algebra::getFormula(
+                        \spl_object_id($arg_value),
                         \spl_object_id($arg_value),
                         $arg_value,
                         $context->self,

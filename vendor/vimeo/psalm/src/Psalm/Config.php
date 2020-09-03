@@ -64,6 +64,8 @@ use function rmdir;
 use function scandir;
 use function sha1;
 use SimpleXMLElement;
+use XdgBaseDir\Xdg;
+
 use function strpos;
 use function strrpos;
 use function strtolower;
@@ -608,6 +610,11 @@ class Config
      */
     public $debug_emitted_issues = false;
 
+    /**
+     * @var bool
+     */
+    private $report_info = true;
+
     protected function __construct()
     {
         self::$instance = $this;
@@ -842,6 +849,7 @@ class Config
             'allowInternalNamedArgumentsCalls' => 'allow_internal_named_arg_calls',
             'allowNamedArgumentCalls' => 'allow_named_arg_calls',
             'findUnusedPsalmSuppress' => 'find_unused_psalm_suppress',
+            'reportInfo' => 'report_info',
         ];
 
         foreach ($booleanAttributes as $xmlName => $internalName) {
@@ -877,6 +885,8 @@ class Config
 
         if (isset($config_xml['cacheDirectory'])) {
             $config->cache_directory = (string)$config_xml['cacheDirectory'];
+        } elseif ($user_cache_dir = (new Xdg())->getHomeCacheDir()) {
+            $config->cache_directory = $user_cache_dir . '/psalm';
         } else {
             $config->cache_directory = sys_get_temp_dir() . '/psalm';
         }
@@ -1225,8 +1235,7 @@ class Config
                         'Loading plugin ' . $plugin_class_name . ' via require'. PHP_EOL
                     );
 
-                    /** @psalm-suppress UnresolvableInclude */
-                    require_once($plugin_class_path);
+                    self::requirePath($plugin_class_path);
                 } else {
                     if (!class_exists($plugin_class_name, true)) {
                         throw new \UnexpectedValueException($plugin_class_name . ' is not a known class');
@@ -1254,8 +1263,7 @@ class Config
                 FileScanner::class
             );
 
-            /** @psalm-suppress UnresolvableInclude */
-            require_once($path);
+            self::requirePath($path);
 
             $this->filetype_scanners[$extension] = $fq_class_name;
         }
@@ -1267,8 +1275,7 @@ class Config
                 FileAnalyzer::class
             );
 
-            /** @psalm-suppress UnresolvableInclude */
-            require_once($path);
+            self::requirePath($path);
 
             $this->filetype_analyzers[$extension] = $fq_class_name;
         }
@@ -1281,6 +1288,12 @@ class Config
                 throw new ConfigException('Failed to load plugin ' . $path, 0, $e);
             }
         }
+    }
+
+    private static function requirePath(string $path) : void
+    {
+        /** @psalm-suppress UnresolvableInclude */
+        require_once($path);
     }
 
     /**
@@ -1454,6 +1467,10 @@ class Config
             $reporting_level = $this->getReportingLevelForFile($issue_type, $e->getFilePath());
         }
 
+        if (!$this->report_info && $reporting_level === self::REPORT_INFO) {
+            $reporting_level = self::REPORT_SUPPRESS;
+        }
+
         $parent_issue_type = self::getParentIssueType($issue_type);
 
         if ($parent_issue_type && $reporting_level === Config::REPORT_ERROR) {
@@ -1468,9 +1485,11 @@ class Config
     }
 
     /**
-     * @param  string $issue_type
+     * @param string $issue_type
      *
      * @return string|null
+     *
+     * @psalm-pure
      */
     public static function getParentIssueType($issue_type)
     {

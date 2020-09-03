@@ -357,6 +357,14 @@ class SimpleAssertionReconciler extends \Psalm\Type\Reconciler
             );
         }
 
+        if (substr($assertion, 0, 12) === 'has-exactly-') {
+            /** @psalm-suppress ArgumentTypeCoercion */
+            return self::reconcileExactlyCountable(
+                $existing_var_type,
+                (int) substr($assertion, 12)
+            );
+        }
+
         if (substr($assertion, 0, 10) === 'hasmethod-') {
             return self::reconcileHasMethod(
                 $codebase,
@@ -409,18 +417,25 @@ class SimpleAssertionReconciler extends \Psalm\Type\Reconciler
             $array_atomic_type = $existing_var_type->getAtomicTypes()['array'];
             $did_remove_type = false;
 
-            if ($array_atomic_type instanceof TArray
-                && !$array_atomic_type instanceof Type\Atomic\TNonEmptyArray
-            ) {
-                $did_remove_type = true;
-                if ($array_atomic_type->getId() === 'array<empty, empty>') {
-                    $existing_var_type->removeType('array');
-                } else {
-                    $existing_var_type->addType(
-                        new Type\Atomic\TNonEmptyArray(
+            if ($array_atomic_type instanceof TArray) {
+                if (!$array_atomic_type instanceof Type\Atomic\TNonEmptyArray
+                    || ($array_atomic_type->count < $min_count)
+                ) {
+                    if ($array_atomic_type->getId() === 'array<empty, empty>') {
+                        $existing_var_type->removeType('array');
+                    } else {
+                        $non_empty_array = new Type\Atomic\TNonEmptyArray(
                             $array_atomic_type->type_params
-                        )
-                    );
+                        );
+
+                        if ($min_count) {
+                            $non_empty_array->count = $min_count;
+                        }
+
+                        $existing_var_type->addType($non_empty_array);
+                    }
+
+                    $did_remove_type = true;
                 }
             } elseif ($array_atomic_type instanceof TList) {
                 if (!$array_atomic_type instanceof Type\Atomic\TNonEmptyList
@@ -460,6 +475,44 @@ class SimpleAssertionReconciler extends \Psalm\Type\Reconciler
                         $suppressed_issues
                     );
                 }
+            }
+        }
+
+        return $existing_var_type;
+    }
+
+    /**
+     * @param   string[]  $suppressed_issues
+     * @param   0|1|2    $failed_reconciliation
+     * @param   positive-int $count
+     */
+    private static function reconcileExactlyCountable(
+        Union $existing_var_type,
+        int $count
+    ) : Union {
+        if ($existing_var_type->hasType('array')) {
+            $array_atomic_type = $existing_var_type->getAtomicTypes()['array'];
+
+            if ($array_atomic_type instanceof TArray) {
+                $non_empty_array = new Type\Atomic\TNonEmptyArray(
+                    $array_atomic_type->type_params
+                );
+
+                $non_empty_array->count = $count;
+
+                $existing_var_type->addType(
+                    $non_empty_array
+                );
+            } elseif ($array_atomic_type instanceof TList) {
+                $non_empty_list = new Type\Atomic\TNonEmptyList(
+                    $array_atomic_type->type_param
+                );
+
+                $non_empty_list->count = $count;
+
+                $existing_var_type->addType(
+                    $non_empty_list
+                );
             }
         }
 
@@ -1499,9 +1552,9 @@ class SimpleAssertionReconciler extends \Psalm\Type\Reconciler
                 $did_remove_type = true;
             } elseif ($type instanceof Atomic\TIterable) {
                 $clone_type = clone $type;
-                if ($clone_type->type_params[0]->isMixed()) {
-                    $clone_type->type_params[0] = Type::getArrayKey();
-                }
+
+                self::refineArrayKey($clone_type->type_params[0]);
+
                 $array_types[] = new TArray($clone_type->type_params);
 
                 $did_remove_type = true;
@@ -1537,6 +1590,27 @@ class SimpleAssertionReconciler extends \Psalm\Type\Reconciler
         return $existing_var_type->from_docblock
             ? Type::getMixed()
             : Type::getEmpty();
+    }
+
+    private static function refineArrayKey(Union $key_type) : void
+    {
+        foreach ($key_type->getAtomicTypes() as $key => $cat) {
+            if ($cat instanceof TTemplateParam) {
+                self::refineArrayKey($cat->as);
+                $key_type->bustCache();
+            } elseif ($cat instanceof TScalar || $cat instanceof TMixed) {
+                $key_type->removeType($key);
+                $key_type->addType(new Type\Atomic\TArrayKey());
+            } elseif (!$cat instanceof TString && !$cat instanceof TInt) {
+                $key_type->removeType($key);
+                $key_type->addType(new Type\Atomic\TArrayKey());
+            }
+        }
+
+        if (!$key_type->getAtomicTypes()) {
+            // this should ideally prompt some sort of error
+            $key_type->addType(new Type\Atomic\TArrayKey());
+        }
     }
 
     /**

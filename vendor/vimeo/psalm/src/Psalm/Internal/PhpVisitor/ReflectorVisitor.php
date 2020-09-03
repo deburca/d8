@@ -451,6 +451,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             || $node instanceof PhpParser\Node\Stmt\Foreach_
             || $node instanceof PhpParser\Node\Stmt\While_
             || $node instanceof PhpParser\Node\Stmt\Do_
+            || $node instanceof PhpParser\Node\Stmt\Echo_
         ) {
             if ($doc_comment = $node->getDocComment()) {
                 $var_comments = [];
@@ -2164,8 +2165,11 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
                             break;
                         }
 
+                        $cond_id = \spl_object_id($function_stmt->cond);
+
                         $if_clauses = \Psalm\Type\Algebra::getFormula(
-                            \spl_object_id($function_stmt->cond),
+                            $cond_id,
+                            $cond_id,
                             $function_stmt->cond,
                             $this->fq_classlike_names
                                 ? $this->fq_classlike_names[count($this->fq_classlike_names) - 1]

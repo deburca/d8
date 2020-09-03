@@ -1335,8 +1335,19 @@ class ProjectAnalyzer
 
         list($php_major_version, $php_minor_version) = explode('.', $version);
 
-        $this->codebase->php_major_version = (int) $php_major_version;
-        $this->codebase->php_minor_version = (int) $php_minor_version;
+        $php_major_version = (int) $php_major_version;
+        $php_minor_version = (int) $php_minor_version;
+
+        if ($this->codebase->php_major_version !== $php_major_version
+            || $this->codebase->php_minor_version !== $php_minor_version
+        ) {
+            // reset lexer and parser when php version changes
+            \Psalm\Internal\Provider\StatementsProvider::clearLexer();
+            \Psalm\Internal\Provider\StatementsProvider::clearParser();
+        }
+
+        $this->codebase->php_major_version = $php_major_version;
+        $this->codebase->php_minor_version = $php_minor_version;
     }
 
     /**
@@ -1348,6 +1359,9 @@ class ProjectAnalyzer
     public function setIssuesToFix(array $issues)
     {
         $supported_issues_to_fix = static::getSupportedIssuesToFix();
+
+        $supported_issues_to_fix[] = 'MissingImmutableAnnotation';
+        $supported_issues_to_fix[] = 'MissingPureAnnotation';
 
         $unsupportedIssues = array_diff(array_keys($issues), $supported_issues_to_fix);
 
@@ -1550,6 +1564,8 @@ class ProjectAnalyzer
 
     /**
      * @return array<string>
+     *
+     * @psalm-pure
      */
     public static function getSupportedIssuesToFix(): array
     {

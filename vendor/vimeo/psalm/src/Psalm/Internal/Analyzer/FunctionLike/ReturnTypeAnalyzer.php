@@ -238,15 +238,12 @@ class ReturnTypeAnalyzer
             }
         }
 
-        $inferred_return_type = TypeAnalyzer::simplifyUnionType(
+        $inferred_return_type = \Psalm\Internal\Type\TypeExpander::expandUnion(
             $codebase,
-            \Psalm\Internal\Type\TypeExpander::expandUnion(
-                $codebase,
-                $inferred_return_type,
-                $source->getFQCLN(),
-                $source->getFQCLN(),
-                $source->getParentFQCLN()
-            )
+            $inferred_return_type,
+            $source->getFQCLN(),
+            $source->getFQCLN(),
+            $source->getParentFQCLN()
         );
 
         // hack until we have proper yield type collection
@@ -298,7 +295,6 @@ class ReturnTypeAnalyzer
                             $project_analyzer,
                             $inferred_return_type,
                             $source,
-                            $function_like_analyzer,
                             ($project_analyzer->only_replace_php_types_with_non_docblock_types
                                     || $unsafe_return_type)
                                 && $inferred_return_type->from_docblock,
@@ -336,7 +332,6 @@ class ReturnTypeAnalyzer
                     $project_analyzer,
                     $inferred_return_type,
                     $source,
-                    $function_like_analyzer,
                     $compatible_method_ids
                         || !$did_explicitly_return
                         || (($project_analyzer->only_replace_php_types_with_non_docblock_types
@@ -407,7 +402,6 @@ class ReturnTypeAnalyzer
                     $project_analyzer,
                     Type::getVoid(),
                     $source,
-                    $function_like_analyzer,
                     $compatible_method_ids
                         || (($project_analyzer->only_replace_php_types_with_non_docblock_types
                                 || $unsafe_return_type)
@@ -505,7 +499,6 @@ class ReturnTypeAnalyzer
                             $project_analyzer,
                             $inferred_return_type,
                             $source,
-                            $function_like_analyzer,
                             ($project_analyzer->only_replace_php_types_with_non_docblock_types
                                     || $unsafe_return_type)
                                 && $inferred_return_type->from_docblock,
@@ -547,7 +540,6 @@ class ReturnTypeAnalyzer
                         $project_analyzer,
                         $inferred_return_type,
                         $source,
-                        $function_like_analyzer,
                         $compatible_method_ids
                             || (($project_analyzer->only_replace_php_types_with_non_docblock_types
                                     || $unsafe_return_type)
@@ -557,8 +549,9 @@ class ReturnTypeAnalyzer
 
                     return null;
                 }
-            } elseif ((!$inferred_return_type->isNullable() && $declared_return_type->isNullable())
-                || (!$inferred_return_type->isFalsable() && $declared_return_type->isFalsable())
+            } elseif (!$inferred_return_type->hasMixed()
+                && ((!$inferred_return_type->isNullable() && $declared_return_type->isNullable())
+                    || (!$inferred_return_type->isFalsable() && $declared_return_type->isFalsable()))
             ) {
                 if ($function instanceof Function_
                     || $function instanceof Closure
@@ -607,7 +600,6 @@ class ReturnTypeAnalyzer
                         $project_analyzer,
                         $inferred_return_type,
                         $source,
-                        $function_like_analyzer,
                         ($project_analyzer->only_replace_php_types_with_non_docblock_types
                                 || $unsafe_return_type)
                             && $inferred_return_type->from_docblock,
@@ -644,7 +636,6 @@ class ReturnTypeAnalyzer
                         $project_analyzer,
                         $inferred_return_type,
                         $source,
-                        $function_like_analyzer,
                         ($project_analyzer->only_replace_php_types_with_non_docblock_types
                                 || $unsafe_return_type)
                             && $inferred_return_type->from_docblock,
@@ -821,8 +812,7 @@ class ReturnTypeAnalyzer
                     $function,
                     $project_analyzer,
                     $storage->signature_return_type,
-                    $function_like_analyzer->getSource(),
-                    $function_like_analyzer
+                    $function_like_analyzer->getSource()
                 );
 
                 return null;
@@ -853,14 +843,12 @@ class ReturnTypeAnalyzer
         ProjectAnalyzer $project_analyzer,
         Type\Union $inferred_return_type,
         StatementsSource $source,
-        FunctionLikeAnalyzer $function_like_analyzer,
         $docblock_only = false,
         FunctionLikeStorage $function_like_storage = null
     ) {
         $manipulator = FunctionDocblockManipulator::getForFunction(
             $project_analyzer,
             $source->getFilePath(),
-            $function_like_analyzer->getId(),
             $function
         );
 
