@@ -249,7 +249,7 @@ final class Versions
   'vlucas/phpdotenv' => 'v2.6.6@e1d57f62db3db00d9139078cbedf262280701479',
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'deburca/www' => 'dev-master@348d8258926bae34aea867e4921fe801446fd95a',
+  'deburca/www' => 'dev-master@b9b7c8ba7c6881572cc1fa459d9e46f70afd7929',
 );
 
     private function __construct()
