@@ -67,7 +67,7 @@ final class Versions
   'drupal/bootstrap_barrio' => '5.1.2@5.1.2',
   'drupal/bootstrap_layouts' => '5.2.0@8.x-5.2',
   'drupal/bootstrap_library' => '1.14.0@8.x-1.14',
-  'drupal/coder' => '8.3.9@d51e0b8c6561e21c0545d04b5410a7bed7ee7c6b',
+  'drupal/coder' => '8.3.10@e1d71c6bb75b94f9ed00dceb2f4f6cb7e044723d',
   'drupal/core' => '9.0.5@145671b8ac88322c43c8415cf287b76dfe45ad38',
   'drupal/core-composer-scaffold' => '9.0.5@c017751a6bb9b2ffe56f0fab607ba67c21604bfd',
   'drupal/core-recommended' => '9.0.5@b78dd90192e614eeb1d3cd484ca2dd85c7a4cf03',
@@ -123,6 +123,7 @@ final class Versions
   'psr/log' => '1.1.3@0f73288fd15629204f9d42b7055f72dacbe811fc',
   'psy/psysh' => 'v0.10.4@a8aec1b2981ab66882a01cce36a49b6317dc3560',
   'ralouphie/getallheaders' => '3.0.3@120b605dfeb996808c31b6477290a714d356e822',
+  'sirbrillig/phpcs-variable-analysis' => 'v2.8.3@00b4fa3130faa26762c929989e3d958086c627f1',
   'squizlabs/php_codesniffer' => '3.5.6@e97627871a7eab2f70e59166072a6b767d5834e0',
   'stack/builder' => 'v1.0.6@a4faaa6f532c6086bc66c29e1bc6c29593e1ca7c',
   'symfony-cmf/routing' => '2.3.2@e073c3b6db0e9a5f4c8d7a7bb8a092cd5e191fba',
@@ -249,7 +250,7 @@ final class Versions
   'vlucas/phpdotenv' => 'v2.6.6@e1d57f62db3db00d9139078cbedf262280701479',
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'deburca/www' => 'dev-master@b9b7c8ba7c6881572cc1fa459d9e46f70afd7929',
+  'deburca/www' => 'dev-master@0de426673c291ff2e9201f7b620f5928378b9f29',
 );
 
     private function __construct()
