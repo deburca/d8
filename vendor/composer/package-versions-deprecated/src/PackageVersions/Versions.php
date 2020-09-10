@@ -168,7 +168,7 @@ final class Versions
   'behat/mink-goutte-driver' => 'v1.2.1@8b9ad6d2d95bc70b840d15323365f52fcdaea6ca',
   'behat/mink-selenium2-driver' => 'v1.4.0@312a967dd527f28980cce40850339cd5316da092',
   'composer/ca-bundle' => '1.2.8@8a7ecad675253e4654ea05505233285377405215',
-  'composer/composer' => '1.10.10@32966a3b1d48bc01472a8321fd6472b44fad033a',
+  'composer/composer' => '1.10.13@47c841ba3b2d3fc0b4b13282cf029ea18b66d78b',
   'composer/package-versions-deprecated' => '1.11.99@c8c9aa8a14cc3d3bec86d0a8c3fa52ea79936855',
   'composer/spdx-licenses' => '1.5.4@6946f785871e2314c60b4524851f3702ea4f2223',
   'composer/xdebug-handler' => '1.4.3@ebd27a9866ae8254e873866f795491f02418c5a5',
@@ -235,10 +235,10 @@ final class Versions
   'symfony/browser-kit' => 'v4.4.13@f53310646af9901292488b2ff36e26ea10f545f5',
   'symfony/config' => 'v4.4.13@043bf8652c307ebc23ce44047d215eec889d8850',
   'symfony/css-selector' => 'v4.4.13@bf17dc9f6ce144e41f786c32435feea4d8e11dcc',
-  'symfony/deprecation-contracts' => 'v2.1.3@5e20b83385a77593259c9f8beb2c43cd03b2ac14',
+  'symfony/deprecation-contracts' => 'v2.2.0@5fa56b4074d1ae755beb55617ddafe6f5d78f665',
   'symfony/dom-crawler' => 'v4.4.13@6dd1e7adef4b7efeeb9691fd619279027d4dcf85',
   'symfony/http-client' => 'v5.1.5@21c4372e9cd2305313f4d4792d7b9fa7c25ade53',
-  'symfony/http-client-contracts' => 'v2.1.3@cd88921e9add61f2064c9c6b30de4f589db42962',
+  'symfony/http-client-contracts' => 'v2.2.0@3a5d0fe7908daaa23e3dbf4cee3ba4bfbb19fdd3',
   'symfony/lock' => 'v4.4.13@8eac1a52d1a3882d0cb5f990e0f907d5457e616f',
   'symfony/options-resolver' => 'v5.1.5@9ff59517938f88d90b6e65311fef08faa640f681',
   'symfony/phpunit-bridge' => 'v4.4.13@bba78ce46a13a8d761f6330c718924dc6ca7d3b0',
@@ -250,7 +250,7 @@ final class Versions
   'vlucas/phpdotenv' => 'v2.6.6@e1d57f62db3db00d9139078cbedf262280701479',
   'webmozart/glob' => '4.1.0@3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe',
   'zaporylie/composer-drupal-optimizations' => '1.1.1@fb231d92adc862a2c9276bccbc90f684816dc75d',
-  'deburca/www' => 'dev-master@0de426673c291ff2e9201f7b620f5928378b9f29',
+  'deburca/www' => 'dev-master@c01f455564c4d7621cd03e4c96d5ee3aadb45937',
 );
 
     private function __construct()
