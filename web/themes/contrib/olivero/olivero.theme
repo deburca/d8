@@ -204,8 +204,8 @@ function olivero_theme_suggestions_block_alter(&$suggestions, array $variables) 
         ->getRegion();
 
       $suggestions[] = 'block__' . $region;
-      $suggestions[] = 'block__' . $region . '__' . $variables['elements']['#plugin_id'];
-      $suggestions[] = 'block__' . $region . '__' . $variables['elements']['#id'];
+      $suggestions[] = 'block__' . $region . '__' . 'plugin_id' . '__' . $variables['elements']['#plugin_id'];
+      $suggestions[] = 'block__' . $region . '__' . 'id' . '__' . $variables['elements']['#id'];
     }
   }
 }
@@ -373,6 +373,7 @@ function olivero_preprocess_field_multiple_value_form(&$variables) {
     }
     // Using array_key_first() for addressing the first header cell would be
     // more elegant here, but we can rely on the related theme.inc preprocess.
+    // @todo change this after https://www.drupal.org/node/3099026 has landed.
     $variables['table']['#header'][0]['data'] = [
       '#type' => 'html_tag',
       '#tag' => 'h4',
@@ -523,7 +524,7 @@ function olivero_preprocess_comment(&$variables) {
   // Getting the node creation time stamp from the comment object.
   $date = $variables['comment']->getCreatedTime();
   // Formatting "created" as "X days ago".
-  $variables['created'] = \Drupal::service('date.formatter')->formatInterval(REQUEST_TIME - $date) . ' ago';
+  $variables['created'] = \Drupal::service('date.formatter')->formatInterval(REQUEST_TIME - $date) . t(' ago');
 }
 
 /**

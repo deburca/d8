@@ -80,10 +80,7 @@ class Populator
         $this->file_reference_provider = $file_reference_provider;
     }
 
-    /**
-     * @return void
-     */
-    public function populateCodebase()
+    public function populateCodebase(): void
     {
         $this->progress->debug('ClassLikeStorage is populating' . "\n");
 
@@ -152,9 +149,6 @@ class Populator
     }
 
     /**
-     * @param  ClassLikeStorage $storage
-     * @param  array            $dependent_classlikes
-     *
      * @return void
      */
     private function populateClassLikeStorage(ClassLikeStorage $storage, array $dependent_classlikes = [])
@@ -281,10 +275,9 @@ class Populator
         }
     }
 
-    /** @return void */
     private function populateOverriddenMethods(
         ClassLikeStorage $storage
-    ) {
+    ): void {
         foreach ($storage->methods as $method_name => $method_storage) {
             if (isset($storage->overridden_method_ids[$method_name])) {
                 $overridden_method_ids = $storage->overridden_method_ids[$method_name];
@@ -363,14 +356,15 @@ class Populator
                                         $declaring_method_storage->signature_return_type
                                     )
                                 ) {
-                                    $method_storage->return_type = $declaring_method_storage->return_type;
+                                    $method_storage->return_type = clone $declaring_method_storage->return_type;
                                     $method_storage->inherited_return_type = true;
                                 } elseif (UnionTypeComparator::isSimplyContainedBy(
                                     $declaring_method_storage->return_type,
                                     $method_storage->signature_return_type
                                 )) {
-                                    $method_storage->return_type = $declaring_method_storage->return_type;
+                                    $method_storage->return_type = clone $declaring_method_storage->return_type;
                                     $method_storage->inherited_return_type = true;
+                                    $method_storage->return_type->from_docblock = false;
                                 }
                             }
                         }
@@ -380,14 +374,11 @@ class Populator
         }
     }
 
-    /**
-     * @return void
-     */
     private function populateDataFromTraits(
         ClassLikeStorage $storage,
         ClassLikeStorageProvider $storage_provider,
         array $dependent_classlikes
-    ) {
+    ): void {
         foreach ($storage->used_traits as $used_trait_lc => $_) {
             try {
                 $used_trait_lc = strtolower(
@@ -627,14 +618,11 @@ class Populator
         $storage->pseudo_methods += $parent_storage->pseudo_methods;
     }
 
-    /**
-     * @return void
-     */
     private function populateInterfaceDataFromParentInterfaces(
         ClassLikeStorage $storage,
         ClassLikeStorageProvider $storage_provider,
         array $dependent_classlikes
-    ) {
+    ): void {
         $parent_interfaces = [];
 
         foreach ($storage->parent_interfaces as $parent_interface_lc => $_) {
@@ -726,14 +714,11 @@ class Populator
         $storage->parent_interfaces = array_merge($parent_interfaces, $storage->parent_interfaces);
     }
 
-    /**
-     * @return void
-     */
     private function populateDataFromImplementedInterfaces(
         ClassLikeStorage $storage,
         ClassLikeStorageProvider $storage_provider,
         array $dependent_classlikes
-    ) {
+    ): void {
         $extra_interfaces = [];
 
         foreach ($storage->class_implements as $implemented_interface_lc => $_) {
@@ -890,7 +875,6 @@ class Populator
     }
 
     /**
-     * @param  FileStorage $storage
      * @param  array<string, bool> $dependent_file_paths
      *
      * @return void
@@ -1025,12 +1009,10 @@ class Populator
     }
 
     /**
-     * @param  Type\Union $candidate
      * @param  bool       $is_property
      *
-     * @return void
      */
-    private function convertPhpStormGenericToPsalmGeneric(Type\Union $candidate, $is_property = false)
+    private function convertPhpStormGenericToPsalmGeneric(Type\Union $candidate, $is_property = false): void
     {
         $atomic_types = $candidate->getAtomicTypes();
 
@@ -1084,16 +1066,10 @@ class Populator
         }
     }
 
-    /**
-     * @param ClassLikeStorage $storage
-     * @param ClassLikeStorage $parent_storage
-     *
-     * @return void
-     */
     protected function inheritMethodsFromParent(
         ClassLikeStorage $storage,
         ClassLikeStorage $parent_storage
-    ) {
+    ): void {
         $fq_class_name = $storage->name;
         $fq_class_name_lc = strtolower($fq_class_name);
 
@@ -1207,16 +1183,10 @@ class Populator
         }
     }
 
-    /**
-     * @param ClassLikeStorage $storage
-     * @param ClassLikeStorage $parent_storage
-     *
-     * @return void
-     */
     private function inheritPropertiesFromParent(
         ClassLikeStorage $storage,
         ClassLikeStorage $parent_storage
-    ) {
+    ): void {
         if ($parent_storage->sealed_properties) {
             $storage->sealed_properties = true;
         }

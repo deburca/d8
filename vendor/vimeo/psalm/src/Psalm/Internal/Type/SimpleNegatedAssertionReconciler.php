@@ -605,7 +605,8 @@ class SimpleNegatedAssertionReconciler extends Reconciler
                             'Found a redundant condition when evaluating ' . $key
                                 . ' of type ' . $existing_var_type->getId()
                                 . ' and trying to reconcile it with a non-' . $assertion . ' assertion',
-                            $code_location
+                            $code_location,
+                            $existing_var_type->getId() . ' ' . $assertion
                         ),
                         $suppressed_issues
                     )
@@ -635,7 +636,8 @@ class SimpleNegatedAssertionReconciler extends Reconciler
                             'Found a redundant condition when evaluating ' . $key
                                 . ' of type ' . $existing_var_type->getId()
                                 . ' and trying to reconcile it with a non-' . $assertion . ' assertion',
-                            $code_location
+                            $code_location,
+                            $existing_var_type->getId() . ' ' . $assertion
                         ),
                         $suppressed_issues
                     )
@@ -671,7 +673,8 @@ class SimpleNegatedAssertionReconciler extends Reconciler
                             'Found a redundant condition when evaluating ' . $key
                                 . ' of type ' . $existing_var_type->getId()
                                 . ' and trying to reconcile it with a non-' . $assertion . ' assertion',
-                            $code_location
+                            $code_location,
+                            $existing_var_type->getId() . ' ' . $assertion
                         ),
                         $suppressed_issues
                     )
@@ -1403,13 +1406,10 @@ class SimpleNegatedAssertionReconciler extends Reconciler
         return Type::getMixed();
     }
 
-    /**
-     * @return void
-     */
     private static function removeFalsyNegatedLiteralTypes(
         Type\Union $existing_var_type,
         bool &$did_remove_type
-    ) {
+    ): void {
         if ($existing_var_type->hasString()) {
             $existing_string_types = $existing_var_type->getLiteralStrings();
 

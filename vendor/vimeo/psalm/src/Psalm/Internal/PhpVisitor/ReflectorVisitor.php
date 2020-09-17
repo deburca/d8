@@ -30,6 +30,8 @@ use Psalm\DocComment;
 use Psalm\Exception\DocblockParseException;
 use Psalm\Exception\FileIncludeException;
 use Psalm\Exception\IncorrectDocblockException;
+use Psalm\Exception\InvalidClasslikeOverrideException;
+use Psalm\Exception\InvalidMethodOverrideException;
 use Psalm\Exception\TypeParseTreeException;
 use Psalm\FileSource;
 use Psalm\Internal\Analyzer\ClassAnalyzer;
@@ -161,12 +163,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
         $this->php_minor_version = $codebase->php_minor_version;
     }
 
-    /**
-     * @param  PhpParser\Node $node
-     *
-     * @return null|int
-     */
-    public function enterNode(PhpParser\Node $node)
+    public function enterNode(PhpParser\Node $node): ?int
     {
         foreach ($node->getComments() as $comment) {
             if ($comment instanceof PhpParser\Comment\Doc && !$node instanceof PhpParser\Node\Stmt\ClassLike) {
@@ -284,7 +281,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             $this->aliases->uses_end = (int) $node->getAttribute('endFilePos') + 1;
         } elseif ($node instanceof PhpParser\Node\Stmt\ClassLike) {
             if ($this->skip_if_descendants) {
-                return;
+                return null;
             }
 
             if ($this->registerClassLike($node) === false) {
@@ -325,13 +322,15 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
                 || $node instanceof PhpParser\Node\Stmt\ClassMethod
             ) {
                 if ($this->skip_if_descendants) {
-                    return;
+                    return null;
                 }
             }
 
             $this->registerFunctionLike($node);
 
-            if ($node instanceof PhpParser\Node\Expr\Closure) {
+            if ($node instanceof PhpParser\Node\Expr\Closure
+                || $node instanceof PhpParser\Node\Expr\ArrowFunction
+            ) {
                 $this->codebase->scanner->queueClassLikeForScanning('Closure');
             }
 
@@ -359,7 +358,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             }
         } elseif ($node instanceof PhpParser\Node\Stmt\TraitUse) {
             if ($this->skip_if_descendants) {
-                return;
+                return null;
             }
 
             if (!$this->classlike_storages) {
@@ -540,6 +539,8 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             $this->codebase->scanner->queueClassLikeForScanning('stdClass', false, false);
             $this->file_storage->referenced_classlikes['stdclass'] = 'stdClass';
         }
+
+        return null;
     }
 
     /**
@@ -571,7 +572,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             }
         } elseif ($node instanceof PhpParser\Node\Stmt\ClassLike) {
             if ($this->skip_if_descendants) {
-                return;
+                return null;
             }
 
             if (!$this->fq_classlike_names) {
@@ -608,7 +609,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             }
 
             $converted_aliases = \array_map(
-                function (TypeAlias\InlineTypeAlias $t) {
+                function (TypeAlias\InlineTypeAlias $t): ?TypeAlias\ClassTypeAlias {
                     try {
                         $union = TypeParser::parseTokens(
                             $t->replacement_tokens,
@@ -675,12 +676,12 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             }
 
             if ($this->skip_if_descendants) {
-                return;
+                return null;
             }
 
             if (!$this->functionlike_storages) {
                 if ($this->file_storage->has_visitor_issues) {
-                    return;
+                    return null;
                 }
 
                 throw new \UnexpectedValueException(
@@ -689,6 +690,13 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             }
 
             $functionlike_storage = array_pop($this->functionlike_storages);
+
+            if ($functionlike_storage->docblock_issues
+                && (strpos($this->file_path, 'CoreGenericFunctions.phpstub')
+                    || strpos($this->file_path, 'CoreGenericClasses.phpstub'))
+            ) {
+                throw new \UnexpectedValueException('Error with core stub file docblocks');
+            }
 
             if ($functionlike_storage->has_visitor_issues) {
                 $this->file_storage->has_visitor_issues = true;
@@ -816,13 +824,10 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
         return null;
     }
 
-    /**
-     * @return void
-     */
     private function registerClassMapFunctionCall(
         string $function_id,
         PhpParser\Node\Expr\FuncCall $node
-    ) {
+    ): void {
         $callables = InternalCallMapHandler::getCallablesFromCallMap($function_id);
 
         if ($callables) {
@@ -904,7 +909,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
                     continue;
                 }
 
-                list($callable_fqcln) = explode('::', $potential_method_id);
+                [$callable_fqcln] = explode('::', $potential_method_id);
 
                 if (!in_array(strtolower($callable_fqcln), ['self', 'parent', 'static'], true)) {
                     $this->codebase->scanner->queueClassLikeForScanning(
@@ -989,7 +994,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
     /**
      * @return false|null
      */
-    private function registerClassLike(PhpParser\Node\Stmt\ClassLike $node)
+    private function registerClassLike(PhpParser\Node\Stmt\ClassLike $node): ?bool
     {
         $class_location = new CodeLocation($this->file_scanner, $node);
         $name_location = null;
@@ -997,6 +1002,8 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
         $storage = null;
 
         $class_name = null;
+
+        $is_classlike_overridden = false;
 
         if ($node->name === null) {
             if (!$node instanceof PhpParser\Node\Stmt\Class_) {
@@ -1043,6 +1050,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
                     || $duplicate_storage->location->file_path !== $this->file_path
                     || $class_location->getHash() !== $duplicate_storage->location->getHash()
                 ) {
+                    $is_classlike_overridden = true;
                     // we're overwriting some methods
                     $storage = $duplicate_storage;
                     $this->codebase->classlike_storage_provider->makeNew(strtolower($fq_classlike_name));
@@ -1095,7 +1103,6 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
         $storage->stubbed = $this->codebase->register_stub_files;
         $storage->aliases = $this->aliases;
 
-        $doc_comment = $node->getDocComment();
 
         $this->classlike_storages[] = $storage;
 
@@ -1143,6 +1150,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             $this->codebase->classlikes->addFullyQualifiedTraitName($fq_classlike_name, $this->file_path);
         }
 
+        $doc_comment = $node->getDocComment();
         if ($doc_comment) {
             $docblock_info = null;
             try {
@@ -1159,6 +1167,13 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             }
 
             if ($docblock_info) {
+                if ($docblock_info->stub_override && !$is_classlike_overridden) {
+                    throw new InvalidClasslikeOverrideException(
+                        'Class/interface/trait ' . $fq_classlike_name . ' is marked as stub override,'
+                        . ' but no original counterpart found'
+                    );
+                }
+
                 if ($docblock_info->templates) {
                     $storage->template_types = [];
 
@@ -1519,6 +1534,8 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
                 $this->visitPropertyDeclaration($node_stmt, $this->config, $storage, $fq_classlike_name);
             }
         }
+
+        return null;
     }
 
     /**
@@ -1817,7 +1834,6 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
     }
 
     /**
-     * @param  PhpParser\Node\FunctionLike $stmt
      * @param  bool $fake_method in the case of @method annotations we do something a little strange
      *
      * @return FunctionLikeStorage|false
@@ -1826,6 +1842,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
     {
         $class_storage = null;
         $fq_classlike_name = null;
+        $is_functionlike_override = false;
 
         if ($fake_method && $stmt instanceof PhpParser\Node\Stmt\ClassMethod) {
             $cased_function_id = '@method ' . $stmt->name->name;
@@ -1959,6 +1976,8 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
                     $duplicate_method_storage->has_visitor_issues = true;
 
                     return false;
+                } else {
+                    $is_functionlike_override = true;
                 }
 
                 $storage = $class_storage->methods[$method_name_lc];
@@ -2083,6 +2102,13 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             }
 
             $param_array = $this->getTranslatedFunctionParam($param, $stmt, $fake_method, $fq_classlike_name);
+
+            if ($param_array->name === 'haystack'
+                && (strpos($this->file_path, 'CoreGenericFunctions.phpstub')
+                    || strpos($this->file_path, 'CoreGenericClasses.phpstub'))
+            ) {
+                $param_array->expect_variable = true;
+            }
 
             if (isset($existing_params['$' . $param_array->name])) {
                 $storage->docblock_issues[] = new DuplicateParam(
@@ -2419,6 +2445,13 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             $storage->return_type->ignore_falsable_issues = true;
         }
 
+        if ($docblock_info->stub_override && !$is_functionlike_override) {
+            throw new InvalidMethodOverrideException(
+                'Method ' . $cased_function_id . ' is marked as stub override,'
+                . ' but no original counterpart found'
+            );
+        }
+
         $storage->suppressed_issues = $docblock_info->suppressed_issues;
 
         foreach ($docblock_info->throws as [$throw, $offset, $line]) {
@@ -2648,8 +2681,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
         if ($storage instanceof MethodStorage) {
             $storage->has_docblock_param_types = (bool) array_filter(
                 $storage->params,
-                /** @return bool */
-                function (FunctionLikeParameter $p) {
+                function (FunctionLikeParameter $p): bool {
                     return $p->type !== null && $p->has_docblock_type;
                 }
             );
@@ -2677,6 +2709,8 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
                     $e->getMessage() . ' in docblock for ' . $cased_function_id,
                     new CodeLocation($this->file_scanner, $stmt, null, true)
                 );
+
+
 
                 continue;
             }
@@ -3160,11 +3194,6 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
         return $assertion_type_parts;
     }
 
-    /**
-     * @param  PhpParser\Node\Param $param
-     *
-     * @return FunctionLikeParameter
-     */
     public function getTranslatedFunctionParam(
         PhpParser\Node\Param $param,
         PhpParser\Node\FunctionLike $stmt,
@@ -3236,7 +3265,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
             $param_type,
             new CodeLocation(
                 $this->file_scanner,
-                $fake_method ? $stmt : $param,
+                $fake_method ? $stmt : $param->var,
                 null,
                 false,
                 !$fake_method
@@ -3270,11 +3299,8 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
     }
 
     /**
-     * @param  FunctionLikeStorage          $storage
      * @param  array<int, array{type:string,name:string,line_number:int,start:int,end:int}>  $docblock_params
-     * @param  PhpParser\Node\FunctionLike  $function
      *
-     * @return void
      */
     private function improveParamsFromDocblock(
         FunctionLikeStorage $storage,
@@ -3282,7 +3308,7 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
         PhpParser\Node\FunctionLike $function,
         bool $fake_method,
         ?string $fq_classlike_name
-    ) {
+    ): void {
         $base = $this->fq_classlike_names
             ? $this->fq_classlike_names[count($this->fq_classlike_names) - 1] . '::'
             : '';
@@ -3491,19 +3517,12 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
         }
     }
 
-    /**
-     * @param   PhpParser\Node\Stmt\Property    $stmt
-     * @param   Config                          $config
-     * @param   string                          $fq_classlike_name
-     *
-     * @return  void
-     */
     private function visitPropertyDeclaration(
         PhpParser\Node\Stmt\Property $stmt,
         Config $config,
         ClassLikeStorage $storage,
-        $fq_classlike_name
-    ) {
+        string $fq_classlike_name
+    ): void {
         if (!$this->fq_classlike_names) {
             throw new \LogicException('$this->fq_classlike_names should not be empty');
         }
@@ -3707,17 +3726,11 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
         }
     }
 
-    /**
-     * @param   PhpParser\Node\Stmt\ClassConst  $stmt
-     * @param   string $fq_classlike_name
-     *
-     * @return  void
-     */
     private function visitClassConstDeclaration(
         PhpParser\Node\Stmt\ClassConst $stmt,
         ClassLikeStorage $storage,
-        $fq_classlike_name
-    ) {
+        string $fq_classlike_name
+    ): void {
         $existing_constants = $storage->protected_class_constants
             + $storage->private_class_constants
             + $storage->public_class_constants;
@@ -3988,8 +4001,6 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
     }
 
     /**
-     * @param  PhpParser\Node\Expr\Include_ $stmt
-     *
      * @return void
      */
     public function visitInclude(PhpParser\Node\Expr\Include_ $stmt)
@@ -4049,47 +4060,32 @@ class ReflectorVisitor extends PhpParser\NodeVisitorAbstract implements PhpParse
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getFilePath()
+    public function getFilePath(): string
     {
         return $this->file_path;
     }
 
-    /**
-     * @return string
-     */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->file_scanner->getFileName();
     }
 
-    /**
-     * @return string
-     */
-    public function getRootFilePath()
+    public function getRootFilePath(): string
     {
         return $this->file_scanner->getRootFilePath();
     }
 
-    /**
-     * @return string
-     */
-    public function getRootFileName()
+    public function getRootFileName(): string
     {
         return $this->file_scanner->getRootFileName();
     }
 
-    /**
-     * @return Aliases
-     */
-    public function getAliases()
+    public function getAliases(): Aliases
     {
         return $this->aliases;
     }
 
-    public function afterTraverse(array $nodes)
+    public function afterTraverse(array $nodes): void
     {
         $this->file_storage->type_aliases = $this->type_aliases;
     }

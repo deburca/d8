@@ -113,11 +113,7 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
     /** @var ?Type\Union */
     private $return_type;
 
-    /**
-     * @param string  $file_path
-     * @param string  $file_name
-     */
-    public function __construct(ProjectAnalyzer $project_analyzer, $file_path, $file_name)
+    public function __construct(ProjectAnalyzer $project_analyzer, string $file_path, string $file_name)
     {
         $this->source = $this;
         $this->file_path = $file_path;
@@ -127,14 +123,12 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
     }
 
     /**
-     * @param  bool $preserve_analyzers
-     *
      * @return void
      */
     public function analyze(
-        Context $file_context = null,
-        $preserve_analyzers = false,
-        Context $global_context = null
+        ?Context $file_context = null,
+        bool $preserve_analyzers = false,
+        ?Context $global_context = null
     ) {
         $codebase = $this->project_analyzer->getCodebase();
 
@@ -294,7 +288,7 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
      *
      * @return array<int, PhpParser\Node\Stmt>
      */
-    public function populateCheckers(array $stmts)
+    public function populateCheckers(array $stmts): array
     {
         $leftover_stmts = [];
 
@@ -372,23 +366,17 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
     }
 
     /**
-     * @param string       $fq_class_name
-     * @param ClassAnalyzer $class_analyzer
-     *
      * @return  void
      */
-    public function addNamespacedClassAnalyzer($fq_class_name, ClassAnalyzer $class_analyzer)
+    public function addNamespacedClassAnalyzer(string $fq_class_name, ClassAnalyzer $class_analyzer)
     {
         $this->class_analyzers_to_analyze[strtolower($fq_class_name)] = $class_analyzer;
     }
 
     /**
-     * @param string            $fq_class_name
-     * @param InterfaceAnalyzer  $interface_analyzer
-     *
      * @return  void
      */
-    public function addNamespacedInterfaceAnalyzer($fq_class_name, InterfaceAnalyzer $interface_analyzer)
+    public function addNamespacedInterfaceAnalyzer(string $fq_class_name, InterfaceAnalyzer $interface_analyzer)
     {
         $this->interface_analyzers_to_analyze[strtolower($fq_class_name)] = $interface_analyzer;
     }
@@ -473,20 +461,15 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
         return $class_analyzer_to_examine->getFunctionLikeAnalyzer($method_name);
     }
 
-    /**
-     * @return null|string
-     */
-    public function getNamespace()
+    public function getNamespace(): ?string
     {
         return null;
     }
 
     /**
-     * @param  string|null $namespace_name
-     *
      * @return array<string, string>
      */
-    public function getAliasedClassesFlipped($namespace_name = null)
+    public function getAliasedClassesFlipped(?string $namespace_name = null): array
     {
         if ($namespace_name && isset($this->namespace_aliased_classes_flipped[$namespace_name])) {
             return $this->namespace_aliased_classes_flipped[$namespace_name];
@@ -496,11 +479,9 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
     }
 
     /**
-     * @param  string|null $namespace_name
-     *
      * @return array<string, string>
      */
-    public function getAliasedClassesFlippedReplaceable($namespace_name = null)
+    public function getAliasedClassesFlippedReplaceable(?string $namespace_name = null): array
     {
         if ($namespace_name && isset($this->namespace_aliased_classes_flipped_replaceable[$namespace_name])) {
             return $this->namespace_aliased_classes_flipped_replaceable[$namespace_name];
@@ -525,86 +506,57 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
         \Psalm\Internal\Provider\FileReferenceProvider::clearCache();
     }
 
-    /**
-     * @return string
-     */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->file_name;
     }
 
-    /**
-     * @return string
-     */
-    public function getFilePath()
+    public function getFilePath(): string
     {
         return $this->file_path;
     }
 
-    /**
-     * @return string
-     */
-    public function getRootFileName()
+    public function getRootFileName(): string
     {
         return $this->root_file_name ?: $this->file_name;
     }
 
-    /**
-     * @return string
-     */
-    public function getRootFilePath()
+    public function getRootFilePath(): string
     {
         return $this->root_file_path ?: $this->file_path;
     }
 
     /**
-     * @param string $file_path
-     * @param string $file_name
-     *
      * @return void
      */
-    public function setRootFilePath($file_path, $file_name)
+    public function setRootFilePath(string $file_path, string $file_name)
     {
         $this->root_file_name = $file_name;
         $this->root_file_path = $file_path;
     }
 
     /**
-     * @param string $file_path
-     *
      * @return void
      */
-    public function addRequiredFilePath($file_path)
+    public function addRequiredFilePath(string $file_path)
     {
         $this->required_file_paths[$file_path] = true;
     }
 
     /**
-     * @param string $file_path
-     *
      * @return void
      */
-    public function addParentFilePath($file_path)
+    public function addParentFilePath(string $file_path)
     {
         $this->parent_file_paths[$file_path] = true;
     }
 
-    /**
-     * @param string $file_path
-     *
-     * @return bool
-     */
-    public function hasParentFilePath($file_path)
+    public function hasParentFilePath(string $file_path): bool
     {
         return $this->file_path === $file_path || isset($this->parent_file_paths[$file_path]);
     }
 
-    /**
-     * @param string $file_path
-     *
-     * @return bool
-     */
-    public function hasAlreadyRequiredFilePath($file_path)
+    public function hasAlreadyRequiredFilePath(string $file_path): bool
     {
         return isset($this->required_file_paths[$file_path]);
     }
@@ -612,7 +564,7 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
     /**
      * @return array<int, string>
      */
-    public function getRequiredFilePaths()
+    public function getRequiredFilePaths(): array
     {
         return array_keys($this->required_file_paths);
     }
@@ -620,15 +572,12 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
     /**
      * @return array<int, string>
      */
-    public function getParentFilePaths()
+    public function getParentFilePaths(): array
     {
         return array_keys($this->parent_file_paths);
     }
 
-    /**
-     * @return int
-     */
-    public function getRequireNesting()
+    public function getRequireNesting(): int
     {
         return count($this->parent_file_paths);
     }
@@ -636,7 +585,7 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
     /**
      * @return array<string>
      */
-    public function getSuppressedIssues()
+    public function getSuppressedIssues(): array
     {
         return $this->suppressed_issues;
     }
@@ -669,26 +618,17 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
         $this->suppressed_issues = \array_diff_key($this->suppressed_issues, $new_issues);
     }
 
-    /**
-     * @return null|string
-     */
-    public function getFQCLN()
+    public function getFQCLN(): ?string
     {
         return null;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getParentFQCLN()
+    public function getParentFQCLN(): ?string
     {
         return null;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getClassName()
+    public function getClassName(): ?string
     {
         return null;
     }
@@ -696,15 +636,12 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
     /**
      * @return array<string, array<string, array{Type\Union}>>|null
      */
-    public function getTemplateTypeMap()
+    public function getTemplateTypeMap(): ?array
     {
         return null;
     }
 
-    /**
-     * @return bool
-     */
-    public function isStatic()
+    public function isStatic(): bool
     {
         return false;
     }

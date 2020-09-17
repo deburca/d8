@@ -244,7 +244,7 @@ class StubsGenerator
     /**
      * @return list<PhpParser\Node\Param>
      */
-    public static function getFunctionParamNodes(\Psalm\Storage\FunctionLikeStorage $method_storage)
+    public static function getFunctionParamNodes(\Psalm\Storage\FunctionLikeStorage $method_storage): array
     {
         $param_nodes = [];
 
@@ -256,7 +256,9 @@ class StubsGenerator
                     : null,
                 $param->signature_type
                     ? self::getParserTypeFromPsalmType($param->signature_type)
-                    : null
+                    : null,
+                $param->by_ref,
+                $param->is_variadic
             );
         }
 

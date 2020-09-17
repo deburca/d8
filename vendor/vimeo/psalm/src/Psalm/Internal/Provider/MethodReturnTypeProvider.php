@@ -42,9 +42,8 @@ class MethodReturnTypeProvider
     /**
      * @param  class-string<MethodReturnTypeProviderInterface> $class
      *
-     * @return void
      */
-    public function registerClass(string $class)
+    public function registerClass(string $class): void
     {
         $callable = \Closure::fromCallable([$class, 'getMethodReturnType']);
 
@@ -66,9 +65,8 @@ class MethodReturnTypeProvider
      *     ?lowercase-string=
      *   ) : ?Type\Union $c
      *
-     * @return void
      */
-    public function registerClosure(string $fq_classlike_name, \Closure $c)
+    public function registerClosure(string $fq_classlike_name, \Closure $c): void
     {
         self::$handlers[strtolower($fq_classlike_name)][] = $c;
     }
@@ -82,7 +80,6 @@ class MethodReturnTypeProvider
      * @param array<PhpParser\Node\Arg>  $call_args
      * @param  ?array<Type\Union> $template_type_parameters
      *
-     * @return  ?Type\Union
      */
     public function getReturnType(
         StatementsSource $statements_source,
@@ -91,10 +88,10 @@ class MethodReturnTypeProvider
         array $call_args,
         Context $context,
         CodeLocation $code_location,
-        array $template_type_parameters = null,
-        string $called_fq_classlike_name = null,
-        string $called_method_name = null
-    ) {
+        ?array $template_type_parameters = null,
+        ?string $called_fq_classlike_name = null,
+        ?string $called_method_name = null
+    ): ?Type\Union {
         foreach (self::$handlers[strtolower($fq_classlike_name)] as $class_handler) {
             $result = $class_handler(
                 $statements_source,

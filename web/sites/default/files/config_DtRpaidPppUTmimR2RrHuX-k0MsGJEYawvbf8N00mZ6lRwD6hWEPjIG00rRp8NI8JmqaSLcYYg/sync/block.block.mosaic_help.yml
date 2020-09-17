@@ -1,17 +1,17 @@
-uuid: 227eac9b-1497-428a-bca4-c20abb98ef96
+uuid: c8b43851-311a-47f6-89a5-15230f1b8fa2
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - help
   theme:
     - mosaic
 _core:
-  default_config_hash: MhtNdV__HKRTab0ZPjkPNfYL4Ng4UPBucDLoC7Rg5Eo
+  default_config_hash: kZCp4h7S-QCo6ENXEyv5I6jbxtIFGrDT8hDDFUfuNjY
 id: mosaic_help
 theme: mosaic
-region: help
-weight: -7
+region: header
+weight: 0
 provider: null
 plugin: help_block
 settings:

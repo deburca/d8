@@ -53,11 +53,9 @@ class FileReferenceCacheProvider
     }
 
     /**
-     * @return ?array
-     *
      * @psalm-suppress MixedAssignment
      */
-    public function getCachedFileReferences()
+    public function getCachedFileReferences(): ?array
     {
         $cache_directory = $this->config->getCacheDirectory();
 
@@ -81,11 +79,9 @@ class FileReferenceCacheProvider
     }
 
     /**
-     * @return ?array
-     *
      * @psalm-suppress MixedAssignment
      */
-    public function getCachedClassLikeFiles()
+    public function getCachedClassLikeFiles(): ?array
     {
         $cache_directory = $this->config->getCacheDirectory();
 
@@ -109,11 +105,9 @@ class FileReferenceCacheProvider
     }
 
     /**
-     * @return ?array
-     *
      * @psalm-suppress MixedAssignment
      */
-    public function getCachedNonMethodClassReferences()
+    public function getCachedNonMethodClassReferences(): ?array
     {
         $cache_directory = $this->config->getCacheDirectory();
 
@@ -137,11 +131,9 @@ class FileReferenceCacheProvider
     }
 
     /**
-     * @return ?array
-     *
      * @psalm-suppress MixedAssignment
      */
-    public function getCachedMethodClassReferences()
+    public function getCachedMethodClassReferences(): ?array
     {
         $cache_directory = $this->config->getCacheDirectory();
 
@@ -165,11 +157,9 @@ class FileReferenceCacheProvider
     }
 
     /**
-     * @return ?array
-     *
      * @psalm-suppress MixedAssignment
      */
-    public function getCachedMethodMemberReferences()
+    public function getCachedMethodMemberReferences(): ?array
     {
         $cache_directory = $this->config->getCacheDirectory();
 
@@ -193,11 +183,9 @@ class FileReferenceCacheProvider
     }
 
     /**
-     * @return ?array
-     *
      * @psalm-suppress MixedAssignment
      */
-    public function getCachedMethodMissingMemberReferences()
+    public function getCachedMethodMissingMemberReferences(): ?array
     {
         $cache_directory = $this->config->getCacheDirectory();
 
@@ -221,11 +209,9 @@ class FileReferenceCacheProvider
     }
 
     /**
-     * @return ?array
-     *
      * @psalm-suppress MixedAssignment
      */
-    public function getCachedFileMemberReferences()
+    public function getCachedFileMemberReferences(): ?array
     {
         $cache_directory = $this->config->getCacheDirectory();
 
@@ -249,11 +235,9 @@ class FileReferenceCacheProvider
     }
 
     /**
-     * @return ?array
-     *
      * @psalm-suppress MixedAssignment
      */
-    public function getCachedFileMissingMemberReferences()
+    public function getCachedFileMissingMemberReferences(): ?array
     {
         $cache_directory = $this->config->getCacheDirectory();
 
@@ -278,11 +262,9 @@ class FileReferenceCacheProvider
     }
 
     /**
-     * @return ?array
-     *
      * @psalm-suppress MixedAssignment
      */
-    public function getCachedMixedMemberNameReferences()
+    public function getCachedMixedMemberNameReferences(): ?array
     {
         $cache_directory = $this->config->getCacheDirectory();
 
@@ -306,11 +288,9 @@ class FileReferenceCacheProvider
     }
 
     /**
-     * @return ?array
-     *
      * @psalm-suppress MixedAssignment
      */
-    public function getCachedMethodParamUses()
+    public function getCachedMethodParamUses(): ?array
     {
         $cache_directory = $this->config->getCacheDirectory();
 
@@ -334,11 +314,9 @@ class FileReferenceCacheProvider
     }
 
     /**
-     * @return ?array
-     *
      * @psalm-suppress MixedAssignment
      */
-    public function getCachedIssues()
+    public function getCachedIssues(): ?array
     {
         $cache_directory = $this->config->getCacheDirectory();
 
@@ -680,10 +658,7 @@ class FileReferenceCacheProvider
         return false;
     }
 
-    /**
-     * @return void
-     */
-    public function setConfigHashCache(string $hash)
+    public function setConfigHashCache(string $hash): void
     {
         $cache_directory = Config::getInstance()->getCacheDirectory();
 

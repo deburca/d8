@@ -31,14 +31,13 @@ use function array_diff_key;
 class SwitchCaseAnalyzer
 {
     /**
-     * @param ?string $switch_var_id
      * @return null|false
      */
     public static function analyze(
         StatementsAnalyzer $statements_analyzer,
         Codebase $codebase,
         PhpParser\Node\Stmt\Switch_ $stmt,
-        $switch_var_id,
+        ?string $switch_var_id,
         PhpParser\Node\Stmt\Case_ $case,
         Context $context,
         Context $original_context,
@@ -46,7 +45,7 @@ class SwitchCaseAnalyzer
         array $case_actions,
         bool $is_last,
         SwitchScope $switch_scope
-    ) {
+    ): ?bool {
         // has a return/throw at end
         $has_ending_statements = $case_actions === [ScopeAnalyzer::ACTION_END];
         $has_leaving_statements = $has_ending_statements
@@ -230,7 +229,7 @@ class SwitchCaseAnalyzer
 
             $statements_analyzer->node_data = $old_node_data;
 
-            return;
+            return null;
         }
 
         if ($switch_scope->leftover_case_equality_expr) {
@@ -519,17 +518,18 @@ class SwitchCaseAnalyzer
         $case_scope->parent_context = null;
         $case_context->case_scope = null;
         $case_context->parent_context = null;
+
+        return null;
     }
 
     /**
-     * @param ?string $switch_var_id
      * @param array<string, bool> $new_case_assigned_var_ids
      * @param array<string, bool> $new_case_possibly_assigned_var_ids
      * @return null|false
      */
     private static function handleNonReturningCase(
         StatementsAnalyzer $statements_analyzer,
-        $switch_var_id,
+        ?string $switch_var_id,
         PhpParser\Node\Stmt\Case_ $case,
         Context $context,
         Context $case_context,
@@ -539,7 +539,7 @@ class SwitchCaseAnalyzer
         string $case_exit_type,
         SwitchScope $switch_scope,
         CaseScope $case_scope
-    ) {
+    ): ?bool {
         if (!$case->cond
             && $switch_var_id
             && isset($case_context->vars_in_scope[$switch_var_id])
@@ -694,6 +694,8 @@ class SwitchCaseAnalyzer
                 }
             }
         }
+
+        return null;
     }
 
     private static function simplifyCaseEqualityExpression(

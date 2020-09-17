@@ -28,11 +28,9 @@
   function init(props) {
     props.navButton.setAttribute('aria-controls', props.navWrapperId);
     props.navButton.setAttribute('aria-expanded', 'false');
-
     props.navButton.addEventListener('click', function () {
       toggleNav(props, !isNavOpen(props.navWrapper));
     });
-
     document.addEventListener('keyup', function (e) {
       if (e.key === 'Escape') {
         if (props.settings.olivero.areAnySubnavsOpen()) {
@@ -42,29 +40,25 @@
         }
       }
     });
-
     props.overlay.addEventListener('click', function () {
       toggleNav(props, false);
     });
-
     props.overlay.addEventListener('touchstart', function () {
       toggleNav(props, false);
     });
-
     props.navWrapper.addEventListener('keydown', function (e) {
-      if (e.key === 'Tab' || e.key === 9) {
+      if (e.key === 'Tab') {
         if (e.shiftKey) {
           if (document.activeElement === props.firstFocusableEl && !props.settings.olivero.isDesktopNav()) {
             props.navButton.focus();
             e.preventDefault();
           }
         } else if (document.activeElement === props.lastFocusableEl && !props.settings.olivero.isDesktopNav()) {
-            props.navButton.focus();
-            e.preventDefault();
-          }
+          props.navButton.focus();
+          e.preventDefault();
+        }
       }
     });
-
     window.addEventListener('resize', function () {
       if (props.settings.olivero.isDesktopNav()) {
         toggleNav(props, false);
@@ -76,16 +70,16 @@
   Drupal.behaviors.oliveroNavigation = {
     attach: function attach(context, settings) {
       var navWrapperId = 'header-nav';
-      var navWrapper = context.querySelector('#' + navWrapperId + ':not(.' + navWrapperId + '-processed)');
+      var navWrapper = context.querySelector("#".concat(navWrapperId, ":not(.").concat(navWrapperId, "-processed)"));
+
       if (navWrapper) {
-        navWrapper.classList.add(navWrapperId + '-processed');
+        navWrapper.classList.add("".concat(navWrapperId, "-processed"));
         var navButton = context.querySelector('.mobile-nav-button');
         var body = context.querySelector('body');
         var overlay = context.querySelector('.overlay');
         var focusableNavElements = navWrapper.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         var firstFocusableEl = focusableNavElements[0];
         var lastFocusableEl = focusableNavElements[focusableNavElements.length - 1];
-
         init({
           settings: settings,
           navWrapperId: navWrapperId,

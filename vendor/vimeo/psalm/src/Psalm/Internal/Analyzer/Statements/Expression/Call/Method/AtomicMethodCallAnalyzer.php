@@ -44,12 +44,7 @@ use function count;
 class AtomicMethodCallAnalyzer extends CallAnalyzer
 {
     /**
-     * @param  StatementsAnalyzer             $statements_analyzer
-     * @param  PhpParser\Node\Expr\MethodCall $stmt
-     * @param  Codebase                       $codebase
-     * @param  Context                        $context
      * @param  Type\Atomic\TNamedObject|Type\Atomic\TTemplateParam  $static_type
-     * @param  ?string                        $lhs_var_id
      */
     public static function analyze(
         StatementsAnalyzer $statements_analyzer,
@@ -59,7 +54,7 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
         Type\Atomic $lhs_type_part,
         ?Type\Atomic $static_type,
         bool $is_intersection,
-        $lhs_var_id,
+        ?string $lhs_var_id,
         AtomicMethodCallAnalysisResult $result
     ) : void {
         $config = $codebase->config;
@@ -595,7 +590,7 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
         }
 
         if ($context->collect_initializations && $context->calling_method_id) {
-            list($calling_method_class) = explode('::', $context->calling_method_id);
+            [$calling_method_class] = explode('::', $context->calling_method_id);
             $codebase->file_reference_provider->addMethodReferenceToClassMember(
                 $calling_method_class . '::__construct',
                 strtolower((string) $method_id)
@@ -1055,16 +1050,12 @@ class AtomicMethodCallAnalyzer extends CallAnalyzer
      * If `@psalm-seal-properties` is set, they must be defined.
      * If an `@property` annotation is specified, the setter must set something with the correct
      * type.
-     *
-     * @param StatementsAnalyzer $statements_analyzer
-     * @param PhpParser\Node\Expr\MethodCall $stmt
-     * @param string $fq_class_name
      */
     private static function getMagicGetterOrSetterProperty(
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Expr\MethodCall $stmt,
         Context $context,
-        $fq_class_name
+        string $fq_class_name
     ) : ?Type\Union {
         if (!$stmt->name instanceof PhpParser\Node\Identifier) {
             return null;

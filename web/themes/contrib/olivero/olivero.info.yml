@@ -38,13 +38,13 @@ libraries-override:
   system/base:
     css:
       component:
-        css/components/ajax-progress.module.css: css/dist/components/ajax-progress.module.css
-        css/components/autocomplete-loading.module.css: css/dist/components/autocomplete-loading.module.css
+        css/components/ajax-progress.module.css: css/components/ajax-progress.module.css
+        css/components/autocomplete-loading.module.css: css/components/autocomplete-loading.module.css
   core/drupal.checkbox: false
   core/drupal.vertical-tabs:
     css:
       component:
-        misc/vertical-tabs.css: css/dist/components/vertical-tabs.css
+        misc/vertical-tabs.css: css/components/vertical-tabs.css
   media/oembed.formatter: false
   layout_builder/twocol_section: olivero/layout_builder_twocol_section
   layout_builder/threecol_section: olivero/layout_builder_threecol_section
@@ -56,6 +56,8 @@ libraries-extend:
     - olivero/details
   core/drupal.progress:
     - olivero/progress
+  core/drupal.dropbutton:
+    - olivero/dropbutton
   layout_discovery/onecol:
     - olivero/layout_discovery_section
   layout_discovery/twocol_bricks:
@@ -71,14 +73,14 @@ libraries-extend:
   core/ckeditor:
     - olivero/cke-dialog
 ckeditor_stylesheets:
-  - css/dist/base/fonts.css
-  - css/dist/base/base.css
-  - css/dist/components/embedded-media.css
-  - css/dist/components/table.css
-  - css/dist/components/text-content.css
-  - css/dist/theme/ckeditor-frame.css
+  - css/base/fonts.css
+  - css/base/base.css
+  - css/components/embedded-media.css
+  - css/components/table.css
+  - css/components/text-content.css
+  - css/theme/ckeditor-frame.css
 
-# Information added by Drupal.org packaging script on 2020-08-13
-version: '8.x-1.0-beta1'
+# Information added by Drupal.org packaging script on 2020-09-12
+version: '8.x-1.0-beta2'
 project: 'olivero'
-datestamp: 1597332019
+datestamp: 1599942294

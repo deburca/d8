@@ -29,7 +29,6 @@ class ClosureAnalyzer extends FunctionLikeAnalyzer
 
     /**
      * @param PhpParser\Node\Expr\Closure|PhpParser\Node\Expr\ArrowFunction $function
-     * @param SourceAnalyzer               $source   [description]
      */
     public function __construct(PhpParser\Node\FunctionLike $function, SourceAnalyzer $source)
     {
@@ -45,7 +44,7 @@ class ClosureAnalyzer extends FunctionLikeAnalyzer
         parent::__construct($function, $source, $storage);
     }
 
-    public function getTemplateTypeMap()
+    public function getTemplateTypeMap(): ?array
     {
         return $this->source->getTemplateTypeMap();
     }
@@ -53,7 +52,7 @@ class ClosureAnalyzer extends FunctionLikeAnalyzer
     /**
      * @return non-empty-lowercase-string
      */
-    public function getClosureId()
+    public function getClosureId(): string
     {
         return strtolower($this->getFilePath())
             . ':' . $this->function->getLine()
@@ -192,17 +191,13 @@ class ClosureAnalyzer extends FunctionLikeAnalyzer
     }
 
     /**
-     * @param   StatementsAnalyzer           $statements_analyzer
-     * @param   PhpParser\Node\Expr\Closure $stmt
-     * @param   Context                     $context
-     *
      * @return  false|null
      */
     public static function analyzeClosureUses(
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Expr\Closure $stmt,
         Context $context
-    ) {
+    ): ?bool {
         $param_names = array_map(
             function (PhpParser\Node\Param $p) : string {
                 if (!$p->var instanceof PhpParser\Node\Expr\Variable
@@ -251,7 +246,7 @@ class ClosureAnalyzer extends FunctionLikeAnalyzer
                         );
                     }
 
-                    return;
+                    return null;
                 }
 
                 if (!isset($context->vars_possibly_in_scope[$use_var_id])) {

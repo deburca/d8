@@ -53,25 +53,20 @@ use Psalm\Internal\Taint\TaintNode;
 class InstancePropertyAssignmentAnalyzer
 {
     /**
-     * @param   StatementsAnalyzer               $statements_analyzer
      * @param   PropertyFetch|PropertyProperty  $stmt
-     * @param   string                          $prop_name
-     * @param   PhpParser\Node\Expr|null        $assignment_value
-     * @param   Type\Union                      $assignment_value_type
-     * @param   Context                         $context
      * @param   bool                            $direct_assignment whether the variable is assigned explicitly
      *
      * @return  false|null
      */
     public static function analyze(
         StatementsAnalyzer $statements_analyzer,
-        $stmt,
-        $prop_name,
-        $assignment_value,
+        PhpParser\NodeAbstract $stmt,
+        string $prop_name,
+        ?PhpParser\Node\Expr $assignment_value,
         Type\Union $assignment_value_type,
         Context $context,
-        $direct_assignment = true
-    ) {
+        bool $direct_assignment = true
+    ): ?bool {
         $class_property_types = [];
 
         $codebase = $statements_analyzer->getCodebase();
@@ -696,7 +691,6 @@ class InstancePropertyAssignmentAnalyzer
                         $property_id,
                         $property_storage,
                         $declaring_class_storage,
-                        $assignment_value_type,
                         $context
                     );
 
@@ -1069,7 +1063,6 @@ class InstancePropertyAssignmentAnalyzer
         string $property_id,
         \Psalm\Storage\PropertyStorage $property_storage,
         \Psalm\Storage\ClassLikeStorage $declaring_class_storage,
-        ?Type\Union $assignment_value_type,
         Context $context
     ): void {
         $codebase = $statements_analyzer->getCodebase();
@@ -1116,26 +1109,6 @@ class InstancePropertyAssignmentAnalyzer
                         instanceof \Psalm\Internal\Analyzer\FunctionLikeAnalyzer
                 ) {
                     $codebase->analyzer->addMutableClass($declaring_class_storage->name);
-                }
-            } elseif ($assignment_value_type
-                && ($declaring_class_storage->mutation_free
-                    || $codebase->alter_code)
-            ) {
-                $visitor = new \Psalm\Internal\TypeVisitor\ImmutablePropertyAssignmentVisitor(
-                    $statements_analyzer,
-                    $stmt
-                );
-
-                $visitor->traverse($assignment_value_type);
-
-                if (!$declaring_class_storage->mutation_free
-                    && $statements_analyzer->getSource()
-                        instanceof \Psalm\Internal\Analyzer\FunctionLikeAnalyzer
-                    && $statements_analyzer->getSource()->track_mutations
-                    && $visitor->has_mutation
-                ) {
-                    $statements_analyzer->getSource()->inferred_has_mutation = true;
-                    $statements_analyzer->getSource()->inferred_impure = true;
                 }
             }
         }

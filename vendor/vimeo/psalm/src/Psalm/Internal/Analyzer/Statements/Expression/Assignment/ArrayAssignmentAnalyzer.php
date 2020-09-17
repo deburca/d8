@@ -30,22 +30,13 @@ use function array_pop;
  */
 class ArrayAssignmentAnalyzer
 {
-    /**
-     * @param   StatementsAnalyzer                  $statements_analyzer
-     * @param   PhpParser\Node\Expr\ArrayDimFetch   $stmt
-     * @param   Context                             $context
-     * @param   PhpParser\Node\Expr|null            $assign_value
-     * @param   Type\Union                          $assignment_value_type
-     *
-     * @return  void
-     */
     public static function analyze(
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Expr\ArrayDimFetch $stmt,
         Context $context,
         ?PhpParser\Node\Expr $assign_value,
         Type\Union $assignment_value_type
-    ) {
+    ): void {
         $nesting = 0;
         $var_id = ExpressionIdentifier::getVarId(
             $stmt->var,
@@ -68,7 +59,6 @@ class ArrayAssignmentAnalyzer
     }
 
     /**
-     *
      * @return false|null
      */
     public static function updateArrayType(
@@ -77,7 +67,7 @@ class ArrayAssignmentAnalyzer
         ?PhpParser\Node\Expr $assign_value,
         Type\Union $assignment_type,
         Context $context
-    ) {
+    ): ?bool {
         $root_array_expr = $stmt;
 
         $child_stmts = [];

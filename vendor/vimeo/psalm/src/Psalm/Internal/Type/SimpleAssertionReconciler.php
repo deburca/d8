@@ -75,7 +75,8 @@ class SimpleAssertionReconciler extends \Psalm\Type\Reconciler
                     if (IssueBuffer::accepts(
                         new TypeDoesNotContainType(
                             'Cannot resolve types for ' . $key . ' on null var',
-                            $code_location
+                            $code_location,
+                            null
                         ),
                         $suppressed_issues
                     )) {
@@ -1382,7 +1383,7 @@ class SimpleAssertionReconciler extends \Psalm\Type\Reconciler
         string $assertion
     ) : Union {
         if (strpos($assertion, '::')) {
-            list($fq_classlike_name, $const_name) = explode('::', $assertion);
+            [$fq_classlike_name, $const_name] = explode('::', $assertion);
 
             $class_constant_type = $codebase->classlikes->getConstantForClass(
                 $fq_classlike_name,
@@ -1429,7 +1430,7 @@ class SimpleAssertionReconciler extends \Psalm\Type\Reconciler
                 $is_class_string = false;
 
                 if (strpos($assertion, '::class')) {
-                    list($assertion) = explode('::', $assertion);
+                    [$assertion] = explode('::', $assertion);
                     $is_class_string = true;
                 }
 
@@ -1981,7 +1982,8 @@ class SimpleAssertionReconciler extends \Psalm\Type\Reconciler
                             'Found a redundant condition when evaluating ' . $key
                                 . ' of type ' . $existing_var_type->getId()
                                 . ' and trying to reconcile it with a ' . $assertion . ' assertion',
-                            $code_location
+                            $code_location,
+                            $existing_var_type->getId() . ' ' . $assertion
                         ),
                         $suppressed_issues
                     )
@@ -2032,7 +2034,8 @@ class SimpleAssertionReconciler extends \Psalm\Type\Reconciler
                             'Found a redundant condition when evaluating ' . $key
                                 . ' of type ' . $existing_var_type->getId()
                                 . ' and trying to reconcile it with a ' . $assertion . ' assertion',
-                            $code_location
+                            $code_location,
+                            $existing_var_type->getId() . ' ' . $assertion
                         ),
                         $suppressed_issues
                     )
@@ -2166,7 +2169,7 @@ class SimpleAssertionReconciler extends \Psalm\Type\Reconciler
                 || ($array_atomic_type instanceof Type\Atomic\ObjectLike
                     && array_filter(
                         $array_atomic_type->properties,
-                        function (Type\Union $t) {
+                        function (Type\Union $t): bool {
                             return !$t->possibly_undefined;
                         }
                     ))

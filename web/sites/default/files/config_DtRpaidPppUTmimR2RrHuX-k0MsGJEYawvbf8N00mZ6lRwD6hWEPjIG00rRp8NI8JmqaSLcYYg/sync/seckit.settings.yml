@@ -3,7 +3,7 @@ seckit_xss:
     checkbox: true
     report-only: false
     default-src: '''self'''
-    script-src: '''self'' ''unsafe-inline'' ''unsafe-eval'' http://cdnjs.cloudflare.com http://stackpath.bootstrapcdn.com http://ajax.googleapis.com'
+    script-src: '''self'' ''unsafe-inline'' ''unsafe-eval'' http://cdnjs.cloudflare.com http://stackpath.bootstrapcdn.com http://ajax.googleapis.com  http://use.fontawesome.com https://use.fontawesome.com'
     object-src: ''
     img-src: '''self'' data:'
     media-src: ''
@@ -27,7 +27,7 @@ seckit_xss:
     select: 2
 seckit_csrf:
   origin: true
-  origin_whitelist: ''
+  origin_whitelist: '*'
 seckit_clickjacking:
   js_css_noscript: true
   noscript_message: 'Sorry, you need to enable JavaScript to visit this website.'

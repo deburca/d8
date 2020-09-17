@@ -65,9 +65,6 @@ class IfAnalyzer
      *   (x: null)
      *   throw new Exception -- effects: remove null from the type of x
      *
-     * @param  StatementsAnalyzer       $statements_analyzer
-     * @param  PhpParser\Node\Stmt\If_ $stmt
-     * @param  Context                 $context
      *
      * @return null|false
      */
@@ -75,7 +72,7 @@ class IfAnalyzer
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Stmt\If_ $stmt,
         Context $context
-    ) {
+    ): ?bool {
         $codebase = $statements_analyzer->getCodebase();
 
         $if_scope = new IfScope();
@@ -127,7 +124,7 @@ class IfAnalyzer
                 /**
                  * @return Clause
                  */
-                function (Clause $c) use ($mixed_var_ids, $cond_object_id) {
+                function (Clause $c) use ($mixed_var_ids, $cond_object_id): Clause {
                     $keys = array_keys($c->possibilities);
 
                     $mixed_var_ids = \array_diff($mixed_var_ids, $keys);
@@ -172,7 +169,7 @@ class IfAnalyzer
             $if_context->clauses = array_values(
                 array_filter(
                     $if_context->clauses,
-                    function ($c) use ($reconciled_expression_clauses) {
+                    function ($c) use ($reconciled_expression_clauses): bool {
                         return !in_array($c->hash, $reconciled_expression_clauses);
                     }
                 )
@@ -213,7 +210,7 @@ class IfAnalyzer
 
         if (array_filter(
             $context->clauses,
-            function ($clause) {
+            function ($clause): bool {
                 return !!$clause->possibilities;
             }
         )) {
@@ -223,7 +220,7 @@ class IfAnalyzer
                  * @param array<string> $carry
                  * @return array<string>
                  */
-                function ($carry, Clause $clause) {
+                function (array $carry, Clause $clause): array {
                     return array_merge($carry, array_keys($clause->possibilities));
                 },
                 []
@@ -510,9 +507,6 @@ class IfAnalyzer
         return null;
     }
 
-    /**
-     * @return \Psalm\Internal\Scope\IfConditionalScope
-     */
     public static function analyzeIfConditional(
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Expr $cond,
@@ -520,7 +514,7 @@ class IfAnalyzer
         Codebase $codebase,
         IfScope $if_scope,
         ?int $branch_point
-    ) {
+    ): \Psalm\Internal\Scope\IfConditionalScope {
         $entry_clauses = [];
 
         // used when evaluating elseifs
@@ -556,8 +550,7 @@ class IfAnalyzer
                     $entry_clauses = array_values(
                         array_filter(
                             $entry_clauses,
-                            /** @return bool */
-                            function (Clause $c) use ($changed_var_ids) {
+                            function (Clause $c) use ($changed_var_ids): bool {
                                 return count($c->possibilities) > 1
                                     || $c->wedge
                                     || !isset($changed_var_ids[array_keys($c->possibilities)[0]]);
@@ -690,7 +683,7 @@ class IfAnalyzer
              *
              * @return true
              */
-            function (Type\Union $_) {
+            function (Type\Union $_): bool {
                 return true;
             },
             array_diff_key(
@@ -709,7 +702,8 @@ class IfAnalyzer
                     if (IssueBuffer::accepts(
                         new DocblockTypeContradiction(
                             'if (false) is impossible',
-                            new CodeLocation($statements_analyzer, $cond)
+                            new CodeLocation($statements_analyzer, $cond),
+                            'false falsy'
                         ),
                         $statements_analyzer->getSuppressedIssues()
                     )) {
@@ -719,7 +713,8 @@ class IfAnalyzer
                     if (IssueBuffer::accepts(
                         new TypeDoesNotContainType(
                             'if (false) is impossible',
-                            new CodeLocation($statements_analyzer, $cond)
+                            new CodeLocation($statements_analyzer, $cond),
+                            'false falsy'
                         ),
                         $statements_analyzer->getSuppressedIssues()
                     )) {
@@ -731,7 +726,8 @@ class IfAnalyzer
                     if (IssueBuffer::accepts(
                         new RedundantConditionGivenDocblockType(
                             'if (true) is redundant',
-                            new CodeLocation($statements_analyzer, $cond)
+                            new CodeLocation($statements_analyzer, $cond),
+                            'true falsy'
                         ),
                         $statements_analyzer->getSuppressedIssues()
                     )) {
@@ -741,7 +737,8 @@ class IfAnalyzer
                     if (IssueBuffer::accepts(
                         new RedundantCondition(
                             'if (true) is redundant',
-                            new CodeLocation($statements_analyzer, $cond)
+                            new CodeLocation($statements_analyzer, $cond),
+                            'true falsy'
                         ),
                         $statements_analyzer->getSuppressedIssues()
                     )) {
@@ -766,12 +763,6 @@ class IfAnalyzer
     }
 
     /**
-     * @param  StatementsAnalyzer        $statements_analyzer
-     * @param  PhpParser\Node\Stmt\If_  $stmt
-     * @param  IfScope                  $if_scope
-     * @param  Context                  $if_context
-     * @param  Context                  $old_if_context
-     * @param  Context                  $outer_context
      * @param  array<string,Type\Union> $pre_assignment_else_redefined_vars
      *
      * @return false|null
@@ -784,7 +775,7 @@ class IfAnalyzer
         Context $old_if_context,
         Context $outer_context,
         array $pre_assignment_else_redefined_vars
-    ) {
+    ): ?bool {
         $codebase = $statements_analyzer->getCodebase();
 
         $if_context->parent_context = $outer_context;
@@ -1041,14 +1032,12 @@ class IfAnalyzer
         if ($outer_context->collect_exceptions) {
             $outer_context->mergeExceptions($if_context);
         }
+
+        return null;
     }
 
     /**
-     * @param  StatementsAnalyzer           $statements_analyzer
-     * @param  PhpParser\Node\Stmt\ElseIf_ $elseif
-     * @param  IfScope                     $if_scope
      * @param  Context                     $elseif_context
-     * @param  Context                     $outer_context
      *
      * @return false|null
      */
@@ -1060,7 +1049,7 @@ class IfAnalyzer
         Context $outer_context,
         Codebase $codebase,
         ?int $branch_point
-    ) {
+    ): ?bool {
         $pre_conditional_context = clone $else_context;
 
         try {
@@ -1104,7 +1093,7 @@ class IfAnalyzer
             /**
              * @return Clause
              */
-            function (Clause $c) use ($mixed_var_ids, $elseif_cond_id) {
+            function (Clause $c) use ($mixed_var_ids, $elseif_cond_id): Clause {
                 $keys = array_keys($c->possibilities);
 
                 $mixed_var_ids = \array_diff($mixed_var_ids, $keys);
@@ -1126,7 +1115,7 @@ class IfAnalyzer
             /**
              * @return Clause
              */
-            function (Clause $c) use ($cond_assigned_var_ids, $elseif_cond_id) {
+            function (Clause $c) use ($cond_assigned_var_ids, $elseif_cond_id): Clause {
                 $keys = array_keys($c->possibilities);
 
                 foreach ($keys as $key) {
@@ -1159,7 +1148,7 @@ class IfAnalyzer
             $elseif_context_clauses = array_values(
                 array_filter(
                     $elseif_context_clauses,
-                    function ($c) use ($reconciled_expression_clauses) {
+                    function ($c) use ($reconciled_expression_clauses): bool {
                         return !in_array($c->hash, $reconciled_expression_clauses);
                     }
                 )
@@ -1173,7 +1162,7 @@ class IfAnalyzer
         try {
             if (array_filter(
                 $entry_clauses,
-                function ($clause) {
+                function ($clause): bool {
                     return !!$clause->possibilities;
                 }
             )) {
@@ -1183,7 +1172,7 @@ class IfAnalyzer
                      * @param array<string> $carry
                      * @return array<string>
                      */
-                    function ($carry, Clause $clause) {
+                    function (array $carry, Clause $clause): array {
                         return array_merge($carry, array_keys($clause->possibilities));
                     },
                     []
@@ -1530,24 +1519,20 @@ class IfAnalyzer
         } catch (\Psalm\Exception\ComplicatedExpressionException $e) {
             $if_scope->negated_clauses = [];
         }
+
+        return null;
     }
 
     /**
-     * @param  StatementsAnalyzer         $statements_analyzer
-     * @param  PhpParser\Node\Stmt\Else_|null $else
-     * @param  IfScope                   $if_scope
-     * @param  Context                   $else_context
-     * @param  Context                   $outer_context
-     *
      * @return false|null
      */
     protected static function analyzeElseBlock(
         StatementsAnalyzer $statements_analyzer,
-        $else,
+        ?PhpParser\Node\Stmt\Else_ $else,
         IfScope $if_scope,
         Context $else_context,
         Context $outer_context
-    ) {
+    ): ?bool {
         $codebase = $statements_analyzer->getCodebase();
 
         if (!$else && !$if_scope->negated_clauses && !$else_context->clauses) {
@@ -1557,7 +1542,7 @@ class IfAnalyzer
             $if_scope->redefined_vars = [];
             $if_scope->reasonable_clauses = [];
 
-            return;
+            return null;
         }
 
         $else_context->clauses = Algebra::simplifyCNF(
@@ -1576,7 +1561,7 @@ class IfAnalyzer
             $if_scope->redefined_vars = [];
             $if_scope->reasonable_clauses = [];
 
-            return;
+            return null;
         }
 
         $original_context = clone $else_context;
@@ -1817,13 +1802,14 @@ class IfAnalyzer
         if ($outer_context->collect_exceptions) {
             $outer_context->mergeExceptions($else_context);
         }
+
+        return null;
     }
 
     /**
      * Returns statements that are definitely evaluated before any statements after the end of the
      * if/elseif/else blocks
      *
-     * @param  PhpParser\Node\Expr $stmt
      *
      * @return PhpParser\Node\Expr|null
      */
@@ -1871,7 +1857,6 @@ class IfAnalyzer
      * Returns statements that are definitely evaluated before any statements inside
      * the if block
      *
-     * @param  PhpParser\Node\Expr $stmt
      *
      * @return PhpParser\Node\Expr|null
      */

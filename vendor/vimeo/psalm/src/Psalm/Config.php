@@ -1,45 +1,11 @@
 <?php
+
 namespace Psalm;
 
-use Composer\Semver\Semver;
-use Psalm\Issue\VariableIssue;
-use Webmozart\PathUtil\Path;
-use function array_merge;
-use function array_pop;
-use function class_exists;
 use Composer\Autoload\ClassLoader;
+use Composer\Semver\Semver;
 use DOMDocument;
 use LogicException;
-
-use function count;
-use const DIRECTORY_SEPARATOR;
-use function dirname;
-use const E_USER_ERROR;
-use function explode;
-use function file_exists;
-use function file_get_contents;
-use function filetype;
-use function get_class;
-use function get_defined_constants;
-use function get_defined_functions;
-use function glob;
-use function in_array;
-use function intval;
-use function is_dir;
-use function is_file;
-use function json_decode;
-use function libxml_clear_errors;
-use const GLOB_NOSORT;
-use const LIBXML_ERR_ERROR;
-use const LIBXML_ERR_FATAL;
-use function libxml_get_errors;
-use function libxml_use_internal_errors;
-use function mkdir;
-use const PHP_EOL;
-use function phpversion;
-use function preg_match;
-use function preg_quote;
-use function preg_replace;
 use Psalm\Config\IssueHandler;
 use Psalm\Config\ProjectFileFilter;
 use Psalm\Config\TaintAnalysisFileFilter;
@@ -55,17 +21,49 @@ use Psalm\Issue\CodeIssue;
 use Psalm\Issue\FunctionIssue;
 use Psalm\Issue\MethodIssue;
 use Psalm\Issue\PropertyIssue;
+use Psalm\Issue\VariableIssue;
 use Psalm\Plugin\Hook;
 use Psalm\Progress\Progress;
 use Psalm\Progress\VoidProgress;
+use SimpleXMLElement;
+use Webmozart\PathUtil\Path;
+use XdgBaseDir\Xdg;
+
+use function array_merge;
+use function array_pop;
+use function chdir;
+use function class_exists;
+use function count;
+use function dirname;
+use function explode;
+use function file_exists;
+use function file_get_contents;
+use function filetype;
+use function get_class;
+use function getcwd;
+use function get_defined_constants;
+use function get_defined_functions;
+use function glob;
+use function in_array;
+use function intval;
+use function is_a;
+use function is_dir;
+use function is_file;
+use function json_decode;
+use function libxml_clear_errors;
+use function libxml_get_errors;
+use function libxml_use_internal_errors;
+use function mkdir;
+use function phpversion;
+use function preg_match;
+use function preg_quote;
+use function preg_replace;
 use function realpath;
 use function reset;
 use function rmdir;
 use function scandir;
 use function sha1;
-use SimpleXMLElement;
-use XdgBaseDir\Xdg;
-
+use function simplexml_import_dom;
 use function strpos;
 use function strrpos;
 use function strtolower;
@@ -76,11 +74,14 @@ use function sys_get_temp_dir;
 use function trigger_error;
 use function unlink;
 use function version_compare;
-use function getcwd;
-use function chdir;
-use function simplexml_import_dom;
+
+use const DIRECTORY_SEPARATOR;
+use const E_USER_ERROR;
+use const GLOB_NOSORT;
+use const LIBXML_ERR_ERROR;
+use const LIBXML_ERR_FATAL;
 use const LIBXML_NONET;
-use function is_a;
+use const PHP_EOL;
 use const SCANDIR_SORT_NONE;
 
 /**
@@ -165,7 +166,7 @@ class Config
     /**
      * The directory to store PHP Parser (and other) caches
      *
-     * @var string
+     * @var string|null
      */
     public $cache_directory;
 
@@ -551,7 +552,7 @@ class Config
     public $after_functionlike_checks = [];
 
     /** @var array<string, mixed> */
-    private $predefined_constants;
+    private $predefined_constants = [];
 
     /** @var array<callable-string, bool> */
     private $predefined_functions = [];
@@ -625,20 +626,15 @@ class Config
      *
      * Searches up a folder hierarchy for the most immediate config.
      *
-     * @param  string $path
-     * @param  string $current_dir
-     * @param  string $output_format
-     *
-     * @return Config
      * @throws ConfigException if a config path is not found
      *
      */
-    public static function getConfigForPath($path, $current_dir, $output_format)
+    public static function getConfigForPath(string $path, string $current_dir, string $output_format): Config
     {
         $config_path = self::locateConfigFile($path);
 
         if (!$config_path) {
-            if ($output_format === \Psalm\Report::TYPE_CONSOLE) {
+            if (in_array($output_format, [\Psalm\Report::TYPE_CONSOLE, \Psalm\Report::TYPE_PHP_STORM])) {
                 echo 'Could not locate a config XML file in path ' . $path
                     . '. Have you run \'psalm --init\' ?' . PHP_EOL;
                 exit(1);
@@ -654,9 +650,8 @@ class Config
      *
      * @throws ConfigException
      *
-     * @return ?string
      */
-    public static function locateConfigFile(string $path)
+    public static function locateConfigFile(string $path): ?string
     {
         $dir_path = realpath($path);
 
@@ -683,13 +678,8 @@ class Config
 
     /**
      * Creates a new config object from the file
-     *
-     * @param  string           $file_path
-     * @param  string           $current_dir
-     *
-     * @return self
      */
-    public static function loadFromXMLFile($file_path, $current_dir)
+    public static function loadFromXMLFile(string $file_path, string $current_dir): Config
     {
         $file_contents = file_get_contents($file_path);
 
@@ -713,16 +703,11 @@ class Config
 
     /**
      * Creates a new config object from an XML string
-     *
-     * @throws ConfigException
-     *
-     * @param  string           $base_dir
-     * @param  string           $file_contents
      * @param  string|null      $current_dir Current working directory, if different to $base_dir
      *
-     * @return self
+     * @throws ConfigException
      */
-    public static function loadFromXML($base_dir, $file_contents, $current_dir = null)
+    public static function loadFromXML(string $base_dir, string $file_contents, ?string $current_dir = null): Config
     {
         if ($current_dir === null) {
             $current_dir = $base_dir;
@@ -1110,10 +1095,7 @@ class Config
         return $config;
     }
 
-    /**
-     * @return $this
-     */
-    public static function getInstance()
+    public static function getInstance(): Config
     {
         if (self::$instance) {
             return self::$instance;
@@ -1122,34 +1104,22 @@ class Config
         throw new \UnexpectedValueException('No config initialized');
     }
 
-    /**
-     * @return void
-     */
-    public function setComposerClassLoader(?ClassLoader $loader = null)
+    public function setComposerClassLoader(?ClassLoader $loader = null): void
     {
         $this->composer_class_loader = $loader;
     }
 
-    /**
-     * @param string $issue_key
-     * @param string $error_level
-     *
-     * @return void
-     */
-    public function setCustomErrorLevel($issue_key, $error_level)
+    public function setCustomErrorLevel(string $issue_key, string $error_level): void
     {
         $this->issue_handlers[$issue_key] = new IssueHandler();
         $this->issue_handlers[$issue_key]->setErrorLevel($error_level);
     }
 
     /**
-     * @param  array<SimpleXMLElement> $extensions
-     *
      * @throws ConfigException if a Config file could not be found
      *
-     * @return void
      */
-    private function loadFileExtensions($extensions)
+    private function loadFileExtensions(SimpleXMLElement $extensions): void
     {
         foreach ($extensions as $extension) {
             $extension_name = preg_replace('/^\.?/', '', (string)$extension['name']);
@@ -1177,12 +1147,7 @@ class Config
         }
     }
 
-    /**
-     * @param string $path
-     *
-     * @return void
-     */
-    public function addPluginPath($path)
+    public function addPluginPath(string $path): void
     {
         if (!file_exists($path)) {
             throw new \InvalidArgumentException('Cannot find plugin file ' . $path);
@@ -1191,8 +1156,7 @@ class Config
         $this->plugin_paths[] = $path;
     }
 
-    /** @return void */
-    public function addPluginClass(string $class_name, SimpleXMLElement $plugin_config = null)
+    public function addPluginClass(string $class_name, ?SimpleXMLElement $plugin_config = null): void
     {
         $this->plugin_classes[] = ['class' => $class_name, 'config' => $plugin_config];
     }
@@ -1206,11 +1170,10 @@ class Config
     /**
      * Initialises all the plugins (done once the config is fully loaded)
      *
-     * @return void
      * @psalm-suppress MixedAssignment
      * @psalm-suppress MixedTypeCoercion
      */
-    public function initializePlugins(ProjectAnalyzer $project_analyzer)
+    public function initializePlugins(ProjectAnalyzer $project_analyzer): void
     {
         $codebase = $project_analyzer->getCodebase();
 
@@ -1232,7 +1195,7 @@ class Config
                     && ($plugin_class_path = $this->composer_class_loader->findFile($plugin_class_name))
                 ) {
                     $project_analyzer->progress->debug(
-                        'Loading plugin ' . $plugin_class_name . ' via require'. PHP_EOL
+                        'Loading plugin ' . $plugin_class_name . ' via require' . PHP_EOL
                     );
 
                     self::requirePath($plugin_class_path);
@@ -1253,7 +1216,7 @@ class Config
                 throw new ConfigException('Failed to load plugin ' . $plugin_class_name, 0, $e);
             }
 
-            $project_analyzer->progress->debug('Loaded plugin ' . $plugin_class_name . ' successfully'. PHP_EOL);
+            $project_analyzer->progress->debug('Loaded plugin ' . $plugin_class_name . ' successfully' . PHP_EOL);
         }
 
         foreach ($this->filetype_scanner_paths as $extension => $path) {
@@ -1290,7 +1253,7 @@ class Config
         }
     }
 
-    private static function requirePath(string $path) : void
+    private static function requirePath(string $path): void
     {
         /** @psalm-suppress UnresolvableInclude */
         require_once($path);
@@ -1299,12 +1262,11 @@ class Config
     /**
      * @template T
      *
-     * @param  string $path
      * @param  T::class $must_extend
      *
      * @return class-string<T>
      */
-    private function getPluginClassForPath(Codebase $codebase, $path, $must_extend)
+    private function getPluginClassForPath(Codebase $codebase, string $path, string $must_extend): string
     {
         $file_storage = $codebase->createFileStorageForPath($path);
         $file_to_scan = new FileScanner($path, $this->shortenFileName($path), true);
@@ -1340,23 +1302,12 @@ class Config
         return $fq_class_name;
     }
 
-    /**
-     * @param  string $file_name
-     *
-     * @return string
-     */
-    public function shortenFileName($file_name)
+    public function shortenFileName(string $file_name): string
     {
         return preg_replace('/^' . preg_quote($this->base_dir, '/') . '/', '', $file_name);
     }
 
-    /**
-     * @param   string $issue_type
-     * @param   string $file_path
-     *
-     * @return  bool
-     */
-    public function reportIssueInFile($issue_type, $file_path)
+    public function reportIssueInFile(string $issue_type, string $file_path): bool
     {
         if (($this->show_mixed_issues === false || $this->level > 2)
             && in_array($issue_type, self::MIXED_ISSUES, true)
@@ -1406,43 +1357,28 @@ class Config
         return true;
     }
 
-    /**
-     * @param   string $file_path
-     *
-     * @return  bool
-     */
-    public function isInProjectDirs($file_path)
+    public function isInProjectDirs(string $file_path): bool
     {
         return $this->project_files && $this->project_files->allows($file_path);
     }
 
-    /**
-     * @param   string $file_path
-     *
-     * @return  bool
-     */
-    public function isInExtraDirs($file_path)
+    public function isInExtraDirs(string $file_path): bool
     {
         return $this->extra_files && $this->extra_files->allows($file_path);
     }
 
-    /**
-     * @param   string $file_path
-     *
-     * @return  bool
-     */
-    public function mustBeIgnored($file_path)
+    public function mustBeIgnored(string $file_path): bool
     {
         return $this->project_files && $this->project_files->forbids($file_path);
     }
 
-    public function trackTaintsInPath(string $file_path) : bool
+    public function trackTaintsInPath(string $file_path): bool
     {
         return !$this->taint_analysis_ignored_files
             || $this->taint_analysis_ignored_files->allows($file_path);
     }
 
-    public function getReportingLevelForIssue(CodeIssue $e) : string
+    public function getReportingLevelForIssue(CodeIssue $e): string
     {
         $fqcn_parts = explode('\\', get_class($e));
         $issue_type = array_pop($fqcn_parts);
@@ -1485,13 +1421,9 @@ class Config
     }
 
     /**
-     * @param string $issue_type
-     *
-     * @return string|null
-     *
      * @psalm-pure
      */
-    public static function getParentIssueType($issue_type)
+    public static function getParentIssueType(string $issue_type): ?string
     {
         if ($issue_type === 'PossiblyUndefinedIntArrayOffset'
             || $issue_type === 'PossiblyUndefinedStringArrayOffset'
@@ -1561,6 +1493,10 @@ class Config
             return 'InvalidOperand';
         }
 
+        if ($issue_type === 'InvalidLiteralArgument') {
+            return 'InvalidArgument';
+        }
+
         if ($issue_type === 'TraitMethodSignatureMismatch') {
             return 'MethodSignatureMismatch';
         }
@@ -1591,13 +1527,7 @@ class Config
         return null;
     }
 
-    /**
-     * @param   string $issue_type
-     * @param   string $file_path
-     *
-     * @return  string
-     */
-    public function getReportingLevelForFile($issue_type, $file_path)
+    public function getReportingLevelForFile(string $issue_type, string $file_path): string
     {
         if (isset($this->issue_handlers[$issue_type])) {
             return $this->issue_handlers[$issue_type]->getReportingLevelForFile($file_path);
@@ -1620,82 +1550,64 @@ class Config
         return self::REPORT_ERROR;
     }
 
-    /**
-     * @param   string $issue_type
-     * @param   string $fq_classlike_name
-     *
-     * @return  string|null
-     */
-    public function getReportingLevelForClass($issue_type, $fq_classlike_name)
+    public function getReportingLevelForClass(string $issue_type, string $fq_classlike_name): ?string
     {
         if (isset($this->issue_handlers[$issue_type])) {
             return $this->issue_handlers[$issue_type]->getReportingLevelForClass($fq_classlike_name);
         }
+
+        return null;
     }
 
-    /**
-     * @param   string $issue_type
-     * @param   string $method_id
-     *
-     * @return  string|null
-     */
-    public function getReportingLevelForMethod($issue_type, $method_id)
+    public function getReportingLevelForMethod(string $issue_type, string $method_id): ?string
     {
         if (isset($this->issue_handlers[$issue_type])) {
             return $this->issue_handlers[$issue_type]->getReportingLevelForMethod($method_id);
         }
+
+        return null;
     }
 
-    /**
-     * @return  string|null
-     */
-    public function getReportingLevelForFunction(string $issue_type, string $function_id)
+    public function getReportingLevelForFunction(string $issue_type, string $function_id): ?string
     {
         if (isset($this->issue_handlers[$issue_type])) {
             return $this->issue_handlers[$issue_type]->getReportingLevelForFunction($function_id);
         }
+
+        return null;
     }
 
-    /**
-     * @return  string|null
-     */
-    public function getReportingLevelForArgument(string $issue_type, string $function_id)
+    public function getReportingLevelForArgument(string $issue_type, string $function_id): ?string
     {
         if (isset($this->issue_handlers[$issue_type])) {
             return $this->issue_handlers[$issue_type]->getReportingLevelForArgument($function_id);
         }
+
+        return null;
     }
 
-    /**
-     * @param   string $issue_type
-     * @param   string $property_id
-     *
-     * @return  string|null
-     */
-    public function getReportingLevelForProperty($issue_type, $property_id)
+    public function getReportingLevelForProperty(string $issue_type, string $property_id): ?string
     {
         if (isset($this->issue_handlers[$issue_type])) {
             return $this->issue_handlers[$issue_type]->getReportingLevelForProperty($property_id);
         }
+
+        return null;
     }
 
-    /**
-     * @param   string $issue_type
-     * @param   string $var_name
-     *
-     * @return  string|null
-     */
-    public function getReportingLevelForVariable(string $issue_type, string $var_name)
+    public function getReportingLevelForVariable(string $issue_type, string $var_name): ?string
     {
         if (isset($this->issue_handlers[$issue_type])) {
             return $this->issue_handlers[$issue_type]->getReportingLevelForVariable($var_name);
         }
+
+        return null;
     }
 
     /**
      * @return array<string>
      */
-    public function getProjectDirectories()
+    public function getProjectDirectories(): array
     {
         if (!$this->project_files) {
             return [];
@@ -1707,7 +1619,7 @@ class Config
     /**
      * @return array<string>
      */
-    public function getProjectFiles()
+    public function getProjectFiles(): array
     {
         if (!$this->project_files) {
             return [];
@@ -1719,7 +1631,7 @@ class Config
     /**
      * @return array<string>
      */
-    public function getExtraDirectories()
+    public function getExtraDirectories(): array
     {
         if (!$this->extra_files) {
             return [];
@@ -1728,24 +1640,14 @@ class Config
         return $this->extra_files->getDirectories();
     }
 
-    /**
-     * @param   string $file_path
-     *
-     * @return  bool
-     */
-    public function reportTypeStatsForFile($file_path)
+    public function reportTypeStatsForFile(string $file_path): bool
     {
         return $this->project_files
             && $this->project_files->allows($file_path)
             && $this->project_files->reportTypeStats($file_path);
     }
 
-    /**
-     * @param   string $file_path
-     *
-     * @return  bool
-     */
-    public function useStrictTypesForFile($file_path)
+    public function useStrictTypesForFile(string $file_path): bool
     {
         return $this->project_files && $this->project_files->useStrictTypes($file_path);
     }
@@ -1753,7 +1655,7 @@ class Config
     /**
      * @return array<string>
      */
-    public function getFileExtensions()
+    public function getFileExtensions(): array
     {
         return $this->file_extensions;
     }
@@ -1761,7 +1663,7 @@ class Config
     /**
      * @return array<string, class-string<FileScanner>>
      */
-    public function getFiletypeScanners()
+    public function getFiletypeScanners(): array
     {
         return $this->filetype_scanners;
     }
@@ -1769,7 +1671,7 @@ class Config
     /**
      * @return array<string, class-string<FileAnalyzer>>
      */
-    public function getFiletypeAnalyzers()
+    public function getFiletypeAnalyzers(): array
     {
         return $this->filetype_analyzers;
     }
@@ -1777,15 +1679,12 @@ class Config
     /**
      * @return array<int, string>
      */
-    public function getMockClasses()
+    public function getMockClasses(): array
     {
         return $this->mock_classes;
     }
 
-    /**
-     * @return void
-     */
-    public function visitStubFiles(Codebase $codebase, Progress $progress = null)
+    public function visitStubFiles(Codebase $codebase, ?Progress $progress = null): void
     {
         if ($progress === null) {
             $progress = new VoidProgress();
@@ -1868,18 +1767,12 @@ class Config
         $codebase->register_stub_files = false;
     }
 
-    /**
-     * @return string
-     */
-    public function getCacheDirectory()
+    public function getCacheDirectory(): ?string
     {
         return $this->cache_directory;
     }
 
-    /**
-     * @return ?string
-     */
-    public function getGlobalCacheDirectory()
+    public function getGlobalCacheDirectory(): ?string
     {
         return $this->global_cache_directory;
     }
@@ -1887,15 +1780,12 @@ class Config
     /**
      * @return array<string, mixed>
      */
-    public function getPredefinedConstants()
+    public function getPredefinedConstants(): array
     {
         return $this->predefined_constants;
     }
 
-    /**
-     * @return void
-     */
-    public function collectPredefinedConstants()
+    public function collectPredefinedConstants(): void
     {
         $this->predefined_constants = get_defined_constants();
     }
@@ -1903,15 +1793,12 @@ class Config
     /**
      * @return array<callable-string, bool>
      */
-    public function getPredefinedFunctions()
+    public function getPredefinedFunctions(): array
     {
         return $this->predefined_functions;
     }
 
-    /**
-     * @return void
-     */
-    public function collectPredefinedFunctions()
+    public function collectPredefinedFunctions(): void
     {
         $defined_functions = get_defined_functions();
 
@@ -1934,12 +1821,10 @@ class Config
     }
 
     /**
-     * @return void
-     *
      * @psalm-suppress MixedAssignment
      * @psalm-suppress MixedArrayAccess
      */
-    public function visitComposerAutoloadFiles(ProjectAnalyzer $project_analyzer, Progress $progress = null)
+    public function visitComposerAutoloadFiles(ProjectAnalyzer $project_analyzer, ?Progress $progress = null): void
     {
         if ($progress === null) {
             $progress = new VoidProgress();
@@ -2006,11 +1891,9 @@ class Config
     }
 
     /**
-     * @param  string $fq_classlike_name
-     *
      * @return string|false
      */
-    public function getComposerFilePathForClassLike($fq_classlike_name)
+    public function getComposerFilePathForClassLike(string $fq_classlike_name)
     {
         if (!$this->composer_class_loader) {
             return false;
@@ -2019,7 +1902,7 @@ class Config
         return $this->composer_class_loader->findFile($fq_classlike_name);
     }
 
-    public function getPotentialComposerFilePathForClassLike(string $class) : ?string
+    public function getPotentialComposerFilePathForClassLike(string $class): ?string
     {
         if (!$this->composer_class_loader) {
             return null;
@@ -2060,12 +1943,7 @@ class Config
         return $candidate_path;
     }
 
-    /**
-     * @param string $dir
-     *
-     * @return void
-     */
-    public static function removeCacheDirectory($dir)
+    public static function removeCacheDirectory(string $dir): void
     {
         if (is_dir($dir)) {
             $objects = scandir($dir, SCANDIR_SORT_NONE);
@@ -2089,21 +1967,17 @@ class Config
         }
     }
 
-    /**
-     * @return void
-     */
-    public function setServerMode()
+    public function setServerMode(): void
     {
         $this->cache_directory .= '-s';
     }
 
-    /** @return void */
-    public function addStubFile(string $stub_file)
+    public function addStubFile(string $stub_file): void
     {
         $this->stub_files[$stub_file] = $stub_file;
     }
 
-    public function hasStubFile(string $stub_file) : bool
+    public function hasStubFile(string $stub_file): bool
     {
         return isset($this->stub_files[$stub_file]);
     }
@@ -2136,7 +2010,7 @@ class Config
      */
     private function getPHPVersionFromComposerJson(): ?string
     {
-        $composer_json_path = $this->base_dir . DIRECTORY_SEPARATOR. 'composer.json';
+        $composer_json_path = $this->base_dir . DIRECTORY_SEPARATOR . 'composer.json';
 
         if (file_exists($composer_json_path)) {
             if (!$composer_json = json_decode(file_get_contents($composer_json_path), true)) {

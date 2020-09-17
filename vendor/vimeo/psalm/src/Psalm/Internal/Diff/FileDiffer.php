@@ -120,11 +120,11 @@ class FileDiffer
      *
      * @psalm-pure
      */
-    public static function getDiff(string $a_code, string $b_code)
+    public static function getDiff(string $a_code, string $b_code): array
     {
         $a = explode("\n", $a_code);
         $b = explode("\n", $b_code);
-        list($trace, $x, $y) = self::calculateTrace($a, $b);
+        [$trace, $x, $y] = self::calculateTrace($a, $b);
 
         $diff = self::coalesceReplacements(self::extractDiff($trace, $x, $y, $a, $b));
 
@@ -270,7 +270,7 @@ class FileDiffer
      *
      * @psalm-pure
      */
-    private static function coalesceReplacements(array $diff)
+    private static function coalesceReplacements(array $diff): array
     {
         $newDiff = [];
         $c = \count($diff);

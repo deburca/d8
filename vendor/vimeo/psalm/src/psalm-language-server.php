@@ -210,7 +210,7 @@ require_once __DIR__ . '/Psalm/Internal/IncludeCollector.php';
 $include_collector = new IncludeCollector();
 
 $first_autoloader = $include_collector->runAndCollect(
-    function () use ($current_dir, $options, $vendor_dir) {
+    function () use ($current_dir, $options, $vendor_dir): ?\Composer\Autoload\ClassLoader {
         return \Psalm\requireAutoloaders($current_dir, isset($options['r']), $vendor_dir);
     }
 );
@@ -248,7 +248,9 @@ $config->setServerMode();
 if (isset($options['clear-cache'])) {
     $cache_directory = $config->getCacheDirectory();
 
-    Config::removeCacheDirectory($cache_directory);
+    if ($cache_directory !== null) {
+        Config::removeCacheDirectory($cache_directory);
+    }
     echo 'Cache directory deleted' . PHP_EOL;
     exit;
 }

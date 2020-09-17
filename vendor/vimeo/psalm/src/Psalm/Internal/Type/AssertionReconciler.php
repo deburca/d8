@@ -53,7 +53,7 @@ class AssertionReconciler extends \Psalm\Type\Reconciler
         StatementsAnalyzer $statements_analyzer,
         bool $inside_loop,
         array $template_type_map,
-        CodeLocation $code_location = null,
+        ?CodeLocation $code_location = null,
         array $suppressed_issues = [],
         ?int &$failed_reconciliation = 0
     ) : Union {
@@ -200,7 +200,8 @@ class AssertionReconciler extends \Psalm\Type\Reconciler
                     if (IssueBuffer::accepts(
                         new TypeDoesNotContainType(
                             'Cannot allow string comparison to object for ' . $key,
-                            $code_location
+                            $code_location,
+                            null
                         ),
                         $suppressed_issues
                     )) {
@@ -592,7 +593,8 @@ class AssertionReconciler extends \Psalm\Type\Reconciler
                             new DocblockTypeContradiction(
                                 'Cannot resolve types for ' . $key . ' - docblock-defined type '
                                     . $existing_var_type . ' does not contain null',
-                                $code_location
+                                $code_location,
+                                $existing_var_type->getId() . ' null'
                             ),
                             $suppressed_issues
                         )) {
@@ -603,7 +605,8 @@ class AssertionReconciler extends \Psalm\Type\Reconciler
                             new TypeDoesNotContainNull(
                                 'Cannot resolve types for ' . $key . ' - ' . $existing_var_type
                                     . ' does not contain null',
-                                $code_location
+                                $code_location,
+                                $existing_var_type->getId()
                             ),
                             $suppressed_issues
                         )) {
@@ -619,7 +622,8 @@ class AssertionReconciler extends \Psalm\Type\Reconciler
                             new DocblockTypeContradiction(
                                 'Cannot resolve types for ' . $key . ' - docblock-defined type '
                                     . $existing_var_type->getId() . ' does not contain ' . $new_type->getId(),
-                                $code_location
+                                $code_location,
+                                $existing_var_type->getId() . ' ' . $new_type->getId()
                             ),
                             $suppressed_issues
                         )) {
@@ -628,9 +632,10 @@ class AssertionReconciler extends \Psalm\Type\Reconciler
                     } else {
                         if (IssueBuffer::accepts(
                             new TypeDoesNotContainType(
-                                'Cannot resolve types for ' . $key . ' - ' . $existing_var_type->getId() .
-                                ' does not contain ' . $new_type->getId(),
-                                $code_location
+                                'Cannot resolve types for ' . $key . ' - ' . $existing_var_type->getId()
+                                    . ' does not contain ' . $new_type->getId(),
+                                $code_location,
+                                $existing_var_type->getId() . ' ' . $new_type->getId()
                             ),
                             $suppressed_issues
                         )) {
@@ -891,7 +896,7 @@ class AssertionReconciler extends \Psalm\Type\Reconciler
                         && !$codebase->classExists($new_type_part->value)
                         && !array_filter(
                             $existing_type_part->extra_types,
-                            function ($extra_type) use ($codebase) {
+                            function ($extra_type) use ($codebase): bool {
                                 return $extra_type instanceof TNamedObject
                                     && $codebase->classExists($extra_type->value);
                             }

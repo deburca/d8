@@ -21,6 +21,7 @@ use Psalm\Context;
 use Psalm\Issue\ImplicitToStringCast;
 use Psalm\Issue\InvalidArgument;
 use Psalm\Issue\InvalidScalarArgument;
+use Psalm\Issue\InvalidLiteralArgument;
 use Psalm\Issue\MixedArgument;
 use Psalm\Issue\MixedArgumentTypeCoercion;
 use Psalm\Issue\NoValue;
@@ -39,6 +40,7 @@ use Psalm\Type\Atomic\TList;
 use function strtolower;
 use function strpos;
 use function explode;
+use function count;
 
 /**
  * @internal
@@ -46,8 +48,6 @@ use function explode;
 class ArgumentAnalyzer
 {
     /**
-     * @param  ?string $self_fq_class_name
-     * @param  ?string $static_fq_class_name
      * @param  array<string, array<string, array{Type\Union, 1?:int}>> $class_generic_params
      * @return false|null
      */
@@ -60,15 +60,14 @@ class ArgumentAnalyzer
         ?FunctionLikeParameter $function_param,
         int $argument_offset,
         PhpParser\Node\Arg $arg,
+        ?Type\Union $arg_value_type,
         Context $context,
         array $class_generic_params,
         ?TemplateResult $template_result,
         bool $specialize_taint,
         bool $in_call_map
-    ) {
+    ): ?bool {
         $codebase = $statements_analyzer->getCodebase();
-
-        $arg_value_type = $statements_analyzer->node_data->getType($arg->value);
 
         if (!$arg_value_type) {
             if ($function_param && !$function_param->by_ref) {
@@ -116,11 +115,51 @@ class ArgumentAnalyzer
                 }
             }
 
-            return;
+            return null;
         }
 
         if (!$function_param) {
-            return;
+            return null;
+        }
+
+        if ($function_param->expect_variable
+            && $arg_value_type->isSingleStringLiteral()
+            && !$arg->value instanceof PhpParser\Node\Scalar\MagicConst
+            && !$arg->value instanceof PhpParser\Node\Expr\ConstFetch
+        ) {
+            $values = \preg_split('//u', $arg_value_type->getSingleStringLiteral()->value, null, \PREG_SPLIT_NO_EMPTY);
+
+            $prev_ord = 0;
+
+            $gt_count = 0;
+
+            foreach ($values as $value) {
+                /**
+                 * @var int
+                 * @psalm-suppress UnnecessaryVarAnnotation
+                 */
+                $ord = \mb_ord($value);
+
+                if ($ord > $prev_ord) {
+                    $gt_count++;
+                }
+
+                $prev_ord = $ord;
+            }
+
+            if (count($values) < 12 || ($gt_count / count($values)) < 0.8) {
+                if (IssueBuffer::accepts(
+                    new InvalidLiteralArgument(
+                        'Argument ' . ($argument_offset + 1) . ' of ' . $cased_method_id
+                            . ' expects a non-literal value, ' . $arg_value_type->getId() . ' provided',
+                        new CodeLocation($statements_analyzer->getSource(), $arg->value),
+                        $cased_method_id
+                    ),
+                    $statements_analyzer->getSuppressedIssues()
+                )) {
+                    // fall through
+                }
+            }
         }
 
         if (self::checkFunctionLikeTypeMatches(
@@ -142,11 +181,11 @@ class ArgumentAnalyzer
         ) === false) {
             return false;
         }
+
+        return null;
     }
 
     /**
-     * @param  ?string $self_fq_class_name
-     * @param  ?string $static_fq_class_name
      * @param  array<string, array<string, array{Type\Union, 1?:int}>> $class_generic_params
      * @param  array<string, array<string, array{Type\Union, 1?:int}>> $generic_params
      * @param  array<string, array<string, array{Type\Union}>> $template_types
@@ -168,10 +207,10 @@ class ArgumentAnalyzer
         ?TemplateResult $template_result,
         bool $specialize_taint,
         bool $in_call_map
-    ) {
+    ): ?bool {
         if (!$function_param->type) {
             if (!$codebase->infer_types_from_usage && !$codebase->taint) {
-                return;
+                return null;
             }
 
             $param_type = Type::getMixed();
@@ -280,7 +319,7 @@ class ArgumentAnalyzer
         }
 
         if (!$context->check_variables) {
-            return;
+            return null;
         }
 
         $parent_class = null;
@@ -362,7 +401,7 @@ class ArgumentAnalyzer
                     );
                 }
 
-                return;
+                return null;
             }
 
             if ($arg_type->hasArray()) {
@@ -404,7 +443,7 @@ class ArgumentAnalyzer
                     }
                 }
 
-                return;
+                return null;
             }
         }
 
@@ -427,6 +466,8 @@ class ArgumentAnalyzer
         ) === false) {
             return false;
         }
+
+        return null;
     }
 
     /**
@@ -449,7 +490,7 @@ class ArgumentAnalyzer
         bool $specialize_taint,
         bool $in_call_map,
         CodeLocation $function_call_location
-    ) {
+    ): ?bool {
         $codebase = $statements_analyzer->getCodebase();
 
         if ($param_type->hasMixed()) {
@@ -798,7 +839,7 @@ class ArgumentAnalyzer
                 }
             }
 
-            return;
+            return null;
         }
 
         if ($input_expr instanceof PhpParser\Node\Scalar\String_
@@ -819,7 +860,7 @@ class ArgumentAnalyzer
                         $statements_analyzer->getSuppressedIssues()
                     ) === false
                     ) {
-                        return;
+                        return null;
                     }
                 } elseif ($param_type_part instanceof TArray
                     && $input_expr instanceof PhpParser\Node\Expr\Array_
@@ -837,7 +878,7 @@ class ArgumentAnalyzer
                                         $statements_analyzer->getSuppressedIssues()
                                     ) === false
                                     ) {
-                                        return;
+                                        return null;
                                     }
                                 }
                             }
@@ -885,7 +926,7 @@ class ArgumentAnalyzer
                                 $has_valid_method = false;
 
                                 foreach ($function_id_parts as $function_id_part) {
-                                    list($callable_fq_class_name, $method_name) = explode('::', $function_id_part);
+                                    [$callable_fq_class_name, $method_name] = explode('::', $function_id_part);
 
                                     switch ($callable_fq_class_name) {
                                         case 'self':
@@ -913,7 +954,7 @@ class ArgumentAnalyzer
                                         $statements_analyzer->getSuppressedIssues()
                                     ) === false
                                     ) {
-                                        return;
+                                        return null;
                                     }
 
                                     $function_id_part = new \Psalm\Internal\MethodIdentifier(
@@ -927,7 +968,7 @@ class ArgumentAnalyzer
                                     );
 
                                     if (!$codebase->classOrInterfaceExists($callable_fq_class_name)) {
-                                        return;
+                                        return null;
                                     }
 
                                     if (!$codebase->methods->methodExists($function_id_part)
@@ -947,7 +988,7 @@ class ArgumentAnalyzer
                                         $statements_analyzer->getSuppressedIssues()
                                     ) === false
                                     ) {
-                                        return;
+                                        return null;
                                     }
                                 }
                             } else {
@@ -960,7 +1001,7 @@ class ArgumentAnalyzer
                                         false
                                     ) === false
                                 ) {
-                                    return;
+                                    return null;
                                 }
                             }
                         }
@@ -1212,7 +1253,7 @@ class ArgumentAnalyzer
             );
 
             if (strpos($cased_method_id, '::')) {
-                list($fq_classlike_name, $cased_method_name) = explode('::', $cased_method_id);
+                [$fq_classlike_name, $cased_method_name] = explode('::', $cased_method_id);
                 $method_name = strtolower($cased_method_name);
                 $class_storage = $codebase->classlike_storage_provider->get($fq_classlike_name);
 

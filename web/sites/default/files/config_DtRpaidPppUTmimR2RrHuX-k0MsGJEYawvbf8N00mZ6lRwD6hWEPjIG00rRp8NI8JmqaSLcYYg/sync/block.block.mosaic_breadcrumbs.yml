@@ -1,4 +1,4 @@
-uuid: 6bc081a1-ea6e-4d61-b8c7-524bd4500604
+uuid: 783f8489-3f1c-4afb-8019-0b2a62b2bace
 langcode: en
 status: true
 dependencies:
@@ -7,11 +7,11 @@ dependencies:
   theme:
     - mosaic
 _core:
-  default_config_hash: wDR9JKEATSWldBjw8du8s3G2zjEYeQf88nlld11hMLo
+  default_config_hash: XMsRP1YhWAcorbrFWZglMYJ_SgWHyF3fyCh5vDXaUN4
 id: mosaic_breadcrumbs
 theme: mosaic
 region: breadcrumb
-weight: -9
+weight: 0
 provider: null
 plugin: system_breadcrumb_block
 settings:
@@ -19,9 +19,4 @@ settings:
   label: Breadcrumbs
   provider: system
   label_display: '0'
-visibility:
-  request_path:
-    id: request_path
-    pages: '<front>'
-    negate: true
-    context_mapping: {  }
+visibility: {  }

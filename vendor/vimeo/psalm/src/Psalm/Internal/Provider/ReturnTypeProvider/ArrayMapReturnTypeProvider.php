@@ -24,7 +24,6 @@ class ArrayMapReturnTypeProvider implements \Psalm\Plugin\Hook\FunctionReturnTyp
 
     /**
      * @param  array<PhpParser\Node\Arg>    $call_args
-     * @param  CodeLocation                 $code_location
      */
     public static function getFunctionReturnType(
         StatementsSource $statements_source,
@@ -173,7 +172,7 @@ class ArrayMapReturnTypeProvider implements \Psalm\Plugin\Hook\FunctionReturnTyp
                         /**
                         * @return Type\Union
                         */
-                        function (Type\Union $_) use ($mapping_return_type) {
+                        function (Type\Union $_) use ($mapping_return_type): Type\Union {
                             return clone $mapping_return_type;
                         },
                         $array_arg_atomic_type->properties

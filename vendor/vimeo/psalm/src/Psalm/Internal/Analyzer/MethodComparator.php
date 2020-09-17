@@ -32,14 +32,7 @@ use function substr;
 class MethodComparator
 {
     /**
-     * @param  ClassLikeStorage $implementer_classlike_storage
-     * @param  ClassLikeStorage $guide_classlike_storage
-     * @param  MethodStorage    $implementer_method_storage
-     * @param  MethodStorage    $guide_method_storage
-     * @param  CodeLocation     $code_location
      * @param  string[]         $suppressed_issues
-     * @param  bool             $prevent_abstract_override
-     * @param  bool             $prevent_method_signature_mismatch
      *
      * @return false|null
      */
@@ -56,7 +49,7 @@ class MethodComparator
         array $suppressed_issues,
         bool $prevent_abstract_override = true,
         bool $prevent_method_signature_mismatch = true
-    ) {
+    ): ?bool {
         $implementer_declaring_method_id = $codebase->methods->getDeclaringMethodId(
             new MethodIdentifier(
                 $implementer_classlike_storage->name,
@@ -192,6 +185,8 @@ class MethodComparator
 
             return null;
         }
+
+        return null;
     }
 
     /**

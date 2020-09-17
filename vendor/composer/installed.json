@@ -3340,17 +3340,17 @@
     },
     {
         "name": "drupal/core",
-        "version": "9.0.5",
-        "version_normalized": "9.0.5.0",
+        "version": "9.0.6",
+        "version_normalized": "9.0.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drupal/core.git",
-            "reference": "145671b8ac88322c43c8415cf287b76dfe45ad38"
+            "reference": "783122d82abb104cebc73ea1f0659f7ccd46f9a8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drupal/core/zipball/145671b8ac88322c43c8415cf287b76dfe45ad38",
-            "reference": "145671b8ac88322c43c8415cf287b76dfe45ad38",
+            "url": "https://api.github.com/repos/drupal/core/zipball/783122d82abb104cebc73ea1f0659f7ccd46f9a8",
+            "reference": "783122d82abb104cebc73ea1f0659f7ccd46f9a8",
             "shasum": ""
         },
         "require": {
@@ -3512,7 +3512,7 @@
             "drupal/workflows": "self.version",
             "drupal/workspaces": "self.version"
         },
-        "time": "2020-09-03T21:05:44+00:00",
+        "time": "2020-09-16T11:21:49+00:00",
         "type": "drupal-core",
         "extra": {
             "drupal-scaffold": {
@@ -3586,8 +3586,8 @@
     },
     {
         "name": "drupal/core-composer-scaffold",
-        "version": "9.0.5",
-        "version_normalized": "9.0.5.0",
+        "version": "9.0.6",
+        "version_normalized": "9.0.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -3635,8 +3635,8 @@
     },
     {
         "name": "drupal/core-dev",
-        "version": "9.0.5",
-        "version_normalized": "9.0.5.0",
+        "version": "9.0.6",
+        "version_normalized": "9.0.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drupal/core-dev.git",
@@ -3681,17 +3681,17 @@
     },
     {
         "name": "drupal/core-recommended",
-        "version": "9.0.5",
-        "version_normalized": "9.0.5.0",
+        "version": "9.0.6",
+        "version_normalized": "9.0.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/drupal/core-recommended.git",
-            "reference": "b78dd90192e614eeb1d3cd484ca2dd85c7a4cf03"
+            "reference": "69c0b587af74cff8ce74fd908b15a279f7d99082"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/drupal/core-recommended/zipball/b78dd90192e614eeb1d3cd484ca2dd85c7a4cf03",
-            "reference": "b78dd90192e614eeb1d3cd484ca2dd85c7a4cf03",
+            "url": "https://api.github.com/repos/drupal/core-recommended/zipball/69c0b587af74cff8ce74fd908b15a279f7d99082",
+            "reference": "69c0b587af74cff8ce74fd908b15a279f7d99082",
             "shasum": ""
         },
         "require": {
@@ -3700,7 +3700,7 @@
             "doctrine/annotations": "1.10.3",
             "doctrine/lexer": "1.2.1",
             "doctrine/reflection": "1.2.1",
-            "drupal/core": "9.0.5",
+            "drupal/core": "9.0.6",
             "egulias/email-validator": "2.1.17",
             "guzzlehttp/guzzle": "6.5.4",
             "guzzlehttp/promises": "v1.3.1",
@@ -3754,7 +3754,7 @@
         "conflict": {
             "webflo/drupal-core-strict": "*"
         },
-        "time": "2020-09-03T21:05:44+00:00",
+        "time": "2020-09-16T11:21:49+00:00",
         "type": "metapackage",
         "notification-url": "https://packagist.org/downloads/",
         "license": [
@@ -3859,18 +3859,18 @@
     },
     {
         "name": "drupal/devel",
-        "version": "4.0.0",
-        "version_normalized": "4.0.0.0",
+        "version": "4.0.1",
+        "version_normalized": "4.0.1.0",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/devel.git",
-            "reference": "4.0.0"
+            "reference": "4.0.1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/devel-4.0.0.zip",
-            "reference": "4.0.0",
-            "shasum": "6c01ef8dd4e926e63b08fe28dea5357c7caa49c9"
+            "url": "https://ftp.drupal.org/files/projects/devel-4.0.1.zip",
+            "reference": "4.0.1",
+            "shasum": "cf2458de1cbac00a88ed26ae3da2cf331e1bc047"
         },
         "require": {
             "doctrine/common": "^2.7",
@@ -3898,8 +3898,8 @@
         "type": "drupal-module",
         "extra": {
             "drupal": {
-                "version": "4.0.0",
-                "datestamp": "1592918748",
+                "version": "4.0.1",
+                "datestamp": "1600300079",
                 "security-coverage": {
                     "status": "covered",
                     "message": "Covered by Drupal's security advisory policy"
@@ -4893,18 +4893,18 @@
     },
     {
         "name": "drupal/olivero",
-        "version": "1.0.0-beta1",
-        "version_normalized": "1.0.0.0-beta1",
+        "version": "1.0.0-beta2",
+        "version_normalized": "1.0.0.0-beta2",
         "source": {
             "type": "git",
             "url": "https://git.drupalcode.org/project/olivero.git",
-            "reference": "8.x-1.0-beta1"
+            "reference": "8.x-1.0-beta2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://ftp.drupal.org/files/projects/olivero-8.x-1.0-beta1.zip",
-            "reference": "8.x-1.0-beta1",
-            "shasum": "3fbaa8fd3d46d34a8afc4974d4e1df69a7f1ebce"
+            "url": "https://ftp.drupal.org/files/projects/olivero-8.x-1.0-beta2.zip",
+            "reference": "8.x-1.0-beta2",
+            "shasum": "79b0d74948a33f0322085b58bc1b1992dcf99bb4"
         },
         "require": {
             "drupal/core": "^8 || ^9"
@@ -4912,8 +4912,8 @@
         "type": "drupal-theme",
         "extra": {
             "drupal": {
-                "version": "8.x-1.0-beta1",
-                "datestamp": "1597332018",
+                "version": "8.x-1.0-beta2",
+                "datestamp": "1599942309",
                 "security-coverage": {
                     "status": "not-covered",
                     "message": "Project has not opted into security advisory coverage!"
@@ -14084,17 +14084,17 @@
     },
     {
         "name": "vimeo/psalm",
-        "version": "3.15",
-        "version_normalized": "3.15.0.0",
+        "version": "3.16",
+        "version_normalized": "3.16.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/vimeo/psalm.git",
-            "reference": "de6e7f324f44dde540ebe7ebd4eb481b97c86f30"
+            "reference": "d03e5ef057d6adc656c0ff7e166c50b73b4f48f3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/vimeo/psalm/zipball/de6e7f324f44dde540ebe7ebd4eb481b97c86f30",
-            "reference": "de6e7f324f44dde540ebe7ebd4eb481b97c86f30",
+            "url": "https://api.github.com/repos/vimeo/psalm/zipball/d03e5ef057d6adc656c0ff7e166c50b73b4f48f3",
+            "reference": "d03e5ef057d6adc656c0ff7e166c50b73b4f48f3",
             "shasum": ""
         },
         "require": {
@@ -14107,6 +14107,7 @@
             "ext-dom": "*",
             "ext-json": "*",
             "ext-libxml": "*",
+            "ext-mbstring": "*",
             "ext-simplexml": "*",
             "ext-tokenizer": "*",
             "felixfbecker/advanced-json-rpc": "^3.0.3",
@@ -14141,7 +14142,7 @@
         "suggest": {
             "ext-igbinary": "^2.0.5"
         },
-        "time": "2020-09-01T22:09:30+00:00",
+        "time": "2020-09-15T13:39:50+00:00",
         "bin": [
             "psalm",
             "psalm-language-server",

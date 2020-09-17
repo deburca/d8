@@ -45,6 +45,9 @@ use function strlen;
 use function strpos;
 use function strtolower;
 use function substr;
+use function reset;
+use function end;
+use function array_pop;
 
 class TypeParser
 {
@@ -56,14 +59,13 @@ class TypeParser
      * @param  array<string, array<string, array{Union}>> $template_type_map
      * @param  array<string, TypeAlias> $type_aliases
      *
-     * @return Union
      */
     public static function parseTokens(
         array $type_tokens,
-        array $php_version = null,
+        ?array $php_version = null,
         array $template_type_map = [],
         array $type_aliases = []
-    ) {
+    ): Union {
         if (count($type_tokens) === 1) {
             $only_token = $type_tokens[0];
 
@@ -104,7 +106,6 @@ class TypeParser
     }
 
     /**
-     * @param  ParseTree $parse_tree
      * @param  array{int,int}|null   $php_version
      * @param  array<string, array<string, array{Union}>> $template_type_map
      * @param  array<string, TypeAlias> $type_aliases
@@ -114,7 +115,7 @@ class TypeParser
     public static function getTypeFromTree(
         ParseTree $parse_tree,
         Codebase $codebase,
-        array $php_version = null,
+        ?array $php_version = null,
         array $template_type_map = [],
         array $type_aliases = []
     ) {
@@ -413,17 +414,33 @@ class TypeParser
                 $parse_tree->children
             );
 
-            $onlyObjectLike = true;
+            $onlyTKeyedArray = true;
+
+            $first_type = \reset($intersection_types);
+            $last_type = \end($intersection_types);
+
             foreach ($intersection_types as $intersection_type) {
-                if (!$intersection_type instanceof ObjectLike) {
-                    $onlyObjectLike = false;
+                if (!$intersection_type instanceof ObjectLike
+                    && ($intersection_type !== $first_type
+                        || !$first_type instanceof TArray)
+                    && ($intersection_type !== $last_type
+                        || !$last_type instanceof TArray)
+                ) {
+                    $onlyTKeyedArray = false;
                     break;
                 }
             }
 
-            if ($onlyObjectLike) {
+            if ($onlyTKeyedArray) {
                 /** @var non-empty-array<string|int, Union> */
                 $properties = [];
+
+                if ($first_type instanceof TArray) {
+                    \array_shift($intersection_types);
+                } elseif ($last_type instanceof TArray) {
+                    \array_pop($intersection_types);
+                }
+
                 /** @var ObjectLike $intersection_type */
                 foreach ($intersection_types as $intersection_type) {
                     foreach ($intersection_type->properties as $property => $property_type) {
@@ -447,7 +464,18 @@ class TypeParser
                         $properties[$property] = $intersection_type;
                     }
                 }
-                return new ObjectLike($properties);
+
+                $keyed_array = new ObjectLike($properties);
+
+                if ($first_type instanceof TArray) {
+                    $keyed_array->previous_key_type = $first_type->type_params[0];
+                    $keyed_array->previous_value_type = $first_type->type_params[1];
+                } elseif ($last_type instanceof TArray) {
+                    $keyed_array->previous_key_type = $last_type->type_params[0];
+                    $keyed_array->previous_value_type = $last_type->type_params[1];
+                }
+
+                return $keyed_array;
             }
 
             $keyed_intersection_types = [];
@@ -627,7 +655,11 @@ class TypeParser
                 /**
                  * @return FunctionLikeParameter
                  */
-                function (ParseTree $child_tree) use ($codebase, $template_type_map, $type_aliases) {
+                function (ParseTree $child_tree) use (
+                    $codebase,
+                    $template_type_map,
+                    $type_aliases
+                ): FunctionLikeParameter {
                     $is_variadic = false;
                     $is_optional = false;
 
@@ -847,7 +879,7 @@ class TypeParser
         }
 
         if (strpos($parse_tree->value, '::')) {
-            list($fq_classlike_name, $const_name) = explode('::', $parse_tree->value);
+            [$fq_classlike_name, $const_name] = explode('::', $parse_tree->value);
 
             if (isset($template_type_map[$fq_classlike_name]) && $const_name === 'class') {
                 $first_class = array_keys($template_type_map[$fq_classlike_name])[0];

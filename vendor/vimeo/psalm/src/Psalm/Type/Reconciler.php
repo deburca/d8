@@ -66,8 +66,6 @@ class Reconciler
      * @param  array<string, Type\Union> $existing_types
      * @param  array<string, bool>       $changed_var_ids
      * @param  array<string, bool>       $referenced_var_ids
-     * @param  StatementsAnalyzer         $statements_analyzer
-     * @param  CodeLocation|null         $code_location
      * @param  array<string, array<string, array{Type\Union}>> $template_type_map
      *
      * @return array<string, Type\Union>
@@ -81,8 +79,8 @@ class Reconciler
         StatementsAnalyzer $statements_analyzer,
         array $template_type_map = [],
         bool $inside_loop = false,
-        CodeLocation $code_location = null
-    ) {
+        ?CodeLocation $code_location = null
+    ): array {
         if (!$new_types) {
             return $existing_types;
         }
@@ -377,11 +375,9 @@ class Reconciler
     }
 
     /**
-     * @param  string $path
-     *
      * @return array<int, string>
      */
-    public static function breakUpPathIntoParts($path)
+    public static function breakUpPathIntoParts(string $path): array
     {
         if (isset(self::$broken_paths[$path])) {
             return self::$broken_paths[$path];
@@ -486,12 +482,10 @@ class Reconciler
     /**
      * Gets the type for a given (non-existent key) based on the passed keys
      *
-     * @param  string                    $key
      * @param  array<string,Type\Union>  $existing_keys
      * @param  array<string,mixed>       $new_assertions
      * @param  string[][]                $new_type_parts
      *
-     * @return Type\Union|null
      */
     private static function getValueForKey(
         Codebase $codebase,
@@ -504,7 +498,7 @@ class Reconciler
         bool $has_empty,
         bool $inside_loop,
         bool &$has_object_array_access
-    ) {
+    ): ?Union {
         $key_parts = self::breakUpPathIntoParts($key);
 
         if (count($key_parts) === 1) {
@@ -520,7 +514,7 @@ class Reconciler
 
         if (!isset($existing_keys[$base_key])) {
             if (strpos($base_key, '::')) {
-                list($fq_class_name, $const_name) = explode('::', $base_key);
+                [$fq_class_name, $const_name] = explode('::', $base_key);
 
                 if (!$codebase->classlikes->classOrInterfaceExists($fq_class_name)) {
                     return null;
@@ -814,13 +808,8 @@ class Reconciler
     }
 
     /**
-     * @param  string       $key
-     * @param  string       $old_var_type_string
-     * @param  string       $assertion
-     * @param  bool         $redundant
      * @param  string[]     $suppressed_issues
      *
-     * @return void
      */
     protected static function triggerIssueForImpossible(
         Union $existing_var_type,
@@ -830,8 +819,12 @@ class Reconciler
         bool $redundant,
         CodeLocation $code_location,
         array $suppressed_issues
-    ) {
-        $reconciliation = ' and trying to reconcile type \'' . $old_var_type_string . '\' to ' . $assertion;
+    ): void {
+        $never = $assertion[0] === '!';
+
+        if ($never) {
+            $assertion = substr($assertion, 1);
+        }
 
         $existing_var_atomic_types = $existing_var_type->getAtomicTypes();
 
@@ -843,9 +836,11 @@ class Reconciler
             if ($from_docblock) {
                 if (IssueBuffer::accepts(
                     new RedundantConditionGivenDocblockType(
-                        'Found a redundant condition when evaluating docblock-defined type '
-                            . $key . $reconciliation,
-                        $code_location
+                        'Docblock-defined type ' . $old_var_type_string
+                            . ' for ' . $key
+                            . ' is ' . ($never ? 'never ' : 'always ') . $assertion,
+                        $code_location,
+                        $old_var_type_string . ' ' . $assertion
                     ),
                     $suppressed_issues
                 )) {
@@ -854,8 +849,11 @@ class Reconciler
             } else {
                 if (IssueBuffer::accepts(
                     new RedundantCondition(
-                        'Found a redundant condition when evaluating ' . $key . $reconciliation,
-                        $code_location
+                        'Type ' . $old_var_type_string
+                            . ' for ' . $key
+                            . ' is ' . ($never ? 'never ' : 'always ') . $assertion,
+                        $code_location,
+                        $old_var_type_string . ' ' . $assertion
                     ),
                     $suppressed_issues
                 )) {
@@ -866,9 +864,11 @@ class Reconciler
             if ($from_docblock) {
                 if (IssueBuffer::accepts(
                     new DocblockTypeContradiction(
-                        'Found a contradiction with a docblock-defined type '
-                            . 'when evaluating ' . $key . $reconciliation,
-                        $code_location
+                        'Docblock-defined type ' . $old_var_type_string
+                            . ' for ' . $key
+                            . ' is ' . ($never ? 'always ' : 'never ') . $assertion,
+                        $code_location,
+                        $old_var_type_string . ' ' . $assertion
                     ),
                     $suppressed_issues
                 )) {
@@ -877,8 +877,11 @@ class Reconciler
             } else {
                 if (IssueBuffer::accepts(
                     new TypeDoesNotContainType(
-                        'Found a contradiction when evaluating ' . $key . $reconciliation,
-                        $code_location
+                        'Type ' . $old_var_type_string
+                            . ' for ' . $key
+                            . ' is ' . ($never ? 'always ' : 'never ') . $assertion,
+                        $code_location,
+                        $old_var_type_string . ' ' . $assertion
                     ),
                     $suppressed_issues
                 )) {

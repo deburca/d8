@@ -219,7 +219,7 @@ $vendor_dir = \Psalm\getVendorDir($current_dir);
 require_once __DIR__ . '/Psalm/Internal/IncludeCollector.php';
 $include_collector = new IncludeCollector();
 $first_autoloader = $include_collector->runAndCollect(
-    function () use ($current_dir, $options, $vendor_dir) {
+    function () use ($current_dir, $options, $vendor_dir): ?\Composer\Autoload\ClassLoader {
         return requireAutoloaders($current_dir, isset($options['r']), $vendor_dir);
     }
 );
@@ -347,7 +347,7 @@ if (isset($options['codeowner'])) {
 
     $codeowner_files = [];
 
-    foreach ($codeowner_lines as list($path, $owners)) {
+    foreach ($codeowner_lines as [$path, $owners]) {
         if (!file_exists($path)) {
             continue;
         }

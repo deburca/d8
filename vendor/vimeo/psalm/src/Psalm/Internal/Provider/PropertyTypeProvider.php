@@ -32,9 +32,8 @@ class PropertyTypeProvider
     /**
      * @param  class-string<PropertyTypeProviderInterface> $class
      *
-     * @return void
      */
-    public function registerClass(string $class)
+    public function registerClass(string $class): void
     {
         $callable = \Closure::fromCallable([$class, 'getPropertyType']);
 
@@ -53,9 +52,8 @@ class PropertyTypeProvider
      *     ?Context=
      *   ) : ?Type\Union $c
      *
-     * @return void
      */
-    public function registerClosure(string $fq_classlike_name, \Closure $c)
+    public function registerClosure(string $fq_classlike_name, \Closure $c): void
     {
         self::$handlers[strtolower($fq_classlike_name)][] = $c;
     }
@@ -68,15 +66,14 @@ class PropertyTypeProvider
     /**
      * @param  array<PhpParser\Node\Arg>  $call_args
      *
-     * @return ?Type\Union
      */
     public function getPropertyType(
         string $fq_classlike_name,
         string $property_name,
         bool $read_mode,
-        StatementsSource $source = null,
-        Context $context = null
-    ) {
+        ?StatementsSource $source = null,
+        ?Context $context = null
+    ): ?Type\Union {
         foreach (self::$handlers[strtolower($fq_classlike_name)] as $property_handler) {
             $property_type = $property_handler(
                 $fq_classlike_name,

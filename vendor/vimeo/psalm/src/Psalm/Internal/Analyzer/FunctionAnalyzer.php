@@ -44,17 +44,14 @@ class FunctionAnalyzer extends FunctionLikeAnalyzer
     }
 
     /**
-     * @param  string                      $function_id
      * @param  array<PhpParser\Node\Arg>   $call_args
-     *
-     * @return Type\Union
      */
     public static function getReturnTypeFromCallMapWithArgs(
         StatementsAnalyzer $statements_analyzer,
-        $function_id,
+        string $function_id,
         array $call_args,
         Context $context
-    ) {
+    ): Type\Union {
         $call_map_key = strtolower($function_id);
 
         $call_map = InternalCallMapHandler::getCallMap();
@@ -282,7 +279,7 @@ class FunctionAnalyzer extends FunctionLikeAnalyzer
     /**
      * @return non-empty-lowercase-string
      */
-    public function getFunctionId()
+    public function getFunctionId(): string
     {
         $namespace = $this->source->getNamespace();
 

@@ -30,7 +30,7 @@ class Algebra
      *
      * @psalm-pure
      */
-    public static function negateTypes(array $all_types)
+    public static function negateTypes(array $all_types): array
     {
         return array_filter(
             array_map(
@@ -39,7 +39,7 @@ class Algebra
                  *
                  * @return list<non-empty-list<string>>
                  */
-                function (array $anded_types) {
+                function (array $anded_types): array {
                     if (count($anded_types) > 1) {
                         $new_anded_types = [];
 
@@ -68,13 +68,9 @@ class Algebra
     }
 
     /**
-     * @param string $type
-     *
-     * @return string
-     *
      * @psalm-pure
      */
-    public static function negateType($type)
+    public static function negateType(string $type): string
     {
         if ($type === 'mixed') {
             return $type;
@@ -84,22 +80,18 @@ class Algebra
     }
 
     /**
-     * @param  PhpParser\Node\Expr      $conditional
-     * @param  string|null              $this_class_name
-     * @param  FileSource         $source
-     *
      * @return array<int, Clause>
      */
     public static function getFormula(
         int $conditional_object_id,
         int $creating_object_id,
         PhpParser\Node\Expr $conditional,
-        $this_class_name,
+        ?string $this_class_name,
         FileSource $source,
-        Codebase $codebase = null,
+        ?Codebase $codebase = null,
         bool $inside_negation = false,
         bool $cache = true
-    ) {
+    ): array {
         if ($conditional instanceof PhpParser\Node\Expr\BinaryOp\BooleanAnd ||
             $conditional instanceof PhpParser\Node\Expr\BinaryOp\LogicalAnd
         ) {
@@ -425,7 +417,7 @@ class Algebra
      *
      * @psalm-pure
      */
-    public static function simplifyCNF(array $clauses)
+    public static function simplifyCNF(array $clauses): array
     {
         $cloned_clauses = [];
 
@@ -460,12 +452,7 @@ class Algebra
                     $clause_var_possibilities = array_values(
                         array_filter(
                             $clause_b->possibilities[$clause_var],
-                            /**
-                             * @param string $possible_type
-                             *
-                             * @return bool
-                             */
-                            function ($possible_type) use ($negated_clause_type) {
+                            function (string $possible_type) use ($negated_clause_type): bool {
                                 return $possible_type !== $negated_clause_type;
                             }
                         )
@@ -533,7 +520,7 @@ class Algebra
         ?int $creating_conditional_id = null,
         array &$cond_referenced_var_ids = [],
         array &$active_truths = []
-    ) {
+    ): array {
         $truths = [];
         $active_truths = [];
 
@@ -568,12 +555,7 @@ class Algebra
                     // if there's only one active clause, return all the non-negation clause members ORed together
                     $things_that_can_be_said = array_filter(
                         $possible_types,
-                        /**
-                         * @param  string $possible_type
-                         *
-                         * @return bool
-                         */
-                        function ($possible_type) {
+                        function (string $possible_type): bool {
                             return $possible_type[0] !== '!';
                         }
                     );
@@ -606,7 +588,7 @@ class Algebra
      *
      * @psalm-pure
      */
-    public static function groupImpossibilities(array $clauses)
+    public static function groupImpossibilities(array $clauses): array
     {
         $complexity = 1;
 
@@ -695,8 +677,11 @@ class Algebra
      *
      * @psalm-pure
      */
-    public static function combineOredClauses(array $left_clauses, array $right_clauses, int $conditional_object_id)
-    {
+    public static function combineOredClauses(
+        array $left_clauses,
+        array $right_clauses,
+        int $conditional_object_id
+    ): array {
         $clauses = [];
 
         $all_wedges = true;
@@ -815,7 +800,7 @@ class Algebra
      *
      * @return non-empty-list<Clause>
      */
-    public static function negateFormula(array $clauses)
+    public static function negateFormula(array $clauses): array
     {
         if (!$clauses) {
             $cond_id = \mt_rand(0, 100000000);

@@ -158,15 +158,14 @@ class TypeCombination
      * @param  int    $literal_limit any greater number of literal types than this
      *                               will be merged to a scalar
      *
-     * @return Union
      */
     public static function combineTypes(
         array $types,
-        Codebase $codebase = null,
+        ?Codebase $codebase = null,
         bool $overwrite_empty_array = false,
         bool $allow_mixed_union = true,
         int $literal_limit = 500
-    ) {
+    ): Union {
         if (in_array(null, $types, true)) {
             return Type::getMixed();
         }
@@ -612,21 +611,14 @@ class TypeCombination
         return $union_type;
     }
 
-    /**
-     * @param  Atomic  $type
-     * @param  TypeCombination $combination
-     * @param  Codebase|null   $codebase
-     *
-     * @return null|Union
-     */
     private static function scrapeTypeProperties(
         Atomic $type,
         TypeCombination $combination,
-        $codebase,
+        ?Codebase $codebase,
         bool $overwrite_empty_array,
         bool $allow_mixed_union,
         int $literal_limit
-    ) {
+    ): ?Union {
         if ($type instanceof TMixed) {
             $combination->has_mixed = true;
             if ($type->from_loop_isset) {
@@ -763,7 +755,7 @@ class TypeCombination
 
         if ($type instanceof TArray && $type_key === 'array') {
             if ($type instanceof TCallableArray && isset($combination->value_types['callable'])) {
-                return;
+                return null;
             }
 
             foreach ($type->type_params as $i => $type_param) {
@@ -920,7 +912,7 @@ class TypeCombination
 
         if ($type instanceof ObjectLike) {
             if ($type instanceof TCallableObjectLikeArray && isset($combination->value_types['callable'])) {
-                return;
+                return null;
             }
 
             $existing_objectlike_entries = (bool) $combination->objectlike_entries;
@@ -1012,7 +1004,7 @@ class TypeCombination
 
         if ($type instanceof TObject) {
             if ($type instanceof TCallableObject && isset($combination->value_types['callable'])) {
-                return;
+                return null;
             }
 
             $combination->named_object_types = null;
@@ -1121,7 +1113,7 @@ class TypeCombination
 
         if ($type instanceof TString) {
             if ($type instanceof TCallableString && isset($combination->value_types['callable'])) {
-                return;
+                return null;
             }
 
             if (isset($combination->value_types['array-key'])) {
@@ -1302,7 +1294,7 @@ class TypeCombination
 
                     $all_nonnegative = !array_filter(
                         $combination->ints,
-                        function ($int) {
+                        function ($int): bool {
                             return $int->value < 0;
                         }
                     );
@@ -1322,7 +1314,7 @@ class TypeCombination
                     if ($combination->ints) {
                         $all_nonnegative = !array_filter(
                             $combination->ints,
-                            function ($int) {
+                            function ($int): bool {
                                 return $int->value < 0;
                             }
                         );
@@ -1379,6 +1371,7 @@ class TypeCombination
         }
 
         $combination->value_types[$type_key] = $type;
+        return null;
     }
 
     /**
@@ -1421,7 +1414,7 @@ class TypeCombination
     /**
      * @return array<string, bool>
      */
-    private static function getClassLikes(Codebase $codebase, string $fq_classlike_name)
+    private static function getClassLikes(Codebase $codebase, string $fq_classlike_name): array
     {
         try {
             $class_storage = $codebase->classlike_storage_provider->get($fq_classlike_name);

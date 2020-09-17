@@ -277,7 +277,7 @@ require_once __DIR__ . '/' . 'Psalm/Internal/IncludeCollector.php';
 
 $include_collector = new IncludeCollector();
 $first_autoloader = $include_collector->runAndCollect(
-    function () use ($current_dir, $options, $vendor_dir) {
+    function () use ($current_dir, $options, $vendor_dir): ?\Composer\Autoload\ClassLoader {
         return requireAutoloaders($current_dir, isset($options['r']), $vendor_dir);
     }
 );
@@ -302,12 +302,7 @@ if (isset($options['i'])) {
 
     $args = array_values(array_filter(
         $args,
-        /**
-         * @param string $arg
-         *
-         * @return bool
-         */
-        function ($arg) {
+        function (string $arg): bool {
             return $arg !== '--ansi'
                 && $arg !== '--no-ansi'
                 && $arg !== '-i'
@@ -530,7 +525,9 @@ if (isset($options['shepherd'])) {
 if (isset($options['clear-cache'])) {
     $cache_directory = $config->getCacheDirectory();
 
-    Config::removeCacheDirectory($cache_directory);
+    if ($cache_directory !== null) {
+        Config::removeCacheDirectory($cache_directory);
+    }
     echo 'Cache directory deleted' . PHP_EOL;
     exit;
 }

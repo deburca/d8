@@ -35,16 +35,13 @@ use function strtolower;
 class ReturnAnalyzer
 {
     /**
-     * @param  PhpParser\Node\Stmt\Return_ $stmt
-     * @param  Context                     $context
-     *
      * @return false|null
      */
     public static function analyze(
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Stmt\Return_ $stmt,
         Context $context
-    ) {
+    ): ?bool {
         $doc_comment = $stmt->getDocComment();
 
         $var_comments = [];
@@ -224,7 +221,7 @@ class ReturnAnalyzer
                     );
 
                     if ($storage instanceof \Psalm\Storage\MethodStorage) {
-                        list($fq_class_name, $method_name) = explode('::', $cased_method_id);
+                        [$fq_class_name, $method_name] = explode('::', $cased_method_id);
 
                         $class_storage = $codebase->classlike_storage_provider->get($fq_class_name);
 

@@ -22,12 +22,10 @@ class TaintedInput extends CodeIssue
     public $journey = [];
 
     /**
-     * @param string        $message
-     * @param CodeLocation  $code_location
      * @param list<array{location: ?CodeLocation, label: string, entry_path_type: string}> $journey
      */
     public function __construct(
-        $message,
+        string $message,
         CodeLocation $code_location,
         array $journey,
         string $journey_text
@@ -41,7 +39,7 @@ class TaintedInput extends CodeIssue
     /**
      * @return list<TaintNodeData|array{label: string, entry_path_type: string}>
      */
-    public function getTaintTrace()
+    public function getTaintTrace(): array
     {
         $nodes = [];
 

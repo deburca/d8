@@ -45,17 +45,13 @@ use function array_keys;
 class ForeachAnalyzer
 {
     /**
-     * @param   StatementsAnalyzer               $statements_analyzer
-     * @param   PhpParser\Node\Stmt\Foreach_    $stmt
-     * @param   Context                         $context
-     *
      * @return  false|null
      */
     public static function analyze(
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Stmt\Foreach_ $stmt,
         Context $context
-    ) {
+    ): ?bool {
         $var_comments = [];
 
         $doc_comment = $stmt->getDocComment();
@@ -353,8 +349,6 @@ class ForeachAnalyzer
     }
 
     /**
-     * @param  ?Type\Union  $key_type
-     * @param  ?Type\Union  $value_type
      * @return false|null
      */
     public static function checkIteratorType(
@@ -363,10 +357,10 @@ class ForeachAnalyzer
         Type\Union $iterator_type,
         Codebase $codebase,
         Context $context,
-        &$key_type,
-        &$value_type,
+        ?Type\Union &$key_type,
+        ?Type\Union &$value_type,
         bool &$always_non_empty_array
-    ) {
+    ): ?bool {
         if ($iterator_type->isNull()) {
             if (IssueBuffer::accepts(
                 new NullIterator(
@@ -708,11 +702,11 @@ class ForeachAnalyzer
                 }
             }
         }
+
+        return null;
     }
 
     /**
-     * @param  ?Type\Union  $key_type
-     * @param  ?Type\Union  $value_type
      * @return void
      */
     public static function handleIterable(
@@ -721,8 +715,8 @@ class ForeachAnalyzer
         PhpParser\Node\Expr $foreach_expr,
         Codebase $codebase,
         Context $context,
-        &$key_type,
-        &$value_type,
+        ?Type\Union &$key_type,
+        ?Type\Union &$value_type,
         bool &$has_valid_iterator
     ) {
         if ($iterator_atomic_type->extra_types) {
@@ -976,15 +970,13 @@ class ForeachAnalyzer
     }
 
     /**
-     * @param  ?Type\Union  $key_type
-     * @param  ?Type\Union  $value_type
      * @return void
      */
     public static function getKeyValueParamsForTraversableObject(
         Type\Atomic $iterator_atomic_type,
         Codebase $codebase,
-        &$key_type,
-        &$value_type
+        ?Type\Union &$key_type,
+        ?Type\Union &$value_type
     ) {
         if ($iterator_atomic_type instanceof Type\Atomic\TIterable
             || ($iterator_atomic_type instanceof Type\Atomic\TGenericObject
@@ -1127,20 +1119,18 @@ class ForeachAnalyzer
     }
 
     /**
-     * @param  string $template_name
      * @param  array<string, array<int|string, Type\Union>>  $template_type_extends
      * @param  array<string, array<string, array{Type\Union}>>  $class_template_types
      * @param  array<int, Type\Union> $calling_type_params
-     * @return Type\Union|null
      */
     private static function getExtendedType(
         string $template_name,
         string $template_class,
         string $calling_class,
         array $template_type_extends,
-        array $class_template_types = null,
-        array $calling_type_params = null
-    ) {
+        ?array $class_template_types = null,
+        ?array $calling_type_params = null
+    ): ?Type\Union {
         if ($calling_class === $template_class) {
             if (isset($class_template_types[$template_name]) && $calling_type_params) {
                 $offset = array_search($template_name, array_keys($class_template_types));

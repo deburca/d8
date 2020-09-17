@@ -24,13 +24,13 @@ class GetClassT extends TString
     /**
      * @param string $typeof the variable id
      */
-    public function __construct($typeof, Union $as_type)
+    public function __construct(string $typeof, Union $as_type)
     {
         $this->typeof = $typeof;
         $this->as_type = $as_type;
     }
 
-    public function getId(bool $nested = false)
+    public function getId(bool $nested = false): string
     {
         return $this->as_type->isMixed()
             || $this->as_type->hasObject()
@@ -38,10 +38,7 @@ class GetClassT extends TString
             : 'class-string<' . $this->as_type->getId() . '>';
     }
 
-    /**
-     * @return bool
-     */
-    public function canBeFullyExpressedInPhp()
+    public function canBeFullyExpressedInPhp(): bool
     {
         return false;
     }

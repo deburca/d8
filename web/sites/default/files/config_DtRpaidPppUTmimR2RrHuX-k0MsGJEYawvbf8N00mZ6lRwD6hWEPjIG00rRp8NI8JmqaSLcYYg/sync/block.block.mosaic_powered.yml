@@ -1,17 +1,17 @@
-uuid: 9e67d4bf-9fb6-447b-b1bb-bb5b9335461e
+uuid: 233e141f-c2f4-406c-a0c9-e6a055042cba
 langcode: en
-status: false
+status: true
 dependencies:
   module:
     - system
   theme:
     - mosaic
 _core:
-  default_config_hash: iggZSiUKz4mYP1YPJ8SsUfFu79HIgOTt6IDy3Up59aM
+  default_config_hash: ygYOxNV388KKajE2oZsiM9hejoed0gu5WeXcLR_zfzM
 id: mosaic_powered
 theme: mosaic
-region: footer
-weight: -8
+region: tools
+weight: 0
 provider: null
 plugin: system_powered_by_block
 settings:

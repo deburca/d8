@@ -43,17 +43,14 @@ use Psalm\Internal\Type\TypeExpander;
 class ArrayFunctionArgumentsAnalyzer
 {
     /**
-     * @param   StatementsAnalyzer              $statements_analyzer
      * @param   array<int, PhpParser\Node\Arg> $args
-     * @param   string                         $method_id
-     *
      * @return  false|null
      */
     public static function checkArgumentsMatch(
         StatementsAnalyzer $statements_analyzer,
         Context $context,
         array $args,
-        $method_id,
+        string $method_id,
         bool $check_functions
     ) {
         $closure_index = $method_id === 'array_map' ? 0 : 1;
@@ -122,9 +119,7 @@ class ArrayFunctionArgumentsAnalyzer
     }
 
     /**
-     * @param   StatementsAnalyzer                      $statements_analyzer
      * @param   array<int, PhpParser\Node\Arg>          $args
-     * @param   Context                                 $context
      *
      * @return  false|null
      */
@@ -133,7 +128,7 @@ class ArrayFunctionArgumentsAnalyzer
         array $args,
         Context $context,
         bool $is_push
-    ) {
+    ): ?bool {
         $array_arg = $args[0]->value;
 
         $unpacked_args = array_filter(
@@ -178,7 +173,7 @@ class ArrayFunctionArgumentsAnalyzer
                 $statements_analyzer->node_data = $old_node_data;
             }
 
-            return;
+            return null;
         }
 
         $context->inside_call = true;
@@ -319,13 +314,11 @@ class ArrayFunctionArgumentsAnalyzer
 
         $context->inside_call = false;
 
-        return;
+        return null;
     }
 
     /**
-     * @param   StatementsAnalyzer                      $statements_analyzer
      * @param   array<int, PhpParser\Node\Arg>          $args
-     * @param   Context                                 $context
      *
      * @return  false|null
      */
@@ -333,7 +326,7 @@ class ArrayFunctionArgumentsAnalyzer
         StatementsAnalyzer $statements_analyzer,
         array $args,
         Context $context
-    ) {
+    ): ?bool {
         $context->inside_call = true;
         $array_arg = $args[0]->value;
 
@@ -356,7 +349,7 @@ class ArrayFunctionArgumentsAnalyzer
         }
 
         if (!isset($args[2])) {
-            return;
+            return null;
         }
 
         $length_arg = $args[2]->value;
@@ -370,7 +363,7 @@ class ArrayFunctionArgumentsAnalyzer
         }
 
         if (!isset($args[3])) {
-            return;
+            return null;
         }
 
         $replacement_arg = $args[3]->value;
@@ -460,7 +453,7 @@ class ArrayFunctionArgumentsAnalyzer
                 false
             );
 
-            return;
+            return null;
         }
 
         $array_type = Type::getArray();
@@ -473,17 +466,16 @@ class ArrayFunctionArgumentsAnalyzer
             $context,
             false
         );
+
+        return null;
     }
 
-    /**
-     * @return void
-     */
     public static function handleByRefArrayAdjustment(
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Arg $arg,
         Context $context,
         bool $is_array_shift
-    ) {
+    ): void {
         $var_id = ExpressionIdentifier::getVarId(
             $arg->value,
             $statements_analyzer->getFQCLN(),
@@ -568,24 +560,20 @@ class ArrayFunctionArgumentsAnalyzer
     }
 
     /**
-     * @param  string   $method_id
-     * @param  int      $min_closure_param_count
-     * @param  int      $max_closure_param_count [description]
      * @param  (TArray|null)[] $array_arg_types
      *
-     * @return void
      */
     private static function checkClosureType(
         StatementsAnalyzer $statements_analyzer,
         Context $context,
-        $method_id,
+        string $method_id,
         Type\Atomic $closure_type,
         PhpParser\Node\Arg $closure_arg,
-        $min_closure_param_count,
-        $max_closure_param_count,
+        int $min_closure_param_count,
+        int $max_closure_param_count,
         array $array_arg_types,
         bool $check_functions
-    ) {
+    ): void {
         $codebase = $statements_analyzer->getCodebase();
 
         if (!$closure_type instanceof Type\Atomic\TFn) {
@@ -618,7 +606,7 @@ class ArrayFunctionArgumentsAnalyzer
                     $function_id_parts = explode('&', $function_id);
 
                     foreach ($function_id_parts as $function_id_part) {
-                        list($callable_fq_class_name, $method_name) = explode('::', $function_id_part);
+                        [$callable_fq_class_name, $method_name] = explode('::', $function_id_part);
 
                         switch ($callable_fq_class_name) {
                             case 'self':
@@ -738,9 +726,6 @@ class ArrayFunctionArgumentsAnalyzer
 
     /**
      * @param  Type\Atomic\TFn|Type\Atomic\TCallable $closure_type
-     * @param  string   $method_id
-     * @param  int      $min_closure_param_count
-     * @param  int      $max_closure_param_count
      * @param  (TArray|null)[] $array_arg_types
      *
      * @return void
@@ -748,11 +733,11 @@ class ArrayFunctionArgumentsAnalyzer
     private static function checkClosureTypeArgs(
         StatementsAnalyzer $statements_analyzer,
         Context $context,
-        $method_id,
+        string $method_id,
         Type\Atomic $closure_type,
         PhpParser\Node\Arg $closure_arg,
-        $min_closure_param_count,
-        $max_closure_param_count,
+        int $min_closure_param_count,
+        int $max_closure_param_count,
         array $array_arg_types
     ) {
         $codebase = $statements_analyzer->getCodebase();

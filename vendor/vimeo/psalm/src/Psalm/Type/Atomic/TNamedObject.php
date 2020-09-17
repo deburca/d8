@@ -29,7 +29,7 @@ class TNamedObject extends Atomic
     /**
      * @param string $value the name of the object
      */
-    public function __construct($value, bool $was_static = false)
+    public function __construct(string $value, bool $was_static = false)
     {
         if ($value[0] === '\\') {
             $value = substr($value, 1);
@@ -39,15 +39,12 @@ class TNamedObject extends Atomic
         $this->was_static = $was_static;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getKey();
     }
 
-    /**
-     * @return string
-     */
-    public function getKey(bool $include_extra = true)
+    public function getKey(bool $include_extra = true): string
     {
         if ($include_extra && $this->extra_types) {
             return $this->value . '&' . implode('&', $this->extra_types);
@@ -56,7 +53,7 @@ class TNamedObject extends Atomic
         return $this->value;
     }
 
-    public function getId(bool $nested = false)
+    public function getId(bool $nested = false): string
     {
         if ($this->extra_types) {
             return $this->value . '&' . implode(
@@ -74,19 +71,15 @@ class TNamedObject extends Atomic
     }
 
     /**
-     * @param  string|null   $namespace
      * @param  array<string, string> $aliased_classes
-     * @param  string|null   $this_class
-     * @param  bool          $use_phpdoc_format
      *
-     * @return string
      */
     public function toNamespacedString(
         ?string $namespace,
         array $aliased_classes,
         ?string $this_class,
         bool $use_phpdoc_format
-    ) {
+    ): string {
         if ($this->value === 'static') {
             return 'static';
         }
@@ -103,21 +96,15 @@ class TNamedObject extends Atomic
     }
 
     /**
-     * @param  string|null   $namespace
      * @param  array<string, string> $aliased_classes
-     * @param  string|null   $this_class
-     * @param  int           $php_major_version
-     * @param  int           $php_minor_version
-     *
-     * @return string|null
      */
     public function toPhpString(
-        $namespace,
+        ?string $namespace,
         array $aliased_classes,
-        $this_class,
-        $php_major_version,
-        $php_minor_version
-    ) {
+        ?string $this_class,
+        int $php_major_version,
+        int $php_minor_version
+    ): ?string {
         if ($this->value === 'static') {
             return null;
         }
@@ -125,7 +112,7 @@ class TNamedObject extends Atomic
         return $this->toNamespacedString($namespace, $aliased_classes, $this_class, false);
     }
 
-    public function canBeFullyExpressedInPhp()
+    public function canBeFullyExpressedInPhp(): bool
     {
         return $this->value !== 'static';
     }

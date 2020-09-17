@@ -27,8 +27,6 @@ class AlgebraAnalyzer
      *
      * @param  array<int, Clause>   $formula1
      * @param  array<int, Clause>   $formula2
-     * @param  StatementsAnalyzer    $statements_analyzer,
-     * @param  PhpParser\Node       $stmt
      * @param  array<string, bool>  $new_assigned_var_ids
      *
      * @return void
@@ -66,7 +64,8 @@ class AlgebraAnalyzer
                 if (IssueBuffer::accepts(
                     new RedundantCondition(
                         $formula2_clause . ' has already been asserted',
-                        new CodeLocation($statements_analyzer, $stmt)
+                        new CodeLocation($statements_analyzer, $stmt),
+                        null
                     ),
                     $statements_analyzer->getSuppressedIssues()
                 )) {
@@ -106,7 +105,8 @@ class AlgebraAnalyzer
                         if (IssueBuffer::accepts(
                             new RedundantCondition(
                                 'Found a redundant condition when evaluating ' . $key,
-                                new CodeLocation($statements_analyzer, $stmt)
+                                new CodeLocation($statements_analyzer, $stmt),
+                                null
                             ),
                             $statements_analyzer->getSuppressedIssues()
                         )) {

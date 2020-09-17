@@ -1,15 +1,15 @@
-uuid: 6e497c51-573b-47ea-83a5-cb7453e22cdb
+uuid: 45aadc68-c932-425b-8fb1-8170e8f4d5c3
 langcode: en
 status: true
 dependencies:
   theme:
     - mosaic
 _core:
-  default_config_hash: 1TQP4b3ZnlzvIH9bj6cpCz_SyUHdJjLQkZnHpikjjhw
+  default_config_hash: WImvmaBdDpwIqobqbDWebBnyxssRvrNEnZSQbOsvOe4
 id: mosaic_page_title
 theme: mosaic
-region: header
-weight: -9
+region: tools
+weight: -5
 provider: null
 plugin: page_title_block
 settings:

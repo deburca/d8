@@ -18,17 +18,13 @@ use function array_intersect_key;
 class ForAnalyzer
 {
     /**
-     * @param   StatementsAnalyzer           $statements_analyzer
-     * @param   PhpParser\Node\Stmt\For_    $stmt
-     * @param   Context                     $context
-     *
      * @return  false|null
      */
     public static function analyze(
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Stmt\For_ $stmt,
         Context $context
-    ) {
+    ): ?bool {
         $pre_assigned_var_ids = $context->assigned_var_ids;
         $context->assigned_var_ids = [];
 

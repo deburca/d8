@@ -498,7 +498,7 @@ class StaticCallAnalyzer extends CallAnalyzer
                                 $mixin_candidates[] = clone $mixin_candidate;
                             }
 
-                            $mixin_candidates_no_generic = array_filter($mixin_candidates, function ($check) {
+                            $mixin_candidates_no_generic = array_filter($mixin_candidates, function ($check): bool {
                                 return !($check instanceof Type\Atomic\TGenericObject);
                             });
 
@@ -669,7 +669,7 @@ class StaticCallAnalyzer extends CallAnalyzer
                             /**
                              * @return PhpParser\Node\Expr\ArrayItem
                              */
-                            function (PhpParser\Node\Arg $arg) {
+                            function (PhpParser\Node\Arg $arg): PhpParser\Node\Expr\ArrayItem {
                                 return new PhpParser\Node\Expr\ArrayItem($arg->value);
                             },
                             $args
@@ -1251,7 +1251,7 @@ class StaticCallAnalyzer extends CallAnalyzer
                             ) {
                                 $new_method_id = substr($transformation, 0, -4);
                                 $old_declaring_fq_class_name = $declaring_method_id->fq_class_name;
-                                list($new_fq_class_name, $new_method_name) = explode('::', $new_method_id);
+                                [$new_fq_class_name, $new_method_name] = explode('::', $new_method_id);
 
                                 if ($codebase->classlikes->handleClassLikeReferenceInMigration(
                                     $codebase,
@@ -1483,7 +1483,7 @@ class StaticCallAnalyzer extends CallAnalyzer
         \Psalm\Storage\ClassLikeStorage $class_storage,
         \Psalm\Storage\MethodStorage $pseudo_method_storage,
         Context $context
-    ) {
+    ): ?bool {
         if (ArgumentsAnalyzer::analyze(
             $statements_analyzer,
             $args,
@@ -1576,5 +1576,7 @@ class StaticCallAnalyzer extends CallAnalyzer
                 );
             }
         }
+
+        return null;
     }
 }

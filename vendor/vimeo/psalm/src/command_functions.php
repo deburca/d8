@@ -37,14 +37,7 @@ use function ini_get;
 use function preg_match;
 use function strtoupper;
 
-/**
- * @param  string $current_dir
- * @param  bool   $has_explicit_root
- * @param  string $vendor_dir
- *
- * @return ?\Composer\Autoload\ClassLoader
- */
-function requireAutoloaders($current_dir, $has_explicit_root, $vendor_dir)
+function requireAutoloaders(string $current_dir, bool $has_explicit_root, string $vendor_dir): ?ClassLoader
 {
     $autoload_roots = [$current_dir];
 
@@ -142,15 +135,11 @@ function requireAutoloaders($current_dir, $has_explicit_root, $vendor_dir)
 }
 
 /**
- * @param  string $current_dir
- *
- * @return string
- *
  * @psalm-suppress MixedArrayAccess
  * @psalm-suppress MixedAssignment
  * @psalm-suppress PossiblyUndefinedStringArrayOffset
  */
-function getVendorDir($current_dir)
+function getVendorDir(string $current_dir): string
 {
     $composer_json_path = $current_dir . DIRECTORY_SEPARATOR . 'composer.json';
 
@@ -219,7 +208,7 @@ function getArguments() : array
  *
  * @return string[]|null
  */
-function getPathsToCheck($f_paths)
+function getPathsToCheck($f_paths): ?array
 {
     global $argv;
 
@@ -384,7 +373,8 @@ Output:
 
     --output-format=console
         Changes the output format.
-        Available formats: compact, console, text, emacs, json, pylint, xml, checkstyle, junit, sonarqube, github
+        Available formats: compact, console, text, emacs, json, pylint, xml, checkstyle, junit, sonarqube, github,
+                           phpstorm
 
     --no-progress
         Disable the progress indicator

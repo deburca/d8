@@ -52,17 +52,14 @@ class InternalCallMapHandler
     private static $taint_sink_map = [];
 
     /**
-     * @param  string                           $method_id
      * @param  array<int, PhpParser\Node\Arg>   $args
-     *
-     * @return TCallable
      */
     public static function getCallableFromCallMapById(
         Codebase $codebase,
-        $method_id,
+        string $method_id,
         array $args,
         ?\Psalm\Internal\Provider\NodeDataProvider $nodes
-    ) {
+    ): TCallable {
         $possible_callables = self::getCallablesFromCallMap($method_id);
 
         if ($possible_callables === null) {
@@ -83,14 +80,13 @@ class InternalCallMapHandler
      * @param  array<int, TCallable>  $callables
      * @param  array<int, PhpParser\Node\Arg>                 $args
      *
-     * @return TCallable
      */
     public static function getMatchingCallableFromCallMapOptions(
         Codebase $codebase,
         array $callables,
         array $args,
         ?\Psalm\NodeTypeProvider $nodes
-    ) {
+    ): TCallable {
         if (count($callables) === 1) {
             return $callables[0];
         }
@@ -218,12 +214,9 @@ class InternalCallMapHandler
     }
 
     /**
-     * @param  string $function_id
-     *
-     * @return array|null
      * @psalm-return array<int, TCallable>|null
      */
-    public static function getCallablesFromCallMap($function_id)
+    public static function getCallablesFromCallMap(string $function_id): ?array
     {
         $call_map_key = strtolower($function_id);
 
@@ -310,6 +303,10 @@ class InternalCallMapHandler
                     $function_param->out_type = $out_type;
                 }
 
+                if ($arg_name === 'haystack') {
+                    $function_param->expect_variable = true;
+                }
+
                 if (isset(self::$taint_sink_map[$call_map_key][$arg_offset])) {
                     $function_param->sinks = self::$taint_sink_map[$call_map_key][$arg_offset];
                 }
@@ -338,7 +335,7 @@ class InternalCallMapHandler
      * @psalm-suppress MixedReturnStatement
      * @psalm-suppress MixedReturnTypeCoercion
      */
-    public static function getCallMap()
+    public static function getCallMap(): array
     {
         $codebase = ProjectAnalyzer::getInstance()->getCodebase();
         $analyzer_major_version = $codebase->php_major_version;
@@ -411,12 +408,7 @@ class InternalCallMapHandler
         return self::$call_map;
     }
 
-    /**
-     * @param   string $key
-     *
-     * @return  bool
-     */
-    public static function inCallMap($key)
+    public static function inCallMap(string $key): bool
     {
         return isset(self::getCallMap()[strtolower($key)]);
     }

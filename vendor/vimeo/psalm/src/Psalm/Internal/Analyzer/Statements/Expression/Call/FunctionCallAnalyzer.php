@@ -117,7 +117,7 @@ class FunctionCallAnalyzer extends CallAnalyzer
         $byref_uses = [];
 
         if ($function_name instanceof PhpParser\Node\Expr) {
-            list($expr_function_exists, $expr_function_name, $expr_function_params, $byref_uses)
+            [$expr_function_exists, $expr_function_name, $expr_function_params, $byref_uses]
                 = self::getAnalyzeNamedExpression(
                     $statements_analyzer,
                     $codebase,
@@ -517,7 +517,7 @@ class FunctionCallAnalyzer extends CallAnalyzer
         PhpParser\Node\Expr\FuncCall $real_stmt,
         PhpParser\Node\Expr $function_name,
         Context $context
-    ) {
+    ): array {
         $function_params = null;
 
         $explicit_function_name = null;
@@ -853,7 +853,7 @@ class FunctionCallAnalyzer extends CallAnalyzer
                 $context->vars_in_scope,
                 $changed_var_ids,
                 array_map(
-                    function ($v) {
+                    function ($v): bool {
                         return true;
                     },
                     $assert_type_assertions
@@ -1593,7 +1593,8 @@ class FunctionCallAnalyzer extends CallAnalyzer
                     if (IssueBuffer::accepts(
                         new \Psalm\Issue\RedundantConditionGivenDocblockType(
                             'The call to strtolower is unnecessary given the docblock type',
-                            new CodeLocation($statements_analyzer, $function_name)
+                            new CodeLocation($statements_analyzer, $function_name),
+                            null
                         ),
                         $statements_analyzer->getSuppressedIssues()
                     )) {
@@ -1603,7 +1604,8 @@ class FunctionCallAnalyzer extends CallAnalyzer
                     if (IssueBuffer::accepts(
                         new \Psalm\Issue\RedundantCondition(
                             'The call to strtolower is unnecessary',
-                            new CodeLocation($statements_analyzer, $function_name)
+                            new CodeLocation($statements_analyzer, $function_name),
+                            null
                         ),
                         $statements_analyzer->getSuppressedIssues()
                     )) {

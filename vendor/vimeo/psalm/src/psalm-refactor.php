@@ -159,7 +159,7 @@ $vendor_dir = \Psalm\getVendorDir($current_dir);
 require_once __DIR__ . '/Psalm/Internal/IncludeCollector.php';
 $include_collector = new IncludeCollector();
 $first_autoloader = $include_collector->runAndCollect(
-    function () use ($current_dir, $options, $vendor_dir) {
+    function () use ($current_dir, $options, $vendor_dir): ?\Composer\Autoload\ClassLoader {
         return requireAutoloaders($current_dir, isset($options['r']), $vendor_dir);
     }
 );
@@ -221,7 +221,7 @@ foreach ($args as $arg) {
 
             foreach ($last_arg_parts as $last_arg_part) {
                 if (strpos($last_arg_part, '::')) {
-                    list(, $identifier_name) = explode('::', $last_arg_part);
+                    [, $identifier_name] = explode('::', $last_arg_part);
                     $to_refactor[$last_arg_part] = $arg . '::' . $identifier_name;
                 } else {
                     $namespace_parts = explode('\\', $last_arg_part);

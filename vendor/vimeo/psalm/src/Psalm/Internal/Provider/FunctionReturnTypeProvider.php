@@ -60,9 +60,8 @@ class FunctionReturnTypeProvider
     /**
      * @param  class-string<FunctionReturnTypeProviderInterface> $class
      *
-     * @return void
      */
-    public function registerClass(string $class)
+    public function registerClass(string $class): void
     {
         $callable = \Closure::fromCallable([$class, 'getFunctionReturnType']);
 
@@ -81,9 +80,8 @@ class FunctionReturnTypeProvider
      *     CodeLocation
      *   ) : ?Type\Union $c
      *
-     * @return void
      */
-    public function registerClosure(string $function_id, \Closure $c)
+    public function registerClosure(string $function_id, \Closure $c): void
     {
         self::$handlers[$function_id][] = $c;
     }
@@ -97,7 +95,6 @@ class FunctionReturnTypeProvider
      * @param  non-empty-string $function_id
      * @param  array<PhpParser\Node\Arg>  $call_args
      *
-     * @return ?Type\Union
      */
     public function getReturnType(
         StatementsSource $statements_source,
@@ -105,7 +102,7 @@ class FunctionReturnTypeProvider
         array $call_args,
         Context $context,
         CodeLocation $code_location
-    ) {
+    ): ?Type\Union {
         foreach (self::$handlers[strtolower($function_id)] as $function_handler) {
             $return_type = $function_handler(
                 $statements_source,

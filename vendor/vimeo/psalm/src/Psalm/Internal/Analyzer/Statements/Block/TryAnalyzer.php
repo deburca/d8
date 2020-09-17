@@ -28,17 +28,13 @@ use const PHP_VERSION;
 class TryAnalyzer
 {
     /**
-     * @param   StatementsAnalyzer               $statements_analyzer
-     * @param   PhpParser\Node\Stmt\TryCatch    $stmt
-     * @param   Context                         $context
-     *
      * @return  false|null
      */
     public static function analyze(
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Stmt\TryCatch $stmt,
         Context $context
-    ) {
+    ): ?bool {
         $catch_actions = [];
         $all_catches_leave = true;
 
@@ -294,7 +290,7 @@ class TryAnalyzer
                          *
                          * @return Type\Atomic
                          */
-                        function ($fq_catch_class) use ($codebase) {
+                        function ($fq_catch_class) use ($codebase): Type\Atomic {
                             $catch_class_type = new TNamedObject($fq_catch_class);
 
                             if (version_compare(PHP_VERSION, '7.0.0dev', '>=')

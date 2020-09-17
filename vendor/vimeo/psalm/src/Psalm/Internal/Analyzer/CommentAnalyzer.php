@@ -60,9 +60,9 @@ class CommentAnalyzer
         PhpParser\Comment\Doc $comment,
         FileSource $source,
         Aliases $aliases,
-        array $template_type_map = null,
+        ?array $template_type_map = null,
         ?array $type_aliases = null
-    ) {
+    ): array {
         $parsed_docblock = DocComment::parsePreservingLength($comment);
 
         return self::arrayToDocblocks(
@@ -88,7 +88,7 @@ class CommentAnalyzer
         ParsedDocblock $parsed_docblock,
         FileSource $source,
         Aliases $aliases,
-        array $template_type_map = null,
+        ?array $template_type_map = null,
         ?array $type_aliases = null
     ) : array {
         $var_id = null;
@@ -252,19 +252,18 @@ class CommentAnalyzer
     }
 
     /**
-     * @param  Aliases          $aliases
      * @param  array<string, TypeAlias> $type_aliases
      *
-     * @throws DocblockParseException if there was a problem parsing the docblock
-     *
      * @return array<string, TypeAlias\InlineTypeAlias>
+     *
+     * @throws DocblockParseException if there was a problem parsing the docblock
      */
     public static function getTypeAliasesFromComment(
         PhpParser\Comment\Doc $comment,
         Aliases $aliases,
         ?array $type_aliases,
         ?string $self_fqcln
-    ) {
+    ): array {
         $parsed_docblock = DocComment::parsePreservingLength($comment);
 
         if (!isset($parsed_docblock->tags['psalm-type'])) {
@@ -281,19 +280,18 @@ class CommentAnalyzer
 
     /**
      * @param  array<string>    $type_alias_comment_lines
-     * @param  Aliases          $aliases
      * @param  array<string, TypeAlias> $type_aliases
      *
-     * @throws DocblockParseException if there was a problem parsing the docblock
-     *
      * @return array<string, TypeAlias\InlineTypeAlias>
+     *
+     * @throws DocblockParseException if there was a problem parsing the docblock
      */
     private static function getTypeAliasesFromCommentLines(
         array $type_alias_comment_lines,
         Aliases $aliases,
         ?array $type_aliases,
         ?string $self_fqcln
-    ) {
+    ): array {
         $type_alias_tokens = [];
 
         foreach ($type_alias_comment_lines as $var_line) {
@@ -359,13 +357,9 @@ class CommentAnalyzer
     }
 
     /**
-     * @param  int     $line_number
-     *
      * @throws DocblockParseException if there was a problem parsing the docblock
-     *
-     * @return FunctionDocblockComment
      */
-    public static function extractFunctionDocblockInfo(PhpParser\Comment\Doc $comment)
+    public static function extractFunctionDocblockInfo(PhpParser\Comment\Doc $comment): FunctionDocblockComment
     {
         $parsed_docblock = DocComment::parsePreservingLength($comment);
 
@@ -632,7 +626,9 @@ class CommentAnalyzer
 
         if (isset($parsed_docblock->tags['psalm-suppress'])) {
             foreach ($parsed_docblock->tags['psalm-suppress'] as $offset => $suppress_entry) {
-                $info->suppressed_issues[$offset + $comment->getFilePos()] = preg_split('/[\s]+/', $suppress_entry)[0];
+                foreach (DocComment::parseSuppressList($suppress_entry) as $issue_offset => $suppressed_issue) {
+                    $info->suppressed_issues[$issue_offset + $offset + $comment->getFilePos()] = $suppressed_issue;
+                }
             }
         }
 
@@ -765,6 +761,7 @@ class CommentAnalyzer
 
         $info->ignore_nullable_return = isset($parsed_docblock->tags['psalm-ignore-nullable-return']);
         $info->ignore_falsable_return = isset($parsed_docblock->tags['psalm-ignore-falsable-return']);
+        $info->stub_override = isset($parsed_docblock->tags['psalm-stub-override']);
 
         return $info;
     }
@@ -821,14 +818,13 @@ class CommentAnalyzer
     /**
      * @throws DocblockParseException if there was a problem parsing the docblock
      *
-     * @return ClassLikeDocblockComment
      * @psalm-suppress MixedArrayAccess
      */
     public static function extractClassLikeDocblockInfo(
         \PhpParser\Node $node,
         PhpParser\Comment\Doc $comment,
         Aliases $aliases
-    ) {
+    ): ClassLikeDocblockComment {
         $parsed_docblock = DocComment::parsePreservingLength($comment);
         $codebase = ProjectAnalyzer::getInstance()->getCodebase();
 
@@ -988,7 +984,9 @@ class CommentAnalyzer
 
         if (isset($parsed_docblock->tags['psalm-suppress'])) {
             foreach ($parsed_docblock->tags['psalm-suppress'] as $offset => $suppress_entry) {
-                $info->suppressed_issues[$offset + $comment->getFilePos()] = preg_split('/[\s]+/', $suppress_entry)[0];
+                foreach (DocComment::parseSuppressList($suppress_entry) as $issue_offset => $suppressed_issue) {
+                    $info->suppressed_issues[$issue_offset + $offset + $comment->getFilePos()] = $suppressed_issue;
+                }
             }
         }
 
@@ -1164,6 +1162,10 @@ class CommentAnalyzer
             }
         }
 
+        if (isset($parsed_docblock->tags['psalm-stub-override'])) {
+            $info->stub_override = true;
+        }
+
         self::addMagicPropertyToInfo($comment, $info, $parsed_docblock->tags, 'property');
         self::addMagicPropertyToInfo($comment, $info, $parsed_docblock->tags, 'psalm-property');
         self::addMagicPropertyToInfo($comment, $info, $parsed_docblock->tags, 'property-read');
@@ -1175,14 +1177,12 @@ class CommentAnalyzer
     }
 
     /**
-     * @param ClassLikeDocblockComment $info
      * @param array<string, array<int, string>> $specials
      * @param 'property'|'psalm-property'|'property-read'|
      *     'psalm-property-read'|'property-write'|'psalm-property-write' $property_tag
      *
      * @throws DocblockParseException
      *
-     * @return void
      */
     protected static function addMagicPropertyToInfo(
         PhpParser\Comment\Doc $comment,
@@ -1241,15 +1241,13 @@ class CommentAnalyzer
     }
 
     /**
-     * @param string $return_block
-     *
      * @throws DocblockParseException if an invalid string is found
      *
      * @return list<string>
      *
      * @psalm-pure
      */
-    public static function splitDocLine($return_block)
+    public static function splitDocLine(string $return_block): array
     {
         $brackets = '';
 
@@ -1373,13 +1371,9 @@ class CommentAnalyzer
     }
 
     /**
-     * @param ParsedDocblock $parsed_docblock
-     *
-     * @return void
-     *
      * @throws DocblockParseException if a duplicate is found
      */
-    private static function checkDuplicatedTags(ParsedDocblock $parsed_docblock)
+    private static function checkDuplicatedTags(ParsedDocblock $parsed_docblock): void
     {
         if (count($parsed_docblock->tags['return'] ?? []) > 1
             || count($parsed_docblock->tags['psalm-return'] ?? []) > 1
@@ -1396,11 +1390,10 @@ class CommentAnalyzer
     /**
      * @param array<int, string> $param
      *
-     * @return void
      *
      * @throws DocblockParseException  if a duplicate is found
      */
-    private static function checkDuplicatedParams(array $param)
+    private static function checkDuplicatedParams(array $param): void
     {
         $list_names = self::extractAllParamNames($param);
 
@@ -1416,7 +1409,7 @@ class CommentAnalyzer
      *
      * @psalm-pure
      */
-    private static function extractAllParamNames(array $lines)
+    private static function extractAllParamNames(array $lines): array
     {
         $names = [];
 

@@ -28,21 +28,15 @@ use function explode;
 class StaticPropertyAssignmentAnalyzer
 {
     /**
-     * @param   StatementsAnalyzer                         $statements_analyzer
-     * @param   PhpParser\Node\Expr\StaticPropertyFetch   $stmt
-     * @param   PhpParser\Node\Expr|null                  $assignment_value
-     * @param   Type\Union                                $assignment_value_type
-     * @param   Context                                   $context
-     *
      * @return  false|null
      */
     public static function analyze(
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Expr\StaticPropertyFetch $stmt,
-        $assignment_value,
+        ?PhpParser\Node\Expr $assignment_value,
         Type\Union $assignment_value_type,
         Context $context
-    ) {
+    ): ?bool {
         $var_id = ExpressionIdentifier::getArrayVarId(
             $stmt,
             $context->self,
@@ -67,7 +61,7 @@ class StaticPropertyAssignmentAnalyzer
                 );
             }
 
-            return;
+            return null;
         }
 
         $property_id = $fq_class_name . '::$' . $prop_name;
@@ -84,7 +78,7 @@ class StaticPropertyAssignmentAnalyzer
                 // fall through
             }
 
-            return;
+            return null;
         }
 
         if (ClassLikeAnalyzer::checkPropertyVisibility(
@@ -116,8 +110,8 @@ class StaticPropertyAssignmentAnalyzer
             if (!$moved_class) {
                 foreach ($codebase->property_transforms as $original_pattern => $transformation) {
                     if ($declaring_property_id === $original_pattern) {
-                        list($old_declaring_fq_class_name) = explode('::$', $declaring_property_id);
-                        list($new_fq_class_name, $new_property_name) = explode('::$', $transformation);
+                        [$old_declaring_fq_class_name] = explode('::$', $declaring_property_id);
+                        [$new_fq_class_name, $new_property_name] = explode('::$', $transformation);
 
                         $file_manipulations = [];
 
