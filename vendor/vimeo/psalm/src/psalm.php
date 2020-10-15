@@ -9,15 +9,14 @@ gc_disable();
 error_reporting(-1);
 
 require_once('command_functions.php');
+require_once __DIR__ . '/Psalm/Internal/Composer.php';
 require_once __DIR__ . '/Psalm/Internal/exception_handler.php';
 
-use Psalm\ErrorBaseline;
 use Psalm\Exception\ConfigException;
 use Psalm\Internal\Analyzer\ProjectAnalyzer;
+use Psalm\Internal\Composer;
 use Psalm\Internal\Provider;
-use Psalm\Config;
 use Psalm\Internal\IncludeCollector;
-use Psalm\IssueBuffer;
 use Psalm\Progress\DebugProgress;
 use Psalm\Progress\DefaultProgress;
 use Psalm\Progress\LongProgress;
@@ -54,7 +53,6 @@ use function ini_get;
 use const PHP_OS;
 use function version_compare;
 use const PHP_VERSION;
-use function is_null;
 use function setlocale;
 use const LC_CTYPE;
 use function microtime;
@@ -453,7 +451,7 @@ if (isset($options['generate-stubs']) && is_string($options['generate-stubs'])) 
 // If Xdebug is enabled, restart without it
 $ini_handler->check();
 
-if (is_null($config->load_xdebug_stub) && '' !== $ini_handler->getSkippedVersion()) {
+if ($config->load_xdebug_stub === null && '' !== $ini_handler->getSkippedVersion()) {
     $config->load_xdebug_stub = true;
 }
 
@@ -580,7 +578,7 @@ if (isset($options['no-cache']) || isset($options['i'])) {
         $file_storage_cache_provider,
         $classlike_storage_cache_provider,
         new Provider\FileReferenceCacheProvider($config),
-        new Provider\ProjectCacheProvider($current_dir . DIRECTORY_SEPARATOR . 'composer.lock')
+        new Provider\ProjectCacheProvider(Composer::getLockFilePath($current_dir))
     );
 }
 

@@ -3,8 +3,6 @@ namespace Psalm\Type\Atomic;
 
 use function get_class;
 use Psalm\Codebase;
-use Psalm\CodeLocation;
-use Psalm\StatementsSource;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
 use Psalm\Internal\Type\TemplateResult;
 use Psalm\Internal\Type\UnionTemplateHandler;
@@ -33,7 +31,7 @@ class TClassStringMap extends \Psalm\Type\Atomic
      */
     public $value_param;
 
-    const KEY = 'class-string-map';
+    public const KEY = 'class-string-map';
 
     /**
      * Constructs a new instance of a list

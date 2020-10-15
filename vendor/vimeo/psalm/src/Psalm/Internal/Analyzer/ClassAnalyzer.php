@@ -48,7 +48,6 @@ use function strtolower;
 use function implode;
 use function substr;
 use function array_map;
-use function array_shift;
 use function str_replace;
 use function count;
 use function array_search;
@@ -1459,11 +1458,11 @@ class ClassAnalyzer extends ClassLikeAnalyzer
         }
 
         if (!$storage->abstract && $uninitialized_typed_properties) {
-            foreach ($uninitialized_typed_properties as $uninitialized_property) {
+            foreach ($uninitialized_typed_properties as $id => $uninitialized_property) {
                 if ($uninitialized_property->location) {
                     if (IssueBuffer::accepts(
                         new MissingConstructor(
-                            $class_storage->name . ' has an uninitialized property ' . $uninitialized_variables[0] .
+                            $class_storage->name . ' has an uninitialized property ' . $id .
                                 ', but no constructor',
                             $uninitialized_property->location,
                             $class_storage->name . '::' . $uninitialized_variables[0]

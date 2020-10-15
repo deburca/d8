@@ -3,8 +3,6 @@ namespace Psalm\Type\Atomic;
 
 use function get_class;
 use Psalm\Codebase;
-use Psalm\CodeLocation;
-use Psalm\StatementsSource;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
 use Psalm\Internal\Type\TemplateResult;
 use Psalm\Internal\Type\UnionTemplateHandler;
@@ -22,7 +20,7 @@ class TList extends \Psalm\Type\Atomic
      */
     public $type_param;
 
-    const KEY = 'list';
+    public const KEY = 'list';
 
     /**
      * Constructs a new instance of a list

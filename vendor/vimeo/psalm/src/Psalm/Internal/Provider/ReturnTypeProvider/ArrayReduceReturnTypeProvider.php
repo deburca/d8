@@ -118,8 +118,7 @@ class ArrayReduceReturnTypeProvider implements \Psalm\Plugin\Hook\FunctionReturn
                     return Type::getMixed();
                 }
 
-                $carry_param = $closure_atomic_type->params[0];
-                $item_param = $closure_atomic_type->params[1];
+                [$carry_param, $item_param] = $closure_atomic_type->params;
 
                 if ($carry_param->type
                     && (
@@ -193,8 +192,6 @@ class ArrayReduceReturnTypeProvider implements \Psalm\Plugin\Hook\FunctionReturn
             $call_map = InternalCallMapHandler::getCallMap();
 
             foreach ($mapping_function_ids as $mapping_function_id) {
-                $mapping_function_id = $mapping_function_id;
-
                 $mapping_function_id_parts = explode('&', $mapping_function_id);
 
                 $part_match_found = false;

@@ -3,11 +3,10 @@
 namespace Psalm\Internal\Codebase;
 
 use Psalm\CodeLocation;
-use Psalm\Internal\Taint\Path;
-use Psalm\Internal\Taint\Sink;
-use Psalm\Internal\Taint\Source;
-use Psalm\Internal\Taint\TaintNode;
-use Psalm\Internal\Taint\Taintable;
+use Psalm\Internal\ControlFlow\Path;
+use Psalm\Internal\ControlFlow\TaintSink;
+use Psalm\Internal\ControlFlow\TaintSource;
+use Psalm\Internal\ControlFlow\ControlFlowNode;
 use Psalm\IssueBuffer;
 use Psalm\Issue\TaintedInput;
 use function array_merge;
@@ -18,19 +17,16 @@ use function strlen;
 use function array_intersect;
 use function array_reverse;
 
-class Taint
+class TaintFlowGraph extends ControlFlowGraph
 {
-    /** @var array<string, Source> */
+    /** @var array<string, TaintSource> */
     private $sources = [];
 
-    /** @var array<string, Taintable> */
+    /** @var array<string, ControlFlowNode> */
     private $nodes = [];
 
-    /** @var array<string, Sink> */
+    /** @var array<string, TaintSink> */
     private $sinks = [];
-
-    /** @var array<string, array<string, Path>> */
-    private $forward_edges = [];
 
     /** @var array<string, array<string, true>> */
     private $specialized_calls = [];
@@ -38,19 +34,7 @@ class Taint
     /** @var array<string, array<string, true>> */
     private $specializations = [];
 
-    public function addSource(Source $node) : void
-    {
-        $this->sources[$node->id] = $node;
-    }
-
-    public function addSink(Sink $node) : void
-    {
-        $this->sinks[$node->id] = $node;
-        // in the rare case the sink is the _next_ node, this is necessary
-        $this->nodes[$node->id] = $node;
-    }
-
-    public function addTaintNode(TaintNode $node) : void
+    public function addNode(ControlFlowNode $node) : void
     {
         $this->nodes[$node->id] = $node;
 
@@ -60,28 +44,43 @@ class Taint
         }
     }
 
-    /**
-     * @param array<string> $added_taints
-     * @param array<string> $removed_taints
-     */
-    public function addPath(
-        Taintable $from,
-        Taintable $to,
-        string $path_type,
-        ?array $added_taints = null,
-        ?array $removed_taints = null
-    ) : void {
-        $from_id = $from->id;
-        $to_id = $to->id;
-
-        if ($from_id === $to_id) {
-            return;
-        }
-
-        $this->forward_edges[$from_id][$to_id] = new Path($path_type, $added_taints, $removed_taints);
+    public function addSource(TaintSource $node) : void
+    {
+        $this->sources[$node->id] = $node;
     }
 
-    public function getPredecessorPath(Taintable $source) : string
+    public function addSink(TaintSink $node) : void
+    {
+        $this->sinks[$node->id] = $node;
+        // in the rare case the sink is the _next_ node, this is necessary
+        $this->nodes[$node->id] = $node;
+    }
+
+    public function addGraph(self $taint) : void
+    {
+        $this->sources += $taint->sources;
+        $this->sinks += $taint->sinks;
+        $this->nodes += $taint->nodes;
+        $this->specialized_calls += $taint->specialized_calls;
+
+        foreach ($taint->forward_edges as $key => $map) {
+            if (!isset($this->forward_edges[$key])) {
+                $this->forward_edges[$key] = $map;
+            } else {
+                $this->forward_edges[$key] += $map;
+            }
+        }
+
+        foreach ($taint->specializations as $key => $map) {
+            if (!isset($this->specializations[$key])) {
+                $this->specializations[$key] = $map;
+            } else {
+                $this->specializations[$key] += $map;
+            }
+        }
+    }
+
+    public function getPredecessorPath(ControlFlowNode $source) : string
     {
         $location_summary = '';
 
@@ -104,7 +103,7 @@ class Taint
         return $source_descriptor;
     }
 
-    public function getSuccessorPath(Taintable $sink) : string
+    public function getSuccessorPath(ControlFlowNode $sink) : string
     {
         $location_summary = '';
 
@@ -130,7 +129,7 @@ class Taint
     /**
      * @return list<array{location: ?CodeLocation, label: string, entry_path_type: string}>
      */
-    public function getIssueTrace(Taintable $source) : array
+    public function getIssueTrace(ControlFlowNode $source) : array
     {
         $previous_source = $source->previous;
 
@@ -149,30 +148,6 @@ class Taint
         }
 
         return [$node];
-    }
-
-    public function addThreadData(self $taint) : void
-    {
-        $this->sources += $taint->sources;
-        $this->sinks += $taint->sinks;
-        $this->nodes += $taint->nodes;
-        $this->specialized_calls += $taint->specialized_calls;
-
-        foreach ($taint->forward_edges as $key => $map) {
-            if (!isset($this->forward_edges[$key])) {
-                $this->forward_edges[$key] = $map;
-            } else {
-                $this->forward_edges[$key] += $map;
-            }
-        }
-
-        foreach ($taint->specializations as $key => $map) {
-            if (!isset($this->specializations[$key])) {
-                $this->specializations[$key] = $map;
-            } else {
-                $this->specializations[$key] += $map;
-            }
-        }
     }
 
     public function connectSinksAndSources() : void
@@ -212,11 +187,11 @@ class Taint
 
     /**
      * @param array<string> $source_taints
-     * @param array<Taintable> $sinks
-     * @return array<Taintable>
+     * @param array<ControlFlowNode> $sinks
+     * @return array<ControlFlowNode>
      */
     private function getChildNodes(
-        Taintable $generated_source,
+        ControlFlowNode $generated_source,
         array $source_taints,
         array $sinks,
         array $visited_source_ids
@@ -297,56 +272,8 @@ class Taint
         return $new_sources;
     }
 
-    /**
-     * @param array<string> $previous_path_types
-     *
-     * @psalm-pure
-     */
-    private static function shouldIgnoreFetch(
-        string $path_type,
-        string $expression_type,
-        array $previous_path_types
-    ) : bool {
-        $el = \strlen($expression_type);
-
-        if (substr($path_type, 0, $el + 7) === $expression_type . '-fetch-') {
-            $fetch_nesting = 0;
-
-            $previous_path_types = array_reverse($previous_path_types);
-
-            foreach ($previous_path_types as $previous_path_type) {
-                if ($previous_path_type === $expression_type . '-assignment') {
-                    if ($fetch_nesting === 0) {
-                        return false;
-                    }
-
-                    $fetch_nesting--;
-                }
-
-                if (substr($previous_path_type, 0, $el + 6) === $expression_type . '-fetch') {
-                    $fetch_nesting++;
-                }
-
-                if (substr($previous_path_type, 0, $el + 12) === $expression_type . '-assignment-') {
-                    if ($fetch_nesting > 0) {
-                        $fetch_nesting--;
-                        continue;
-                    }
-
-                    if (substr($previous_path_type, $el + 12) === substr($path_type, $el + 7)) {
-                        return false;
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /** @return array<Taintable> */
-    private function getSpecializedSources(Taintable $source) : array
+    /** @return array<ControlFlowNode> */
+    private function getSpecializedSources(ControlFlowNode $source) : array
     {
         $generated_sources = [];
 

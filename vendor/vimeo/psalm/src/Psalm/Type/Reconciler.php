@@ -1,7 +1,6 @@
 <?php
 namespace Psalm\Type;
 
-use function array_map;
 use function array_pop;
 use function array_shift;
 use function count;
@@ -11,8 +10,6 @@ use function ksort;
 use Psalm\Codebase;
 use Psalm\CodeLocation;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
-use Psalm\Internal\Analyzer\Statements\ExpressionAnalyzer;
-use Psalm\Internal\Analyzer\TraitAnalyzer;
 use Psalm\Internal\Type\AssertionReconciler;
 use Psalm\Issue\DocblockTypeContradiction;
 use Psalm\Issue\PsalmInternalError;
@@ -21,35 +18,18 @@ use Psalm\Issue\RedundantConditionGivenDocblockType;
 use Psalm\Issue\TypeDoesNotContainType;
 use Psalm\IssueBuffer;
 use Psalm\Type;
-use Psalm\Type\Atomic\ObjectLike;
-use Psalm\Type\Atomic\Scalar;
-use Psalm\Type\Atomic\TArray;
-use Psalm\Type\Atomic\TArrayKey;
-use Psalm\Type\Atomic\TBool;
-use Psalm\Type\Atomic\TCallable;
-use Psalm\Type\Atomic\TCallableObjectLikeArray;
-use Psalm\Type\Atomic\TClassString;
 use Psalm\Type\Atomic\TEmpty;
-use Psalm\Type\Atomic\TFalse;
-use Psalm\Type\Atomic\TInt;
 use Psalm\Type\Atomic\TMixed;
 use Psalm\Type\Atomic\TNamedObject;
 use Psalm\Type\Atomic\TNull;
-use Psalm\Type\Atomic\TNumeric;
-use Psalm\Type\Atomic\TNumericString;
 use Psalm\Type\Atomic\TObject;
-use Psalm\Type\Atomic\TResource;
-use Psalm\Type\Atomic\TScalar;
 use Psalm\Type\Atomic\TString;
 use Psalm\Type\Atomic\TTemplateParam;
-use Psalm\Type\Atomic\TTrue;
-use function sort;
 use function str_replace;
 use function str_split;
 use function strpos;
 use function strtolower;
 use function substr;
-use Exception;
 use function preg_match;
 use function preg_quote;
 
@@ -79,7 +59,8 @@ class Reconciler
         StatementsAnalyzer $statements_analyzer,
         array $template_type_map = [],
         bool $inside_loop = false,
-        ?CodeLocation $code_location = null
+        ?CodeLocation $code_location = null,
+        bool $negated = false
     ): array {
         if (!$new_types) {
             return $existing_types;
@@ -278,7 +259,8 @@ class Reconciler
                             $statements_analyzer,
                             $template_type_map,
                             $inside_loop,
-                            $code_location
+                            $code_location,
+                            $negated
                         );
 
                         $new_type_part_part = '!falsy';
@@ -297,7 +279,8 @@ class Reconciler
                             ? $code_location
                             : null,
                         $suppressed_issues,
-                        $failed_reconciliation
+                        $failed_reconciliation,
+                        $negated
                     );
 
                     if (!$result_type_candidate->getAtomicTypes()) {

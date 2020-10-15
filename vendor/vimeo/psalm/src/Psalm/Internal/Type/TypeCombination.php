@@ -261,6 +261,7 @@ class TypeCombination
                 || (isset($combination->named_object_types['Traversable'])
                     && $combination->named_object_types['Traversable']->from_docblock)
             )
+            && !$combination->extra_types
         ) {
             $array_param_types = $combination->array_type_params;
             $traversable_param_types = $combination->builtin_type_params['Traversable']
@@ -945,6 +946,8 @@ class TypeCombination
                 }
             }
 
+            $has_defined_keys = false;
+
             foreach ($type->properties as $candidate_property_name => $candidate_property_type) {
                 $value_type = isset($combination->objectlike_entries[$candidate_property_name])
                     ? $combination->objectlike_entries[$candidate_property_name]
@@ -973,6 +976,14 @@ class TypeCombination
                 if (!$type->previous_value_type) {
                     unset($possibly_undefined_entries[$candidate_property_name]);
                 }
+
+                if (!$candidate_property_type->possibly_undefined) {
+                    $has_defined_keys = true;
+                }
+            }
+
+            if (!$has_defined_keys) {
+                $combination->array_always_filled = false;
             }
 
             if ($combination->array_counts !== null) {
@@ -1254,7 +1265,7 @@ class TypeCombination
                         } elseif (get_class($combination->value_types['string']) === TNonEmptyString::class
                             && get_class($type) === TNonEmptyLowercaseString::class
                         ) {
-                            $combination->value_types['string'] = $combination->value_types['string'];
+                            //no-change
                         } elseif (get_class($type) === TLowercaseString::class
                             && get_class($combination->value_types['string']) === TNonEmptyLowercaseString::class
                         ) {
@@ -1262,7 +1273,7 @@ class TypeCombination
                         } elseif (get_class($combination->value_types['string']) === TLowercaseString::class
                             && get_class($type) === TNonEmptyLowercaseString::class
                         ) {
-                            $combination->value_types['string'] = $combination->value_types['string'];
+                            //no-change
                         } else {
                             $combination->value_types['string'] = new TString();
                         }

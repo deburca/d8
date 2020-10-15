@@ -6,7 +6,6 @@ use function array_keys;
 use function array_map;
 use function array_merge;
 use function array_pop;
-use function array_shift;
 use function array_unique;
 use function array_values;
 use function count;
@@ -18,7 +17,6 @@ use Psalm\FileSource;
 use Psalm\Internal\Analyzer\Statements\Expression\AssertionFinder;
 use Psalm\Internal\Clause;
 use function strlen;
-use function strpos;
 use function substr;
 
 class Algebra
@@ -201,37 +199,35 @@ class Algebra
                     }
                 }
 
-                if ($assertions !== null) {
-                    $clauses = [];
+                $clauses = [];
 
-                    foreach ($assertions as $var => $anded_types) {
-                        $redefined = false;
+                foreach ($assertions as $var => $anded_types) {
+                    $redefined = false;
 
-                        if ($var[0] === '=') {
-                            /** @var string */
-                            $var = substr($var, 1);
-                            $redefined = true;
-                        }
-
-                        foreach ($anded_types as $orred_types) {
-                            $clauses[] = new Clause(
-                                [$var => $orred_types],
-                                $conditional_object_id,
-                                \spl_object_id($conditional->expr),
-                                false,
-                                true,
-                                $orred_types[0][0] === '='
-                                    || $orred_types[0][0] === '~'
-                                    || (strlen($orred_types[0]) > 1
-                                        && ($orred_types[0][1] === '='
-                                            || $orred_types[0][1] === '~')),
-                                $redefined ? [$var => true] : []
-                            );
-                        }
+                    if ($var[0] === '=') {
+                        /** @var string */
+                        $var = substr($var, 1);
+                        $redefined = true;
                     }
 
-                    return self::negateFormula($clauses);
+                    foreach ($anded_types as $orred_types) {
+                        $clauses[] = new Clause(
+                            [$var => $orred_types],
+                            $conditional_object_id,
+                            \spl_object_id($conditional->expr),
+                            false,
+                            true,
+                            $orred_types[0][0] === '='
+                                || $orred_types[0][0] === '~'
+                                || (strlen($orred_types[0]) > 1
+                                    && ($orred_types[0][1] === '='
+                                        || $orred_types[0][1] === '~')),
+                            $redefined ? [$var => true] : []
+                        );
+                    }
                 }
+
+                return self::negateFormula($clauses);
             }
 
             if ($conditional->expr instanceof PhpParser\Node\Expr\BinaryOp\BooleanAnd) {
@@ -345,6 +341,19 @@ class Algebra
                     $cache
                 );
             }
+        }
+
+        if ($conditional instanceof PhpParser\Node\Expr\Cast\Bool_) {
+            return self::getFormula(
+                $conditional_object_id,
+                \spl_object_id($conditional->expr),
+                $conditional->expr,
+                $this_class_name,
+                $source,
+                $codebase,
+                $inside_negation,
+                $cache
+            );
         }
 
         $assertions = null;
@@ -524,7 +533,7 @@ class Algebra
         $truths = [];
         $active_truths = [];
 
-        if (empty($clauses)) {
+        if ($clauses === []) {
             return [];
         }
 

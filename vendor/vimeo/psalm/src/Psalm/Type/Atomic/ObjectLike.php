@@ -9,8 +9,6 @@ use function implode;
 use function is_int;
 use function sort;
 use Psalm\Codebase;
-use Psalm\CodeLocation;
-use Psalm\StatementsSource;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
 use Psalm\Internal\Type\TypeCombination;
 use Psalm\Internal\Type\TemplateResult;
@@ -58,7 +56,7 @@ class ObjectLike extends \Psalm\Type\Atomic
      */
     public $is_list = false;
 
-    const KEY = 'array';
+    public const KEY = 'array';
 
     /**
      * Constructs a new instance of a generic type

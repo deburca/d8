@@ -2,15 +2,14 @@
 namespace Psalm\Type\Atomic;
 
 use Psalm\Codebase;
-use Psalm\CodeLocation;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
 use Psalm\Internal\Type\TemplateResult;
 use Psalm\Internal\Type\UnionTemplateHandler;
-use Psalm\StatementsSource;
 use Psalm\Type\Atomic;
 use function preg_quote;
 use function preg_replace;
 use function stripos;
+use function strpos;
 use function strtolower;
 
 class TClassString extends TString
@@ -86,7 +85,7 @@ class TClassString extends TString
             ) . '>';
         }
 
-        if (!$namespace && stripos($this->as, '\\') === false) {
+        if (!$namespace && strpos($this->as, '\\') === false) {
             return 'class-string<' . $this->as . '>';
         }
 

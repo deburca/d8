@@ -3,6 +3,7 @@
 namespace Psalm;
 
 require_once('command_functions.php');
+require_once __DIR__ . '/Psalm/Internal/Composer.php';
 // show all errors
 error_reporting(-1);
 ini_set('display_errors', '1');
@@ -15,8 +16,8 @@ gc_disable();
 require_once __DIR__ . '/Psalm/Internal/exception_handler.php';
 
 use Psalm\Internal\Analyzer\ProjectAnalyzer;
+use Psalm\Internal\Composer;
 use Psalm\Internal\IncludeCollector;
-use Psalm\IssueBuffer;
 use Psalm\Progress\DebugProgress;
 use Psalm\Progress\DefaultProgress;
 use function error_reporting;
@@ -269,7 +270,7 @@ $providers = new \Psalm\Internal\Provider\Providers(
     new \Psalm\Internal\Provider\FileStorageCacheProvider($config),
     new \Psalm\Internal\Provider\ClassLikeStorageCacheProvider($config),
     null,
-    new \Psalm\Internal\Provider\ProjectCacheProvider($current_dir . DIRECTORY_SEPARATOR . 'composer.lock')
+    new \Psalm\Internal\Provider\ProjectCacheProvider(Composer::getLockFilePath($current_dir))
 );
 
 $debug = array_key_exists('debug', $options) || array_key_exists('debug-by-line', $options);

@@ -3,12 +3,11 @@
 namespace Psalm;
 
 require_once('command_functions.php');
+require_once __DIR__ . '/Psalm/Internal/Composer.php';
 
-use Psalm\DocComment;
 use Psalm\Internal\Analyzer\ProjectAnalyzer;
-use Psalm\Config;
+use Psalm\Internal\Composer;
 use Psalm\Internal\IncludeCollector;
-use Psalm\IssueBuffer;
 use Psalm\Progress\DebugProgress;
 use Psalm\Progress\DefaultProgress;
 use function error_reporting;
@@ -253,7 +252,7 @@ if (isset($options['no-cache'])) {
         new \Psalm\Internal\Provider\FileStorageCacheProvider($config),
         new \Psalm\Internal\Provider\ClassLikeStorageCacheProvider($config),
         null,
-        new \Psalm\Internal\Provider\ProjectCacheProvider($current_dir . DIRECTORY_SEPARATOR . 'composer.lock')
+        new \Psalm\Internal\Provider\ProjectCacheProvider(Composer::getLockFilePath($current_dir))
     );
 }
 
@@ -451,6 +450,7 @@ foreach ($keyed_issues as $issue_name => $_) {
         || $issue_name === 'all'
     ) {
         $find_unused_code = true;
+        break;
     }
 }
 

@@ -13,6 +13,7 @@ use Psalm\Exception\ConfigException;
 use Psalm\Internal\Analyzer\ClassLikeAnalyzer;
 use Psalm\Internal\Analyzer\FileAnalyzer;
 use Psalm\Internal\Analyzer\ProjectAnalyzer;
+use Psalm\Internal\Composer;
 use Psalm\Internal\IncludeCollector;
 use Psalm\Internal\Scanner\FileScanner;
 use Psalm\Issue\ArgumentIssue;
@@ -83,6 +84,7 @@ use const LIBXML_ERR_FATAL;
 use const LIBXML_NONET;
 use const PHP_EOL;
 use const SCANDIR_SORT_NONE;
+use function array_map;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
@@ -90,10 +92,10 @@ use const SCANDIR_SORT_NONE;
  */
 class Config
 {
-    const DEFAULT_FILE_NAME = 'psalm.xml';
-    const REPORT_INFO = 'info';
-    const REPORT_ERROR = 'error';
-    const REPORT_SUPPRESS = 'suppress';
+    private const DEFAULT_FILE_NAME = 'psalm.xml';
+    public const REPORT_INFO = 'info';
+    public const REPORT_ERROR = 'error';
+    public const REPORT_SUPPRESS = 'suppress';
 
     /**
      * @var array<string>
@@ -107,7 +109,7 @@ class Config
     /**
      * @var array
      */
-    const MIXED_ISSUES = [
+    private const MIXED_ISSUES = [
         'MixedArgument',
         'MixedArrayAccess',
         'MixedArrayAssignment',
@@ -129,6 +131,15 @@ class Config
     ];
 
     /**
+     * These are special object classes that allow any and all properties to be get/set on them
+     * @var array<int, class-string>
+     */
+    protected $universal_object_crates = [
+        \stdClass::class,
+        SimpleXMLElement::class,
+    ];
+
+    /**
      * @var static|null
      */
     private static $instance;
@@ -147,7 +158,7 @@ class Config
      *
      * @var bool
      */
-    public $use_docblock_property_types = true;
+    public $use_docblock_property_types = false;
 
     /**
      * Whether or not to throw an exception on first error
@@ -739,7 +750,7 @@ class Config
      */
     private static function validateXmlConfig(string $base_dir, string $file_contents): void
     {
-        $schema_path = dirname(dirname(__DIR__)) . '/config.xsd';
+        $schema_path = dirname(__DIR__, 2). '/config.xsd';
 
         if (!file_exists($schema_path)) {
             throw new ConfigException('Cannot locate config schema');
@@ -975,6 +986,15 @@ class Config
             /** @var \SimpleXMLElement $mock_class */
             foreach ($config_xml->mockClasses->class as $mock_class) {
                 $config->mock_classes[] = strtolower((string)$mock_class['name']);
+            }
+        }
+
+        if (isset($config_xml->universalObjectCrates) && isset($config_xml->universalObjectCrates->class)) {
+            /** @var \SimpleXMLElement $universal_object_crate */
+            foreach ($config_xml->universalObjectCrates->class as $universal_object_crate) {
+                /** @var class-string $classString */
+                $classString = $universal_object_crate['name'];
+                $config->addUniversalObjectCrate($classString);
             }
         }
 
@@ -1693,21 +1713,21 @@ class Config
         $codebase->register_stub_files = true;
 
         // note: don't realpath $generic_stubs_path, or phar version will fail
-        $generic_stubs_path = __DIR__ . '/Internal/Stubs/CoreGenericFunctions.phpstub';
+        $generic_stubs_path = dirname(__DIR__, 2) . '/stubs/CoreGenericFunctions.phpstub';
 
         if (!file_exists($generic_stubs_path)) {
             throw new \UnexpectedValueException('Cannot locate core generic stubs');
         }
 
         // note: don't realpath $generic_classes_path, or phar version will fail
-        $generic_classes_path = __DIR__ . '/Internal/Stubs/CoreGenericClasses.phpstub';
+        $generic_classes_path = dirname(__DIR__, 2) . '/stubs/CoreGenericClasses.phpstub';
 
         if (!file_exists($generic_classes_path)) {
             throw new \UnexpectedValueException('Cannot locate core generic classes');
         }
 
         // note: don't realpath $generic_classes_path, or phar version will fail
-        $immutable_classes_path = __DIR__ . '/Internal/Stubs/CoreImmutableClasses.phpstub';
+        $immutable_classes_path = dirname(__DIR__, 2) . '/stubs/CoreImmutableClasses.phpstub';
 
         if (!file_exists($immutable_classes_path)) {
             throw new \UnexpectedValueException('Cannot locate core immutable classes');
@@ -1716,7 +1736,7 @@ class Config
         $core_generic_files = [$generic_stubs_path, $generic_classes_path, $immutable_classes_path];
 
         if (\extension_loaded('ds')) {
-            $ext_ds_path = __DIR__ . '/Internal/Stubs/ext-ds.php';
+            $ext_ds_path = dirname(__DIR__, 2) . '/stubs/ext-ds.php';
 
             if (!file_exists($ext_ds_path)) {
                 throw new \UnexpectedValueException('Cannot locate core generic classes');
@@ -1744,7 +1764,7 @@ class Config
         }
 
         if ($this->load_xdebug_stub) {
-            $xdebug_stub_path = __DIR__ . '/Internal/Stubs/Xdebug.php';
+            $xdebug_stub_path = dirname(__DIR__, 2) . '/stubs/Xdebug.php';
 
             if (!file_exists($xdebug_stub_path)) {
                 throw new \UnexpectedValueException('Cannot locate XDebug stub');
@@ -1953,8 +1973,8 @@ class Config
             }
 
             foreach ($objects as $object) {
-                if ($object != '.' && $object != '..') {
-                    if (filetype($dir . '/' . $object) == 'dir') {
+                if ($object !== '.' && $object !== '..') {
+                    if (filetype($dir . '/' . $object) === 'dir') {
                         self::removeCacheDirectory($dir . '/' . $object);
                     } else {
                         unlink($dir . '/' . $object);
@@ -2010,7 +2030,7 @@ class Config
      */
     private function getPHPVersionFromComposerJson(): ?string
     {
-        $composer_json_path = $this->base_dir . DIRECTORY_SEPARATOR . 'composer.json';
+        $composer_json_path = Composer::getJsonFilePath($this->base_dir);
 
         if (file_exists($composer_json_path)) {
             if (!$composer_json = json_decode(file_get_contents($composer_json_path), true)) {
@@ -2027,5 +2047,21 @@ class Config
             }
         }
         return null;
+    }
+
+    /**
+     * @param class-string $class
+     */
+    public function addUniversalObjectCrate(string $class): void
+    {
+        $this->universal_object_crates[] = $class;
+    }
+
+    /**
+     * @return array<int, lowercase-string>
+     */
+    public function getUniversalObjectCrates(): array
+    {
+        return array_map('strtolower', $this->universal_object_crates);
     }
 }

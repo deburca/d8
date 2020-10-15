@@ -12,6 +12,7 @@ use Psalm\IssueBuffer;
 use Psalm\Type;
 use Psalm\Type\Atomic\TNamedObject;
 use Psalm\Type\Union;
+use Psalm\Internal\Scope\FinallyScope;
 use function in_array;
 use function array_merge;
 use function array_intersect_key;
@@ -67,6 +68,10 @@ class TryAnalyzer
             if ($codebase->alter_code) {
                 $try_context->branch_point = $try_context->branch_point ?: (int) $stmt->getAttribute('startFilePos');
             }
+
+            if ($stmt->finally) {
+                $try_context->finally_scope = new FinallyScope($try_context->vars_in_scope);
+            }
         }
 
         $assigned_var_ids = $try_context->assigned_var_ids;
@@ -79,6 +84,22 @@ class TryAnalyzer
 
         if ($statements_analyzer->analyze($stmt->stmts, $context) === false) {
             return false;
+        }
+
+        if ($try_context->finally_scope) {
+            foreach ($context->vars_in_scope as $var_id => $type) {
+                if (isset($try_context->finally_scope->vars_in_scope[$var_id])) {
+                    if ($try_context->finally_scope->vars_in_scope[$var_id] !== $type) {
+                        $try_context->finally_scope->vars_in_scope[$var_id] = Type::combineUnionTypes(
+                            $try_context->finally_scope->vars_in_scope[$var_id],
+                            $type,
+                            $statements_analyzer->getCodebase()
+                        );
+                    }
+                } else {
+                    $try_context->finally_scope->vars_in_scope[$var_id] = $type;
+                }
+            }
         }
 
         $context->has_returned = false;
@@ -411,9 +432,7 @@ class TryAnalyzer
                 foreach ($catch_context->vars_in_scope as $var_id => $type) {
                     if ($stmt_control_actions === [ScopeAnalyzer::ACTION_END]) {
                         $context->vars_in_scope[$var_id] = $type;
-                    } elseif (isset($context->vars_in_scope[$var_id])
-                        && !$context->vars_in_scope[$var_id]->equals($type)
-                    ) {
+                    } elseif (isset($context->vars_in_scope[$var_id])) {
                         $context->vars_in_scope[$var_id] = Type::combineUnionTypes(
                             $context->vars_in_scope[$var_id],
                             $type
@@ -434,22 +453,18 @@ class TryAnalyzer
                 }
             }
 
-            if ($stmt->finally) {
-                $suppressed_issues = $statements_analyzer->getSuppressedIssues();
-
-                foreach ($issues_to_suppress as $issue_to_suppress) {
-                    if (!in_array($issue_to_suppress, $suppressed_issues, true)) {
-                        $statements_analyzer->addSuppressedIssues([$issue_to_suppress]);
-                    }
-                }
-
-                $catch_context->has_returned = false;
-
-                $statements_analyzer->analyze($stmt->finally->stmts, $catch_context);
-
-                foreach ($issues_to_suppress as $issue_to_suppress) {
-                    if (!in_array($issue_to_suppress, $suppressed_issues, true)) {
-                        $statements_analyzer->removeSuppressedIssues([$issue_to_suppress]);
+            if ($try_context->finally_scope) {
+                foreach ($catch_context->vars_in_scope as $var_id => $type) {
+                    if (isset($try_context->finally_scope->vars_in_scope[$var_id])) {
+                        if ($try_context->finally_scope->vars_in_scope[$var_id] !== $type) {
+                            $try_context->finally_scope->vars_in_scope[$var_id] = Type::combineUnionTypes(
+                                $try_context->finally_scope->vars_in_scope[$var_id],
+                                $type,
+                                $statements_analyzer->getCodebase()
+                            );
+                        }
+                    } else {
+                        $try_context->finally_scope->vars_in_scope[$var_id] = $type;
                     }
                 }
             }
@@ -500,19 +515,54 @@ class TryAnalyzer
         }
 
         if ($stmt->finally) {
-            $suppressed_issues = $statements_analyzer->getSuppressedIssues();
+            if ($try_context->finally_scope) {
+                $finally_context = clone $context;
 
-            foreach ($issues_to_suppress as $issue_to_suppress) {
-                if (!in_array($issue_to_suppress, $suppressed_issues, true)) {
-                    $statements_analyzer->addSuppressedIssues([$issue_to_suppress]);
+                $finally_context->assigned_var_ids = [];
+                $finally_context->possibly_assigned_var_ids = [];
+
+                $finally_context->vars_in_scope = $try_context->finally_scope->vars_in_scope;
+
+                $statements_analyzer->analyze($stmt->finally->stmts, $finally_context);
+
+                if ($finally_context->has_returned) {
+                    $context->has_returned = true;
                 }
-            }
 
-            $statements_analyzer->analyze($stmt->finally->stmts, $context);
+                /** @var string $var_id */
+                foreach ($finally_context->assigned_var_ids as $var_id => $_) {
+                    if (isset($context->vars_in_scope[$var_id])) {
+                        $context->vars_in_scope[$var_id] = Type::combineUnionTypes(
+                            $context->vars_in_scope[$var_id],
+                            $finally_context->vars_in_scope[$var_id],
+                            $codebase
+                        );
+                    } elseif (isset($finally_context->vars_in_scope[$var_id])) {
+                        $context->vars_in_scope[$var_id] = clone $finally_context->vars_in_scope[$var_id];
+                    }
+                }
 
-            foreach ($issues_to_suppress as $issue_to_suppress) {
-                if (!in_array($issue_to_suppress, $suppressed_issues, true)) {
-                    $statements_analyzer->removeSuppressedIssues([$issue_to_suppress]);
+                $newly_unreferenced_vars = array_merge(
+                    $newly_unreferenced_vars,
+                    array_diff_key(
+                        $finally_context->unreferenced_vars,
+                        $old_unreferenced_vars
+                    )
+                );
+
+                foreach ($finally_context->unreferenced_vars as $var_id => $locations) {
+                    if (!isset($old_unreferenced_vars[$var_id])
+                        && (isset($context->unreferenced_vars[$var_id])
+                            || isset($newly_assigned_var_ids[$var_id]))
+                    ) {
+                        $statements_analyzer->registerVariableUses($locations);
+                    } elseif (isset($old_unreferenced_vars[$var_id])
+                        && $old_unreferenced_vars[$var_id] !== $locations
+                    ) {
+                        $statements_analyzer->registerVariableUses($locations);
+                    } elseif (isset($newly_unreferenced_vars[$var_id])) {
+                        $context->unreferenced_vars[$var_id] = $newly_unreferenced_vars[$var_id];
+                    }
                 }
             }
         }

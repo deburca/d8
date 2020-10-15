@@ -202,24 +202,23 @@ class ArrayAnalyzer
                 $array_keys[$item_key_value] = true;
             }
 
-            if ($codebase->taint
-                && $codebase->config->trackTaintsInPath($statements_analyzer->getFilePath())
+            if ($statements_analyzer->control_flow_graph
                 && !\in_array('TaintedInput', $statements_analyzer->getSuppressedIssues())
             ) {
                 if ($item_value_type = $statements_analyzer->node_data->getType($item->value)) {
                     if ($item_value_type->parent_nodes) {
                         $var_location = new CodeLocation($statements_analyzer->getSource(), $item);
 
-                        $new_parent_node = \Psalm\Internal\Taint\TaintNode::getForAssignment(
+                        $new_parent_node = \Psalm\Internal\ControlFlow\ControlFlowNode::getForAssignment(
                             'array'
                                 . ($item_key_value !== null ? '[\'' . $item_key_value . '\']' : ''),
                             $var_location
                         );
 
-                        $codebase->taint->addTaintNode($new_parent_node);
+                        $statements_analyzer->control_flow_graph->addNode($new_parent_node);
 
                         foreach ($item_value_type->parent_nodes as $parent_node) {
-                            $codebase->taint->addPath(
+                            $statements_analyzer->control_flow_graph->addPath(
                                 $parent_node,
                                 $new_parent_node,
                                 'array-assignment'
@@ -227,7 +226,7 @@ class ArrayAnalyzer
                             );
                         }
 
-                        $parent_taint_nodes = array_merge($parent_taint_nodes, [$new_parent_node]);
+                        $parent_taint_nodes[$new_parent_node->id] = $new_parent_node;
                     }
                 }
             }

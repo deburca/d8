@@ -285,14 +285,20 @@ class ArrayAssignmentAnalyzer
                 $child_stmt_type = $assignment_type;
                 $statements_analyzer->node_data->setType($child_stmt, $assignment_type);
 
-                self::taintArrayAssignment(
-                    $statements_analyzer,
-                    $child_stmt->var,
-                    $array_type,
-                    $assignment_type,
-                    $array_var_id,
-                    $dim_value !== null ? [$dim_value] : []
-                );
+                if ($statements_analyzer->control_flow_graph) {
+                    self::taintArrayAssignment(
+                        $statements_analyzer,
+                        $child_stmt,
+                        $array_type,
+                        $assignment_type,
+                        ExpressionIdentifier::getArrayVarId(
+                            $child_stmt->var,
+                            $statements_analyzer->getFQCLN(),
+                            $statements_analyzer
+                        ),
+                        $dim_value !== null ? [$dim_value] : []
+                    );
+                }
             }
 
             $current_type = $child_stmt_type;
@@ -400,21 +406,22 @@ class ArrayAssignmentAnalyzer
 
             array_pop($var_id_additions);
 
-            $array_var_id = null;
+            $parent_array_var_id = null;
 
             if ($root_var_id) {
                 $array_var_id = $root_var_id . implode('', $var_id_additions);
+                $parent_array_var_id = $root_var_id . implode('', \array_slice($var_id_additions, 0, -1));
                 $context->vars_in_scope[$array_var_id] = clone $child_stmt_type;
                 $context->possibly_assigned_var_ids[$array_var_id] = true;
             }
 
-            if ($codebase->taint) {
+            if ($statements_analyzer->control_flow_graph) {
                 self::taintArrayAssignment(
                     $statements_analyzer,
-                    $child_stmt->var,
+                    $child_stmt,
                     $statements_analyzer->node_data->getType($child_stmt->var) ?: Type::getMixed(),
                     $new_child_type,
-                    $array_var_id,
+                    $parent_array_var_id,
                     $key_values
                 );
             }
@@ -565,6 +572,8 @@ class ArrayAssignmentAnalyzer
                             $array_atomic_type = clone $atomic_root_types['array'];
 
                             $new_child_type = new Type\Union([$array_atomic_type]);
+
+                            $new_child_type->parent_nodes = $root_type->parent_nodes;
                         }
                     } elseif ($array_atomic_type instanceof TList) {
                         $array_atomic_type = new TNonEmptyList(
@@ -706,7 +715,6 @@ class ArrayAssignmentAnalyzer
                     }
                 } elseif ($type instanceof TNonEmptyList
                     && $key_value instanceof Type\Atomic\TLiteralInt
-                    && ($key_value->value === $key_value->value || $key_value->value < $type->count)
                     && count($key_values) === 1
                 ) {
                     $has_matching_objectlike_property = true;
@@ -768,46 +776,47 @@ class ArrayAssignmentAnalyzer
      */
     private static function taintArrayAssignment(
         StatementsAnalyzer $statements_analyzer,
-        PhpParser\Node\Expr $stmt,
+        PhpParser\Node\Expr\ArrayDimFetch $expr,
         Type\Union $stmt_type,
         Type\Union $child_stmt_type,
-        ?string $array_var_id,
+        ?string $var_var_id,
         array $key_values
     ) : void {
-        $codebase = $statements_analyzer->getCodebase();
-
-        if ($codebase->taint
-            && $child_stmt_type->parent_nodes
+        if ($statements_analyzer->control_flow_graph
             && !\in_array('TaintedInput', $statements_analyzer->getSuppressedIssues())
         ) {
-            $var_location = new \Psalm\CodeLocation($statements_analyzer->getSource(), $stmt);
+            if (!$stmt_type->parent_nodes) {
+                $var_location = new \Psalm\CodeLocation($statements_analyzer->getSource(), $expr->var);
 
-            $new_parent_node = \Psalm\Internal\Taint\TaintNode::getForAssignment(
-                $array_var_id ?: 'array-assignment',
-                $var_location
-            );
+                $parent_node = \Psalm\Internal\ControlFlow\ControlFlowNode::getForAssignment(
+                    $var_var_id ?: 'assignment',
+                    $var_location
+                );
 
-            $codebase->taint->addTaintNode($new_parent_node);
+                $statements_analyzer->control_flow_graph->addNode($parent_node);
 
-            foreach ($child_stmt_type->parent_nodes as $parent_node) {
-                if ($key_values) {
-                    foreach ($key_values as $key_value) {
-                        $codebase->taint->addPath(
-                            $parent_node,
-                            $new_parent_node,
-                            'array-assignment-\'' . $key_value->value . '\''
-                        );
-                    }
-                } else {
-                    $codebase->taint->addPath(
-                        $parent_node,
-                        $new_parent_node,
-                        'array-assignment'
-                    );
-                }
+                $stmt_type->parent_nodes = [$parent_node->id => $parent_node];
             }
 
-            $stmt_type->parent_nodes[] = $new_parent_node;
+            foreach ($stmt_type->parent_nodes as $parent_node) {
+                foreach ($child_stmt_type->parent_nodes as $child_parent_node) {
+                    if ($key_values) {
+                        foreach ($key_values as $key_value) {
+                            $statements_analyzer->control_flow_graph->addPath(
+                                $child_parent_node,
+                                $parent_node,
+                                'array-assignment-\'' . $key_value->value . '\''
+                            );
+                        }
+                    } else {
+                        $statements_analyzer->control_flow_graph->addPath(
+                            $child_parent_node,
+                            $parent_node,
+                            'array-assignment'
+                        );
+                    }
+                }
+            }
         }
     }
 }

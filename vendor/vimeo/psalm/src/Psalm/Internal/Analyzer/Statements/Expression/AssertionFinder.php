@@ -17,7 +17,7 @@ use Psalm\Issue\TypeDoesNotContainType;
 use Psalm\Issue\UnevaluatedCode;
 use Psalm\IssueBuffer;
 use Psalm\Type;
-use Psalm\Type\Atomic\TBool;
+
 use function substr;
 use function count;
 use function strtolower;
@@ -31,13 +31,13 @@ use function is_int;
  */
 class AssertionFinder
 {
-    const ASSIGNMENT_TO_RIGHT = 1;
-    const ASSIGNMENT_TO_LEFT = -1;
+    public const ASSIGNMENT_TO_RIGHT = 1;
+    public const ASSIGNMENT_TO_LEFT = -1;
 
     /**
      * Gets all the type assertions in a conditional
      *
-     * @return array<string, non-empty-list<non-empty-list<string>>>|null
+     * @return array<string, non-empty-list<non-empty-list<string>>>
      */
     public static function scrapeAssertions(
         PhpParser\Node\Expr $conditional,
@@ -47,7 +47,7 @@ class AssertionFinder
         bool $inside_negation = false,
         bool $cache = true,
         bool $inside_conditional = true
-    ) {
+    ): array {
         $if_types = [];
 
         if ($conditional instanceof PhpParser\Node\Expr\Instanceof_) {
@@ -193,10 +193,6 @@ class AssertionFinder
                 if ($cache && $source instanceof StatementsAnalyzer) {
                     $source->node_data->setAssertions($conditional->expr, $expr_assertions);
                 }
-            }
-
-            if ($expr_assertions === null) {
-                throw new \UnexpectedValueException('Assertions should be set');
             }
 
             if (count($expr_assertions) !== 1) {
@@ -699,10 +695,6 @@ class AssertionFinder
                         }
                     }
 
-                    if ($base_assertions === null) {
-                        throw new \UnexpectedValueException('Assertions should be set');
-                    }
-
                     $if_types = $base_assertions;
                 }
             }
@@ -818,10 +810,6 @@ class AssertionFinder
                         if ($source instanceof StatementsAnalyzer && $cache) {
                             $source->node_data->setAssertions($base_conditional, $base_assertions);
                         }
-                    }
-
-                    if ($base_assertions === null) {
-                        throw new \UnexpectedValueException('Assertions should be set');
                     }
 
                     $notif_types = $base_assertions;
@@ -1338,10 +1326,6 @@ class AssertionFinder
                     }
                 }
 
-                if ($base_assertions === null) {
-                    throw new \UnexpectedValueException('Assertions should be set');
-                }
-
                 $notif_types = $base_assertions;
 
                 if (count($notif_types) === 1) {
@@ -1446,10 +1430,6 @@ class AssertionFinder
                         if ($source instanceof StatementsAnalyzer && $cache) {
                             $source->node_data->setAssertions($base_conditional, $base_assertions);
                         }
-                    }
-
-                    if ($base_assertions === null) {
-                        throw new \UnexpectedValueException('Assertions should be set');
                     }
 
                     $notif_types = $base_assertions;
@@ -2171,6 +2151,14 @@ class AssertionFinder
                                 $literal_assertions[] = '=' . $array_literal_type->getId();
                             }
 
+                            if ($atomic_type->type_params[1]->isFalsable()) {
+                                $literal_assertions[] = 'false';
+                            }
+
+                            if ($atomic_type->type_params[1]->isNullable()) {
+                                $literal_assertions[] = 'null';
+                            }
+
                             if ($negate) {
                                 $if_types = \Psalm\Type\Algebra::negateTypes([
                                     $first_var_name => [$literal_assertions]
@@ -2668,6 +2656,7 @@ class AssertionFinder
             foreach ($left_type->getAtomicTypes() as $type_part) {
                 if ($type_part instanceof Type\Atomic\TClassString) {
                     $left_class_string_t = true;
+                    break;
                 }
             }
         }
@@ -2699,6 +2688,7 @@ class AssertionFinder
             foreach ($right_type->getAtomicTypes() as $type_part) {
                 if ($type_part instanceof Type\Atomic\TClassString) {
                     $right_class_string_t = true;
+                    break;
                 }
             }
         }

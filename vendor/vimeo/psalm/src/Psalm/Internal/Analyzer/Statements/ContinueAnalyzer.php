@@ -71,6 +71,10 @@ class ContinueAnalyzer
 
             foreach ($redefined_vars as $var => $type) {
                 if ($type->hasMixed()) {
+                    if (isset($loop_scope->possibly_redefined_loop_vars[$var])) {
+                        $type->parent_nodes += $loop_scope->possibly_redefined_loop_vars[$var]->parent_nodes;
+                    }
+
                     $loop_scope->possibly_redefined_loop_vars[$var] = $type;
                 } elseif (isset($loop_scope->possibly_redefined_loop_vars[$var])) {
                     $loop_scope->possibly_redefined_loop_vars[$var] = Type::combineUnionTypes(
@@ -98,6 +102,22 @@ class ContinueAnalyzer
                 }
 
                 $loop_scope->referenced_var_ids += $context->referenced_var_ids;
+            }
+
+            if ($context->finally_scope) {
+                foreach ($context->vars_in_scope as $var_id => $type) {
+                    if (isset($context->finally_scope->vars_in_scope[$var_id])) {
+                        if ($context->finally_scope->vars_in_scope[$var_id] !== $type) {
+                            $context->finally_scope->vars_in_scope[$var_id] = Type::combineUnionTypes(
+                                $context->finally_scope->vars_in_scope[$var_id],
+                                $type,
+                                $statements_analyzer->getCodebase()
+                            );
+                        }
+                    } else {
+                        $context->finally_scope->vars_in_scope[$var_id] = $type;
+                    }
+                }
             }
         }
 

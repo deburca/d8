@@ -414,10 +414,11 @@ class TypeParser
                 $parse_tree->children
             );
 
-            $onlyTKeyedArray = true;
-
             $first_type = \reset($intersection_types);
             $last_type = \end($intersection_types);
+
+            $onlyTKeyedArray = $first_type instanceof ObjectLike
+                || $last_type instanceof ObjectLike;
 
             foreach ($intersection_types as $intersection_type) {
                 if (!$intersection_type instanceof ObjectLike
@@ -664,13 +665,18 @@ class TypeParser
                     $is_optional = false;
 
                     if ($child_tree instanceof ParseTree\CallableParamTree) {
-                        $tree_type = self::getTypeFromTree(
-                            $child_tree->children[0],
-                            $codebase,
-                            null,
-                            $template_type_map,
-                            $type_aliases
-                        );
+                        if (isset($child_tree->children[0])) {
+                            $tree_type = self::getTypeFromTree(
+                                $child_tree->children[0],
+                                $codebase,
+                                null,
+                                $template_type_map,
+                                $type_aliases
+                            );
+                        } else {
+                            $tree_type = new TMixed();
+                        }
+
                         $is_variadic = $child_tree->variadic;
                         $is_optional = $child_tree->has_default;
                     } else {

@@ -1,8 +1,6 @@
 <?php
 namespace Psalm\Type\Atomic;
 
-use Psalm\CodeLocation;
-use Psalm\StatementsSource;
 use function implode;
 use function array_map;
 
@@ -36,9 +34,7 @@ class TTypeAlias extends \Psalm\Type\Atomic
             return $this->getKey() . '&' . implode(
                 '&',
                 array_map(
-                    function ($type): string {
-                        return (string) $type;
-                    },
+                    'strval',
                     $this->extra_types
                 )
             );

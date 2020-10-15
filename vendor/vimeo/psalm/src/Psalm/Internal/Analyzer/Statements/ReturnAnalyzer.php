@@ -14,7 +14,7 @@ use Psalm\Internal\Type\Comparator\UnionTypeComparator;
 use Psalm\CodeLocation;
 use Psalm\Context;
 use Psalm\Exception\DocblockParseException;
-use Psalm\Internal\Taint\TaintNode;
+use Psalm\Internal\ControlFlow\ControlFlowNode;
 use Psalm\Internal\Type\TemplateResult;
 use Psalm\Issue\FalsableReturnStatement;
 use Psalm\Issue\InvalidDocblock;
@@ -115,6 +115,10 @@ class ReturnAnalyzer
                     continue;
                 }
 
+                if (isset($context->vars_in_scope[$var_comment->var_id])) {
+                    $comment_type->parent_nodes = $context->vars_in_scope[$var_comment->var_id]->parent_nodes;
+                }
+
                 $context->vars_in_scope[$var_comment->var_id] = $comment_type;
             }
         }
@@ -136,11 +140,17 @@ class ReturnAnalyzer
                 return false;
             }
 
+            $stmt_expr_type = $statements_analyzer->node_data->getType($stmt->expr);
+
             if ($var_comment_type) {
                 $stmt_type = $var_comment_type;
 
+                if ($stmt_expr_type && $stmt_expr_type->parent_nodes) {
+                    $stmt_type->parent_nodes = $stmt_expr_type->parent_nodes;
+                }
+
                 $statements_analyzer->node_data->setType($stmt, $var_comment_type);
-            } elseif ($stmt_expr_type = $statements_analyzer->node_data->getType($stmt->expr)) {
+            } elseif ($stmt_expr_type) {
                 $stmt_type = $stmt_expr_type;
 
                 if ($stmt_type->isNever()) {
@@ -169,6 +179,22 @@ class ReturnAnalyzer
 
         $statements_analyzer->node_data->setType($stmt, $stmt_type);
 
+        if ($context->finally_scope) {
+            foreach ($context->vars_in_scope as $var_id => $type) {
+                if (isset($context->finally_scope->vars_in_scope[$var_id])) {
+                    if ($context->finally_scope->vars_in_scope[$var_id] !== $type) {
+                        $context->finally_scope->vars_in_scope[$var_id] = Type::combineUnionTypes(
+                            $context->finally_scope->vars_in_scope[$var_id],
+                            $type,
+                            $statements_analyzer->getCodebase()
+                        );
+                    }
+                } else {
+                    $context->finally_scope->vars_in_scope[$var_id] = $type;
+                }
+            }
+        }
+
         if ($source instanceof FunctionLikeAnalyzer
             && !($source->getSource() instanceof TraitAnalyzer)
         ) {
@@ -189,11 +215,9 @@ class ReturnAnalyzer
                     $source->getParentFQCLN()
                 );
 
-                if ($codebase->taint
-                    && $codebase->config->trackTaintsInPath($statements_analyzer->getFilePath())
-                ) {
+                if ($statements_analyzer->control_flow_graph) {
                     self::handleTaints(
-                        $codebase,
+                        $statements_analyzer,
                         $stmt,
                         $cased_method_id,
                         $inferred_type,
@@ -492,27 +516,27 @@ class ReturnAnalyzer
     }
 
     private static function handleTaints(
-        \Psalm\Codebase $codebase,
+        StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Stmt\Return_ $stmt,
         string $cased_method_id,
         Type\Union $inferred_type,
         \Psalm\Storage\FunctionLikeStorage $storage
     ) : void {
-        if (!$codebase->taint || !$stmt->expr || !$storage->location) {
+        if (!$statements_analyzer->control_flow_graph || !$stmt->expr || !$storage->location) {
             return;
         }
 
-        $method_node = TaintNode::getForMethodReturn(
+        $method_node = ControlFlowNode::getForMethodReturn(
             strtolower($cased_method_id),
             $cased_method_id,
-            $storage->location
+            $storage->signature_return_type_location ?: $storage->location
         );
 
-        $codebase->taint->addTaintNode($method_node);
+        $statements_analyzer->control_flow_graph->addNode($method_node);
 
         if ($inferred_type->parent_nodes) {
             foreach ($inferred_type->parent_nodes as $parent_node) {
-                $codebase->taint->addPath(
+                $statements_analyzer->control_flow_graph->addPath(
                     $parent_node,
                     $method_node,
                     'return',

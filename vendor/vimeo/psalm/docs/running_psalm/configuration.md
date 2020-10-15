@@ -273,6 +273,14 @@ Setting to `false` prevents the stub from loading.
 ```
 When `true`, Psalm will complain when referencing an explicit string offset on an array e.g. `$arr['foo']` without a user first asserting that it exists (either via an `isset` check or via an object-like array). Defaults to `false`.
 
+#### ensureArrayIntOffsetsExist
+```xml
+<psalm
+  ensureArrayIntOffsetsExist="[bool]"
+>
+```
+When `true`, Psalm will complain when referencing an explicit integer offset on an array e.g. `$arr[7]` without a user first asserting that it exists (either via an `isset` check or via an object-like array). Defaults to `false`.
+
 #### phpVersion
 ```xml
 <psalm
@@ -358,7 +366,7 @@ Whether or not to show issues in files that are used by your project files, but 
 ```
 The directory used to store Psalm's cache data - if you specify one (and it does not already exist), its parent directory must already exist, otherwise Psalm will throw an error.
 
-Defaults to `$HOME/.cache/psalm` or `sys_get_temp_dir() . '/psalm'` when not defined.
+Defaults to `$XDG_CACHE_HOME/psalm`. If `$XDG_CACHE_HOME` is either not set or empty, a default equal to `$HOME/.cache/psalm` is used or `sys_get_temp_dir() . '/psalm'` when not defined.
 
 #### allowFileIncludes
 ```xml
@@ -404,6 +412,9 @@ Optional.  If you don't want Psalm to complain about every single issue it finds
 
 #### &lt;mockClasses&gt;
 Optional. Do you use mock classes in your tests? If you want Psalm to ignore them when checking files, include a fully-qualified path to the class with `<class name="Your\Namespace\ClassName" />`
+
+#### &lt;universalObjectCrates&gt;
+Optional. Do you have objects with properties that cannot be determined statically? If you want Psalm to treat all properties on a given classlike as mixed, include a fully-qualified path to the class with `<class name="Your\Namespace\ClassName" />`. By default, `stdClass` and `SimpleXMLElement` are configured to be universal object crates.
 
 #### &lt;stubs&gt;
 Optional. If your codebase uses classes and functions that are not visible to Psalm via reflection (e.g. if there are internal packages that your codebase relies on that are not available on the machine running Psalm), you can use stub files. Used by PhpStorm (a popular IDE) and others, stubs provide a description of classes and functions without the implementations. You can find a list of stubs for common classes [here](https://github.com/JetBrains/phpstorm-stubs). List out each file with `<file name="path/to/file.php" />`.

@@ -312,12 +312,9 @@ class ArrayFetchAnalyzer
         Type\Union $stmt_type,
         Type\Union $offset_type
     ) : void {
-        $codebase = $statements_analyzer->getCodebase();
-
-        if ($codebase->taint
+        if ($statements_analyzer->control_flow_graph
             && ($stmt_var_type = $statements_analyzer->node_data->getType($var))
             && $stmt_var_type->parent_nodes
-            && $codebase->config->trackTaintsInPath($statements_analyzer->getFilePath())
         ) {
             if (\in_array('TaintedInput', $statements_analyzer->getSuppressedIssues())) {
                 $stmt_var_type->parent_nodes = [];
@@ -326,12 +323,12 @@ class ArrayFetchAnalyzer
 
             $var_location = new CodeLocation($statements_analyzer->getSource(), $var);
 
-            $new_parent_node = \Psalm\Internal\Taint\TaintNode::getForAssignment(
+            $new_parent_node = \Psalm\Internal\ControlFlow\ControlFlowNode::getForAssignment(
                 $keyed_array_var_id ?: 'array-fetch',
                 $var_location
             );
 
-            $codebase->taint->addTaintNode($new_parent_node);
+            $statements_analyzer->control_flow_graph->addNode($new_parent_node);
 
             $dim_value = $offset_type->isSingleStringLiteral()
                 ? $offset_type->getSingleStringLiteral()->value
@@ -340,17 +337,17 @@ class ArrayFetchAnalyzer
                     : null);
 
             foreach ($stmt_var_type->parent_nodes as $parent_node) {
-                $codebase->taint->addPath(
+                $statements_analyzer->control_flow_graph->addPath(
                     $parent_node,
                     $new_parent_node,
                     'array-fetch' . ($dim_value !== null ? '-\'' . $dim_value . '\'' : '')
                 );
             }
 
-            $stmt_type->parent_nodes = [$new_parent_node];
+            $stmt_type->parent_nodes = [$new_parent_node->id => $new_parent_node];
         }
     }
-    
+
     public static function getArrayAccessTypeGivenOffset(
         StatementsAnalyzer $statements_analyzer,
         PhpParser\Node\Expr\ArrayDimFetch $stmt,
@@ -561,8 +558,7 @@ class ArrayFetchAnalyzer
                     if (count($key_values) === 1) {
                         $from_mixed_array = $type->type_params[1]->isMixed();
 
-                        $previous_key_type = $type->type_params[0];
-                        $previous_value_type = $type->type_params[1];
+                        [$previous_key_type, $previous_value_type] = $type->type_params;
 
                         // ok, type becomes an ObjectLike
                         $array_type->removeType($type_string);
@@ -1506,6 +1502,7 @@ class ArrayFetchAnalyzer
                         ]->possibly_undefined
                 ) {
                     $found_match = true;
+                    break;
                 }
             }
 
@@ -1555,6 +1552,7 @@ class ArrayFetchAnalyzer
                         ]->possibly_undefined
                 ) {
                     $found_match = true;
+                    break;
                 }
             }
 
@@ -1575,7 +1573,7 @@ class ArrayFetchAnalyzer
             }
         }
     }
-    
+
     public static function replaceOffsetTypeWithInts(Type\Union $offset_type): Type\Union
     {
         $offset_types = $offset_type->getAtomicTypes();

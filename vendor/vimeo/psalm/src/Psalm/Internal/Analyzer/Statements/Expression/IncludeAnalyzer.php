@@ -4,7 +4,7 @@ namespace Psalm\Internal\Analyzer\Statements\Expression;
 use PhpParser;
 use Psalm\Internal\Analyzer\Statements\ExpressionAnalyzer;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
-use Psalm\Internal\Taint\Sink;
+use Psalm\Internal\ControlFlow\TaintSink;
 use Psalm\CodeLocation;
 use Psalm\Config;
 use Psalm\Context;
@@ -102,14 +102,13 @@ class IncludeAnalyzer
         }
 
         if ($stmt_expr_type
-            && $codebase->taint
+            && $statements_analyzer->control_flow_graph instanceof \Psalm\Internal\Codebase\TaintFlowGraph
             && $stmt_expr_type->parent_nodes
-            && $codebase->config->trackTaintsInPath($statements_analyzer->getFilePath())
             && !\in_array('TaintedInput', $statements_analyzer->getSuppressedIssues())
         ) {
             $arg_location = new CodeLocation($statements_analyzer->getSource(), $stmt->expr);
 
-            $include_param_sink = Sink::getForMethodArgument(
+            $include_param_sink = TaintSink::getForMethodArgument(
                 'include',
                 'include',
                 0,
@@ -118,10 +117,10 @@ class IncludeAnalyzer
 
             $include_param_sink->taints = [\Psalm\Type\TaintKind::INPUT_TEXT];
 
-            $codebase->taint->addSink($include_param_sink);
+            $statements_analyzer->control_flow_graph->addSink($include_param_sink);
 
             foreach ($stmt_expr_type->parent_nodes as $parent_node) {
-                $codebase->taint->addPath($parent_node, $include_param_sink, 'arg');
+                $statements_analyzer->control_flow_graph->addPath($parent_node, $include_param_sink, 'arg');
             }
         }
 
@@ -356,12 +355,12 @@ class IncludeAnalyzer
             return $file_name;
         }
 
-        $paths = PATH_SEPARATOR == ':'
+        $paths = PATH_SEPARATOR === ':'
             ? preg_split('#(?<!phar):#', get_include_path())
             : explode(PATH_SEPARATOR, get_include_path());
 
         foreach ($paths as $prefix) {
-            $ds = substr($prefix, -1) == DIRECTORY_SEPARATOR ? '' : DIRECTORY_SEPARATOR;
+            $ds = substr($prefix, -1) === DIRECTORY_SEPARATOR ? '' : DIRECTORY_SEPARATOR;
 
             if ($prefix === '.') {
                 $prefix = $current_directory;

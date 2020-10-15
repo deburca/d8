@@ -907,16 +907,6 @@
     }
   });
 
-  // Block cookies when the user hasn't agreed.
-  if (drupalSettings.eu_cookie_compliance.automatic_cookies_removal &&
-      (
-        (drupalSettings.eu_cookie_compliance.method === 'opt_in' && (_euccCurrentStatus === null  || !Drupal.eu_cookie_compliance.hasAgreed()))
-      || (drupalSettings.eu_cookie_compliance.method === 'opt_out' && !Drupal.eu_cookie_compliance.hasAgreed() && _euccCurrentStatus !== null)
-      || (drupalSettings.eu_cookie_compliance.method === 'categories')
-    )) {
-    euCookieComplianceBlockCookies = setInterval(Drupal.eu_cookie_compliance.BlockCookies, 5000);
-  }
-
   Drupal.eu_cookie_compliance.BlockCookies = function () {
     var cookieStatus = Drupal.eu_cookie_compliance.getCookieStatus();
     if (cookieStatus === 1 || cookieStatus === 2) {
@@ -960,6 +950,16 @@
         }
       }
     }
+  }
+
+  // Block cookies when the user hasn't agreed.
+  if (drupalSettings.eu_cookie_compliance.automatic_cookies_removal &&
+    (
+      (drupalSettings.eu_cookie_compliance.method === 'opt_in' && (_euccCurrentStatus === null  || !Drupal.eu_cookie_compliance.hasAgreed()))
+      || (drupalSettings.eu_cookie_compliance.method === 'opt_out' && !Drupal.eu_cookie_compliance.hasAgreed() && _euccCurrentStatus !== null)
+      || (drupalSettings.eu_cookie_compliance.method === 'categories')
+    )) {
+    euCookieComplianceBlockCookies = setInterval(Drupal.eu_cookie_compliance.BlockCookies, 5000);
   }
 
   /**

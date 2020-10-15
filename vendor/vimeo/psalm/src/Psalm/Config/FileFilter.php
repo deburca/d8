@@ -8,7 +8,6 @@ use const E_WARNING;
 use function explode;
 use function glob;
 use function in_array;
-use function is_bool;
 use function is_dir;
 use function preg_match;
 use function preg_replace;
@@ -260,7 +259,7 @@ class FileFilter
 
                 $file_path = realpath($prospective_file_path);
 
-                if (!$file_path) {
+                if (!$file_path && !$allow_missing_files) {
                     throw new ConfigException(
                         'Could not resolve config path to ' . $base_dir . DIRECTORY_SEPARATOR .
                         (string)$file['name']

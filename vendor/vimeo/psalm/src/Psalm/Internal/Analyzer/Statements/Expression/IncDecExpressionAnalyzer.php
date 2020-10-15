@@ -10,10 +10,7 @@ use Psalm\Internal\Analyzer\Statements\ExpressionAnalyzer;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
 use Psalm\CodeLocation;
 use Psalm\Context;
-use Psalm\Issue\ImpurePropertyAssignment;
-use Psalm\IssueBuffer;
 use Psalm\Type;
-use function strpos;
 
 class IncDecExpressionAnalyzer
 {
@@ -103,11 +100,13 @@ class IncDecExpressionAnalyzer
             $operation = $stmt instanceof PostInc || $stmt instanceof PreInc
                 ? new PhpParser\Node\Expr\BinaryOp\Plus(
                     $stmt->var,
-                    $fake_right_expr
+                    $fake_right_expr,
+                    $stmt->var->getAttributes()
                 )
                 : new PhpParser\Node\Expr\BinaryOp\Minus(
                     $stmt->var,
-                    $fake_right_expr
+                    $fake_right_expr,
+                    $stmt->var->getAttributes()
                 );
 
             $fake_assignment = new PhpParser\Node\Expr\Assign(

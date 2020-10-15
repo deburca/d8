@@ -6,7 +6,7 @@ use Psalm\CodeLocation;
 use Psalm\Context;
 use Psalm\StatementsSource;
 use Psalm\Type;
-use Psalm\Internal\Taint\TaintNode;
+use Psalm\Internal\ControlFlow\ControlFlowNode;
 
 class FilterVarReturnTypeProvider implements \Psalm\Plugin\Hook\FunctionReturnTypeProviderInterface
 {
@@ -118,22 +118,19 @@ class FilterVarReturnTypeProvider implements \Psalm\Plugin\Hook\FunctionReturnTy
             $filter_type = Type::getMixed();
         }
 
-        $codebase = $statements_source->getCodebase();
-
-        if ($codebase->taint
-            && $codebase->config->trackTaintsInPath($statements_source->getFilePath())
+        if ($statements_source->control_flow_graph
             && !\in_array('TaintedInput', $statements_source->getSuppressedIssues())
         ) {
-            $function_return_sink = TaintNode::getForMethodReturn(
+            $function_return_sink = ControlFlowNode::getForMethodReturn(
                 $function_id,
                 $function_id,
                 null,
                 $code_location
             );
 
-            $codebase->taint->addTaintNode($function_return_sink);
+            $statements_source->control_flow_graph->addNode($function_return_sink);
 
-            $function_param_sink = TaintNode::getForMethodArgument(
+            $function_param_sink = ControlFlowNode::getForMethodArgument(
                 $function_id,
                 $function_id,
                 0,
@@ -141,15 +138,15 @@ class FilterVarReturnTypeProvider implements \Psalm\Plugin\Hook\FunctionReturnTy
                 $code_location
             );
 
-            $codebase->taint->addTaintNode($function_param_sink);
+            $statements_source->control_flow_graph->addNode($function_param_sink);
 
-            $codebase->taint->addPath(
+            $statements_source->control_flow_graph->addPath(
                 $function_param_sink,
                 $function_return_sink,
                 'arg'
             );
 
-            $filter_type->parent_nodes = [$function_return_sink];
+            $filter_type->parent_nodes = [$function_return_sink->id => $function_return_sink];
         }
 
         return $filter_type;

@@ -131,7 +131,7 @@ abstract class Type
             if (!isset($aliased_classes[strtolower($candidate_parts[0])])) {
                 return $candidate;
             }
-        } elseif (!$namespace && stripos($value, '\\') === false) {
+        } elseif (!$namespace && strpos($value, '\\') === false) {
             return $value;
         }
 
@@ -490,9 +490,7 @@ abstract class Type
         }
 
         if ($type_1->parent_nodes || $type_2->parent_nodes) {
-            $combined_type->parent_nodes = \array_unique(
-                array_merge($type_1->parent_nodes ?: [], $type_2->parent_nodes ?: [])
-            );
+            $combined_type->parent_nodes = $type_1->parent_nodes + $type_2->parent_nodes;
         }
 
         return $combined_type;

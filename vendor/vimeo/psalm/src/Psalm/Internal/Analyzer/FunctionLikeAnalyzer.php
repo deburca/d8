@@ -42,7 +42,7 @@ use function strpos;
 use function array_search;
 use function array_keys;
 use function end;
-use Psalm\Internal\Taint\TaintNode;
+use Psalm\Internal\ControlFlow\ControlFlowNode;
 use Psalm\Storage\FunctionStorage;
 
 /**
@@ -111,6 +111,13 @@ abstract class FunctionLikeAnalyzer extends SourceAnalyzer
     public $inferred_has_mutation = false;
 
     /**
+     * Holds param nodes for functions with func_get_args calls
+     *
+     * @var array<string, bool>
+     */
+    public $param_names = [];
+
+    /**
      * @var FunctionLikeStorage
      */
     protected $storage;
@@ -118,7 +125,7 @@ abstract class FunctionLikeAnalyzer extends SourceAnalyzer
     /**
      * @param Closure|Function_|ClassMethod|ArrowFunction $function
      */
-    protected function __construct($function, SourceAnalyzer $source, FunctionLikeStorage $storage)
+    public function __construct($function, SourceAnalyzer $source, FunctionLikeStorage $storage)
     {
         $this->function = $function;
         $this->source = $source;
@@ -143,6 +150,14 @@ abstract class FunctionLikeAnalyzer extends SourceAnalyzer
         $storage = $this->storage;
 
         $function_stmts = $this->function->getStmts() ?: [];
+
+        if ($this->function instanceof ArrowFunction
+            && isset($function_stmts[0])
+            && $function_stmts[0] instanceof PhpParser\Node\Stmt\Return_
+            && $function_stmts[0]->expr
+        ) {
+            $function_stmts[0]->setAttributes($function_stmts[0]->expr->getAttributes());
+        }
 
         $hash = null;
         $real_method_id = null;
@@ -843,23 +858,23 @@ abstract class FunctionLikeAnalyzer extends SourceAnalyzer
             }
         }
 
-        if ($codebase->taint
+        if ($codebase->taint_flow_graph
             && $this->function instanceof ClassMethod
             && $cased_method_id
             && $storage->specialize_call
             && isset($context->vars_in_scope['$this'])
             && $context->vars_in_scope['$this']->parent_nodes
         ) {
-            $method_source = TaintNode::getForMethodReturn(
+            $method_source = ControlFlowNode::getForMethodReturn(
                 (string) $method_id,
                 $cased_method_id,
                 $storage->location
             );
 
-            $codebase->taint->addTaintNode($method_source);
+            $codebase->taint_flow_graph->addNode($method_source);
 
             foreach ($context->vars_in_scope['$this']->parent_nodes as $parent_node) {
-                $codebase->taint->addPath(
+                $codebase->taint_flow_graph->addPath(
                     $parent_node,
                     $method_source,
                     '$this'
@@ -1183,15 +1198,20 @@ abstract class FunctionLikeAnalyzer extends SourceAnalyzer
                 ]);
             }
 
-            if ($cased_method_id && $codebase->taint) {
-                $type_source = TaintNode::getForMethodArgument(
+            if ($cased_method_id && $codebase->taint_flow_graph) {
+                $type_source = ControlFlowNode::getForMethodArgument(
                     $cased_method_id,
                     $cased_method_id,
                     $offset,
                     $function_param->location,
                     null
                 );
-                $var_type->parent_nodes = [$type_source];
+
+                $var_type->parent_nodes = [$type_source->id => $type_source];
+            }
+
+            if ($storage->variadic) {
+                $this->param_names[$function_param->name] = true;
             }
 
             $context->vars_in_scope['$' . $function_param->name] = $var_type;
@@ -1490,8 +1510,6 @@ abstract class FunctionLikeAnalyzer extends SourceAnalyzer
 
     /**
      * @param array<PhpParser\Node\Stmt> $function_stmts
-     *
-     * @return  false|null
      */
     public function verifyReturnType(
         array $function_stmts,
@@ -1501,7 +1519,7 @@ abstract class FunctionLikeAnalyzer extends SourceAnalyzer
         ?CodeLocation $return_type_location = null,
         bool $did_explicitly_return = false,
         bool $closure_inside_call = false
-    ) {
+    ): void {
         ReturnTypeAnalyzer::verifyReturnType(
             $this->function,
             $function_stmts,

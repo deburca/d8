@@ -261,7 +261,7 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
                         true
                     ) === false) {
                         continue;
-                    };
+                    }
 
                     $referenced_class_storage = $codebase->classlike_storage_provider->get($fq_source_classlike);
                     if (!isset($referenced_class_storage->type_aliases[$alias->alias_name])) {
@@ -504,6 +504,7 @@ class FileAnalyzer extends SourceAnalyzer implements StatementsSource
         \Psalm\Internal\Provider\ClassLikeStorageProvider::deleteAll();
         \Psalm\Internal\Provider\FileStorageProvider::deleteAll();
         \Psalm\Internal\Provider\FileReferenceProvider::clearCache();
+        \Psalm\Internal\Codebase\InternalCallMapHandler::clearCache();
     }
 
     public function getFileName(): string

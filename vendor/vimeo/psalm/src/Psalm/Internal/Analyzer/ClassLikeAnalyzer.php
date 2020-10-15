@@ -8,10 +8,8 @@ use Psalm\CodeLocation;
 use Psalm\Context;
 use Psalm\Internal\FileManipulation\FileManipulationBuffer;
 use Psalm\Issue\InaccessibleProperty;
-use Psalm\Issue\InternalClass;
 use Psalm\Issue\InvalidClass;
 use Psalm\Issue\MissingDependency;
-use Psalm\Issue\PsalmInternalError;
 use Psalm\Issue\ReservedWord;
 use Psalm\Issue\UndefinedClass;
 use Psalm\Issue\UndefinedDocblockClass;
@@ -33,11 +31,11 @@ use function gettype;
  */
 abstract class ClassLikeAnalyzer extends SourceAnalyzer implements StatementsSource
 {
-    const VISIBILITY_PUBLIC = 1;
-    const VISIBILITY_PROTECTED = 2;
-    const VISIBILITY_PRIVATE = 3;
+    public const VISIBILITY_PUBLIC = 1;
+    public const VISIBILITY_PROTECTED = 2;
+    public const VISIBILITY_PRIVATE = 3;
 
-    const SPECIAL_TYPES = [
+    public const SPECIAL_TYPES = [
         'int' => 'int',
         'string' => 'string',
         'float' => 'float',
@@ -52,7 +50,7 @@ abstract class ClassLikeAnalyzer extends SourceAnalyzer implements StatementsSou
         'mixed' => 'mixed',
     ];
 
-    const GETTYPE_TYPES = [
+    public const GETTYPE_TYPES = [
         'boolean' => true,
         'integer' => true,
         'double' => true,
@@ -215,7 +213,7 @@ abstract class ClassLikeAnalyzer extends SourceAnalyzer implements StatementsSou
         bool $from_docblock = false
     ): ?bool {
         $codebase = $statements_source->getCodebase();
-        if (empty($fq_class_name)) {
+        if ($fq_class_name === '') {
             if (IssueBuffer::accepts(
                 new UndefinedClass(
                     'Class or interface <empty string> does not exist',
@@ -519,7 +517,7 @@ abstract class ClassLikeAnalyzer extends SourceAnalyzer implements StatementsSou
         array $suppressed_issues,
         bool $emit_issues = true
     ): ?bool {
-        [$fq_class_name, $property_name] = explode('::$', (string)$property_id);
+        [$fq_class_name, $property_name] = explode('::$', $property_id);
 
         $codebase = $source->getCodebase();
 

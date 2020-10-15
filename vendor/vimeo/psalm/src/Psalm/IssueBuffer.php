@@ -200,7 +200,7 @@ class IssueBuffer
             return false;
         }
 
-        if ($project_analyzer->getCodebase()->taint && $issue_type !== 'TaintedInput') {
+        if ($project_analyzer->getCodebase()->taint_flow_graph && $issue_type !== 'TaintedInput') {
             return false;
         }
 
@@ -412,7 +412,7 @@ class IssueBuffer
                     . '-' . $issue->file_name
                     . ':' . $issue->line_from
                     . ':' . $issue->column_from
-                    . ' ' . $issue->getDupeKey();
+                    . ' ' . $issue->dupe_key;
 
                 if (!self::alreadyEmitted($emitted_key)) {
                     self::$issues_data[$file_path][] = $issue;
@@ -598,7 +598,7 @@ class IssueBuffer
                 }
             }
 
-            if (self::$fixable_issue_counts && $show_suggestions && !$codebase->taint) {
+            if (self::$fixable_issue_counts && $show_suggestions && !$codebase->taint_flow_graph) {
                 echo str_repeat('-', 30) . "\n";
 
                 $total_count = \array_sum(self::$fixable_issue_counts);
@@ -729,7 +729,7 @@ class IssueBuffer
                 break;
 
             case Report::TYPE_JUNIT:
-                $output = new JUnitReport($normalized_data, self::$fixable_issue_counts, $report_options);
+                $output = new JunitReport($normalized_data, self::$fixable_issue_counts, $report_options);
                 break;
 
             case Report::TYPE_CONSOLE:

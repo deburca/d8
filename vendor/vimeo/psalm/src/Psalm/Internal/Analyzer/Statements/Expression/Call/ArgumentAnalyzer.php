@@ -12,8 +12,8 @@ use Psalm\Internal\Analyzer\Statements\Expression\CastAnalyzer;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
 use Psalm\Internal\Type\Comparator\CallableTypeComparator;
 use Psalm\Internal\Type\Comparator\UnionTypeComparator;
-use Psalm\Internal\Taint\Sink;
-use Psalm\Internal\Taint\TaintNode;
+use Psalm\Internal\ControlFlow\TaintSink;
+use Psalm\Internal\ControlFlow\ControlFlowNode;
 use Psalm\Internal\Type\TemplateResult;
 use Psalm\Internal\Type\UnionTemplateHandler;
 use Psalm\CodeLocation;
@@ -127,7 +127,7 @@ class ArgumentAnalyzer
             && !$arg->value instanceof PhpParser\Node\Scalar\MagicConst
             && !$arg->value instanceof PhpParser\Node\Expr\ConstFetch
         ) {
-            $values = \preg_split('//u', $arg_value_type->getSingleStringLiteral()->value, null, \PREG_SPLIT_NO_EMPTY);
+            $values = \preg_split('//u', $arg_value_type->getSingleStringLiteral()->value, -1, \PREG_SPLIT_NO_EMPTY);
 
             $prev_ord = 0;
 
@@ -209,7 +209,7 @@ class ArgumentAnalyzer
         bool $in_call_map
     ): ?bool {
         if (!$function_param->type) {
-            if (!$codebase->infer_types_from_usage && !$codebase->taint) {
+            if (!$codebase->infer_types_from_usage && !$statements_analyzer->control_flow_graph) {
                 return null;
             }
 
@@ -284,6 +284,7 @@ class ArgumentAnalyzer
 
                 if (!$arg_type_param) {
                     $arg_type_param = Type::getMixed();
+                    $arg_type_param->parent_nodes = $arg_type->parent_nodes;
                 }
             }
 
@@ -413,6 +414,7 @@ class ArgumentAnalyzer
 
                 if ($unpacked_atomic_array instanceof Type\Atomic\ObjectLike) {
                     if ($unpacked_atomic_array->is_list
+                        && $argument_offset === 0
                         && isset($unpacked_atomic_array->properties[$argument_offset])
                     ) {
                         $arg_type = clone $unpacked_atomic_array->properties[$argument_offset];
@@ -849,7 +851,7 @@ class ArgumentAnalyzer
             foreach ($param_type->getAtomicTypes() as $param_type_part) {
                 if ($param_type_part instanceof TClassString
                     && $input_expr instanceof PhpParser\Node\Scalar\String_
-                    && !$param_type->getLiteralStrings()
+                    && $param_type->isSingle()
                 ) {
                     if (ClassLikeAnalyzer::checkFullyQualifiedClassLikeName(
                         $statements_analyzer,
@@ -1219,8 +1221,7 @@ class ArgumentAnalyzer
     ) : Type\Union {
         $codebase = $statements_analyzer->getCodebase();
 
-        if (!$codebase->taint
-            || !$codebase->config->trackTaintsInPath($statements_analyzer->getFilePath())
+        if (!$statements_analyzer->control_flow_graph instanceof \Psalm\Internal\Codebase\TaintFlowGraph
             || \in_array('TaintedInput', $statements_analyzer->getSuppressedIssues())
         ) {
             return $input_type;
@@ -1237,7 +1238,7 @@ class ArgumentAnalyzer
         }
 
         if ($specialize_taint) {
-            $method_node = TaintNode::getForMethodArgument(
+            $method_node = ControlFlowNode::getForMethodArgument(
                 $cased_method_id,
                 $cased_method_id,
                 $argument_offset,
@@ -1245,7 +1246,7 @@ class ArgumentAnalyzer
                 $function_call_location
             );
         } else {
-            $method_node = TaintNode::getForMethodArgument(
+            $method_node = ControlFlowNode::getForMethodArgument(
                 $cased_method_id,
                 $cased_method_id,
                 $argument_offset,
@@ -1261,7 +1262,7 @@ class ArgumentAnalyzer
                     $dependent_classlike_storage = $codebase->classlike_storage_provider->get(
                         $dependent_classlike_lc
                     );
-                    $new_sink = TaintNode::getForMethodArgument(
+                    $new_sink = ControlFlowNode::getForMethodArgument(
                         $dependent_classlike_lc . '::' . $method_name,
                         $dependent_classlike_storage->name . '::' . $cased_method_name,
                         $argument_offset,
@@ -1269,13 +1270,13 @@ class ArgumentAnalyzer
                         null
                     );
 
-                    $codebase->taint->addTaintNode($new_sink);
-                    $codebase->taint->addPath($method_node, $new_sink, 'arg');
+                    $statements_analyzer->control_flow_graph->addNode($new_sink);
+                    $statements_analyzer->control_flow_graph->addPath($method_node, $new_sink, 'arg');
                 }
 
                 if (isset($class_storage->overridden_method_ids[$method_name])) {
                     foreach ($class_storage->overridden_method_ids[$method_name] as $parent_method_id) {
-                        $new_sink = TaintNode::getForMethodArgument(
+                        $new_sink = ControlFlowNode::getForMethodArgument(
                             (string) $parent_method_id,
                             $codebase->methods->getCasedMethodId($parent_method_id),
                             $argument_offset,
@@ -1283,27 +1284,27 @@ class ArgumentAnalyzer
                             null
                         );
 
-                        $codebase->taint->addTaintNode($new_sink);
-                        $codebase->taint->addPath($method_node, $new_sink, 'arg');
+                        $statements_analyzer->control_flow_graph->addNode($new_sink);
+                        $statements_analyzer->control_flow_graph->addPath($method_node, $new_sink, 'arg');
                     }
                 }
             }
         }
 
-        $codebase->taint->addTaintNode($method_node);
+        $statements_analyzer->control_flow_graph->addNode($method_node);
 
-        $argument_value_node = TaintNode::getForAssignment(
+        $argument_value_node = ControlFlowNode::getForAssignment(
             'call to ' . $cased_method_id,
             $arg_location
         );
 
-        $codebase->taint->addTaintNode($argument_value_node);
+        $statements_analyzer->control_flow_graph->addNode($argument_value_node);
 
-        $codebase->taint->addPath($argument_value_node, $method_node, 'arg');
+        $statements_analyzer->control_flow_graph->addPath($argument_value_node, $method_node, 'arg');
 
         if ($function_param->sinks) {
             if ($specialize_taint) {
-                $sink = Sink::getForMethodArgument(
+                $sink = TaintSink::getForMethodArgument(
                     $cased_method_id,
                     $cased_method_id,
                     $argument_offset,
@@ -1311,7 +1312,7 @@ class ArgumentAnalyzer
                     $function_call_location
                 );
             } else {
-                $sink = Sink::getForMethodArgument(
+                $sink = TaintSink::getForMethodArgument(
                     $cased_method_id,
                     $cased_method_id,
                     $argument_offset,
@@ -1321,13 +1322,13 @@ class ArgumentAnalyzer
 
             $sink->taints = $function_param->sinks;
 
-            $codebase->taint->addSink($sink);
+            $statements_analyzer->control_flow_graph->addSink($sink);
         }
 
         if ($input_type->parent_nodes) {
             foreach ($input_type->parent_nodes as $parent_node) {
-                $codebase->taint->addTaintNode($method_node);
-                $codebase->taint->addPath($parent_node, $argument_value_node, 'arg');
+                $statements_analyzer->control_flow_graph->addNode($method_node);
+                $statements_analyzer->control_flow_graph->addPath($parent_node, $argument_value_node, 'arg');
             }
         }
 

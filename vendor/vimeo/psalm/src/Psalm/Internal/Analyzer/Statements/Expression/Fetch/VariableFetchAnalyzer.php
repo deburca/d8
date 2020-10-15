@@ -6,7 +6,7 @@ use Psalm\Internal\Analyzer\FunctionLikeAnalyzer;
 use Psalm\Internal\Analyzer\Statements\Expression\AssignmentAnalyzer;
 use Psalm\Internal\Analyzer\Statements\ExpressionAnalyzer;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
-use Psalm\Internal\Taint\Source;
+use Psalm\Internal\ControlFlow\TaintSource;
 use Psalm\CodeLocation;
 use Psalm\Context;
 use Psalm\Issue\ImpureVariable;
@@ -25,7 +25,7 @@ use function in_array;
  */
 class VariableFetchAnalyzer
 {
-    const SUPER_GLOBALS = [
+    private const SUPER_GLOBALS = [
         '$GLOBALS',
         '$_SERVER',
         '$_GET',
@@ -132,7 +132,9 @@ class VariableFetchAnalyzer
                     $context->vars_possibly_in_scope[$var_name] = true;
                     $statements_analyzer->node_data->setType($stmt, Type::getMixed());
                 } else {
-                    $statements_analyzer->node_data->setType($stmt, clone $context->vars_in_scope[$var_name]);
+                    $stmt_type = clone $context->vars_in_scope[$var_name];
+
+                    $statements_analyzer->node_data->setType($stmt, $stmt_type);
                 }
             } else {
                 $statements_analyzer->node_data->setType($stmt, Type::getMixed());
@@ -393,10 +395,7 @@ class VariableFetchAnalyzer
         Type\Union $type,
         PhpParser\Node\Expr\Variable $stmt
     ) : void {
-        $codebase = $statements_analyzer->getCodebase();
-
-        if ($codebase->taint
-            && $codebase->config->trackTaintsInPath($statements_analyzer->getFilePath())
+        if ($statements_analyzer->control_flow_graph instanceof \Psalm\Internal\Codebase\TaintFlowGraph
             && !\in_array('TaintedInput', $statements_analyzer->getSuppressedIssues())
         ) {
             if ($var_name === '$_GET'
@@ -406,7 +405,7 @@ class VariableFetchAnalyzer
             ) {
                 $taint_location = new CodeLocation($statements_analyzer->getSource(), $stmt);
 
-                $server_taint_source = new Source(
+                $server_taint_source = new TaintSource(
                     $var_name . ':' . $taint_location->file_name . ':' . $taint_location->raw_file_start,
                     $var_name,
                     null,
@@ -414,10 +413,10 @@ class VariableFetchAnalyzer
                     Type\TaintKindGroup::ALL_INPUT
                 );
 
-                $codebase->taint->addSource($server_taint_source);
+                $statements_analyzer->control_flow_graph->addSource($server_taint_source);
 
                 $type->parent_nodes = [
-                    $server_taint_source
+                    $server_taint_source->id => $server_taint_source
                 ];
             }
         }

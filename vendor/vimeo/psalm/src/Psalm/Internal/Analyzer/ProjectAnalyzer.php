@@ -87,7 +87,7 @@ use function file_get_contents;
 use function substr_count;
 use function array_map;
 use function end;
-use Psalm\Internal\Codebase\Taint;
+use Psalm\Internal\Codebase\TaintFlowGraph;
 use function ini_get;
 use function in_array;
 
@@ -211,7 +211,7 @@ class ProjectAnalyzer
     /**
      * @var array<int, class-string<CodeIssue>>
      */
-    const SUPPORTED_ISSUES_TO_FIX = [
+    private const SUPPORTED_ISSUES_TO_FIX = [
         InvalidFalsableReturnType::class,
         InvalidNullableReturnType::class,
         InvalidReturnType::class,
@@ -665,7 +665,7 @@ class ProjectAnalyzer
 
     public function trackTaintedInputs(): void
     {
-        $this->codebase->taint = new Taint();
+        $this->codebase->taint_flow_graph = new TaintFlowGraph();
     }
 
     public function trackUnusedSuppressions(): void
@@ -716,9 +716,7 @@ class ProjectAnalyzer
 
                 $source_class_storage = $this->codebase->classlike_storage_provider->get($source_parts[0]);
 
-                $destination_parts = explode('\\', $destination);
-
-                array_pop($destination_parts);
+                $destination_parts = explode('\\', $destination, -1);
                 $destination_ns = implode('\\', $destination_parts);
 
                 $this->codebase->classes_to_move[strtolower($source)] = $destination;

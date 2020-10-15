@@ -14,7 +14,6 @@ use Psalm\Internal\Analyzer\ScopeAnalyzer;
 use Psalm\Internal\Analyzer\SourceAnalyzer;
 use Psalm\Internal\Analyzer\Statements\Expression\Call\ClassTemplateParamCollector;
 use Psalm\Internal\Analyzer\StatementsAnalyzer;
-use Psalm\Internal\Analyzer\TypeAnalyzer;
 use Psalm\Internal\Type\Comparator\UnionTypeComparator;
 use Psalm\CodeLocation;
 use Psalm\Context;
@@ -237,6 +236,7 @@ class ReturnTypeAnalyzer
             foreach ($inferred_return_type_parts as $inferred_return_type_part) {
                 if ($inferred_return_type_part->isVoid()) {
                     $unsafe_return_type = true;
+                    break;
                 }
             }
         }

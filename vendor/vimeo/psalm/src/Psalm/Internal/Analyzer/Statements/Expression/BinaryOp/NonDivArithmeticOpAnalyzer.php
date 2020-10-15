@@ -34,6 +34,7 @@ use Psalm\Type\Atomic\TNumeric;
 use Psalm\Internal\Type\TypeCombination;
 use function array_diff_key;
 use function array_values;
+use function preg_match;
 use function strtolower;
 
 /**
@@ -287,6 +288,48 @@ class NonDivArithmeticOpAnalyzer
         bool &$has_string_increment,
         Type\Union &$result_type = null
     ): ?Type\Union {
+        if ($left_type_part instanceof TLiteralInt
+            && $right_type_part instanceof TLiteralInt
+            && ($left instanceof PhpParser\Node\Scalar || $left instanceof PhpParser\Node\Expr\ConstFetch)
+            && ($right instanceof PhpParser\Node\Scalar || $right instanceof PhpParser\Node\Expr\ConstFetch)
+        ) {
+            // time for some arithmetic!
+
+            $calculated_type = null;
+
+            if ($parent instanceof PhpParser\Node\Expr\BinaryOp\Plus) {
+                $calculated_type = Type::getInt(false, $left_type_part->value + $right_type_part->value);
+            } elseif ($parent instanceof PhpParser\Node\Expr\BinaryOp\Minus) {
+                $calculated_type = Type::getInt(false, $left_type_part->value - $right_type_part->value);
+            } elseif ($parent instanceof PhpParser\Node\Expr\BinaryOp\Mod) {
+                $calculated_type = Type::getInt(false, $left_type_part->value % $right_type_part->value);
+            } elseif ($parent instanceof PhpParser\Node\Expr\BinaryOp\Mul) {
+                $calculated_type = Type::getInt(false, $left_type_part->value * $right_type_part->value);
+            } elseif ($parent instanceof PhpParser\Node\Expr\BinaryOp\Pow) {
+                $calculated_type = Type::getInt(false, $left_type_part->value ^ $right_type_part->value);
+            } elseif ($parent instanceof PhpParser\Node\Expr\BinaryOp\BitwiseOr) {
+                $calculated_type = Type::getInt(false, $left_type_part->value | $right_type_part->value);
+            } elseif ($parent instanceof PhpParser\Node\Expr\BinaryOp\BitwiseAnd) {
+                $calculated_type = Type::getInt(false, $left_type_part->value & $right_type_part->value);
+            }
+
+            if ($calculated_type) {
+                if ($result_type) {
+                    $result_type = Type::combineUnionTypes(
+                        $calculated_type,
+                        $result_type
+                    );
+                } else {
+                    $result_type = $calculated_type;
+                }
+
+                $has_valid_left_operand = true;
+                $has_valid_right_operand = true;
+
+                return null;
+            }
+        }
+
         if ($left_type_part instanceof TNull || $right_type_part instanceof TNull) {
             // null case is handled above
             return null;
@@ -547,6 +590,22 @@ class NonDivArithmeticOpAnalyzer
             return null;
         }
 
+        if ($left_type_part instanceof Type\Atomic\TLiteralString) {
+            if (preg_match('/^\-?\d+$/', $left_type_part->value)) {
+                $left_type_part = new Type\Atomic\TLiteralInt((int) $left_type_part->value);
+            } elseif (preg_match('/^\-?\d?\.\d+$/', $left_type_part->value)) {
+                $left_type_part = new Type\Atomic\TLiteralFloat((float) $left_type_part->value);
+            }
+        }
+
+        if ($right_type_part instanceof Type\Atomic\TLiteralString) {
+            if (preg_match('/^\-?\d+$/', $right_type_part->value)) {
+                $right_type_part = new Type\Atomic\TLiteralInt((int) $right_type_part->value);
+            } elseif (preg_match('/^\-?\d?\.\d+$/', $right_type_part->value)) {
+                $right_type_part = new Type\Atomic\TLiteralFloat((float) $right_type_part->value);
+            }
+        }
+
         if ($left_type_part->isNumericType() || $right_type_part->isNumericType()) {
             if (($left_type_part instanceof TNumeric || $right_type_part instanceof TNumeric)
                 && ($left_type_part->isNumericType() && $right_type_part->isNumericType())
@@ -668,10 +727,8 @@ class NonDivArithmeticOpAnalyzer
 
                 if ($parent instanceof PhpParser\Node\Expr\BinaryOp\Mod) {
                     $result_type = Type::getInt();
-                } elseif (!$result_type) {
-                    $result_type = Type::getFloat();
                 } else {
-                    $result_type = Type::combineUnionTypes(Type::getFloat(), $result_type);
+                    $result_type = new Type\Union([new Type\Atomic\TInt, new Type\Atomic\TFloat]);
                 }
 
                 $has_valid_right_operand = true;

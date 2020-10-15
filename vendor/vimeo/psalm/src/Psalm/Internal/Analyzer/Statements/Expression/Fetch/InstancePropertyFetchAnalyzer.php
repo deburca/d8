@@ -2,6 +2,7 @@
 namespace Psalm\Internal\Analyzer\Statements\Expression\Fetch;
 
 use PhpParser;
+use Psalm\Config;
 use Psalm\Internal\Analyzer\ClassLikeAnalyzer;
 use Psalm\Internal\Analyzer\FunctionLikeAnalyzer;
 use Psalm\Internal\Analyzer\NamespaceAnalyzer;
@@ -14,7 +15,6 @@ use Psalm\Internal\Type\TemplateResult;
 use Psalm\CodeLocation;
 use Psalm\Context;
 use Psalm\Issue\DeprecatedProperty;
-use Psalm\Issue\ImpurePropertyAssignment;
 use Psalm\Issue\ImpurePropertyFetch;
 use Psalm\Issue\InvalidPropertyFetch;
 use Psalm\Issue\InternalProperty;
@@ -31,7 +31,6 @@ use Psalm\Issue\UndefinedPropertyFetch;
 use Psalm\Issue\UndefinedThisPropertyFetch;
 use Psalm\Issue\UninitializedProperty;
 use Psalm\IssueBuffer;
-use Psalm\Storage\PropertyStorage;
 use Psalm\Type;
 use Psalm\Storage\ClassLikeStorage;
 use Psalm\Type\Atomic\TGenericObject;
@@ -43,7 +42,7 @@ use function strtolower;
 use function array_values;
 use function in_array;
 use function array_keys;
-use Psalm\Internal\Taint\TaintNode;
+use Psalm\Internal\ControlFlow\ControlFlowNode;
 
 /**
  * @internal
@@ -425,7 +424,7 @@ class InstancePropertyFetchAnalyzer
             // but we don't want to throw an error
             // Hack has a similar issue: https://github.com/facebook/hhvm/issues/5164
             if ($lhs_type_part instanceof TObject
-                || in_array(strtolower($lhs_type_part->value), ['stdclass', 'simplexmlelement'], true)
+                || in_array(strtolower($lhs_type_part->value), Config::getInstance()->getUniversalObjectCrates(), true)
             ) {
                 $statements_analyzer->node_data->setType($stmt, Type::getMixed());
 
@@ -1193,13 +1192,11 @@ class InstancePropertyFetchAnalyzer
         \Psalm\Storage\ClassLikeStorage $class_storage,
         bool $in_assignment
     ) : void {
-        $codebase = $statements_analyzer->getCodebase();
-
-        if (!$codebase->taint
-            || !$codebase->config->trackTaintsInPath($statements_analyzer->getFilePath())
-        ) {
+        if (!$statements_analyzer->control_flow_graph) {
             return;
         }
+
+        $control_flow_graph = $statements_analyzer->control_flow_graph;
 
         $var_location = new CodeLocation($statements_analyzer->getSource(), $stmt->var);
         $property_location = new CodeLocation($statements_analyzer->getSource(), $stmt);
@@ -1225,21 +1222,21 @@ class InstancePropertyFetchAnalyzer
                     return;
                 }
 
-                $var_node = TaintNode::getForAssignment(
+                $var_node = ControlFlowNode::getForAssignment(
                     $var_id,
                     $var_location
                 );
 
-                $codebase->taint->addTaintNode($var_node);
+                $control_flow_graph->addNode($var_node);
 
-                $property_node = TaintNode::getForAssignment(
+                $property_node = ControlFlowNode::getForAssignment(
                     $var_property_id ?: $var_id . '->$property',
                     $property_location
                 );
 
-                $codebase->taint->addTaintNode($property_node);
+                $control_flow_graph->addNode($property_node);
 
-                $codebase->taint->addPath(
+                $control_flow_graph->addPath(
                     $var_node,
                     $property_node,
                     'property-fetch'
@@ -1248,7 +1245,7 @@ class InstancePropertyFetchAnalyzer
 
                 if ($var_type && $var_type->parent_nodes) {
                     foreach ($var_type->parent_nodes as $parent_node) {
-                        $codebase->taint->addPath(
+                        $control_flow_graph->addPath(
                             $parent_node,
                             $var_node,
                             '='
@@ -1256,36 +1253,36 @@ class InstancePropertyFetchAnalyzer
                     }
                 }
 
-                $type->parent_nodes = [$property_node];
+                $type->parent_nodes = [$property_node->id => $property_node];
             }
         } else {
             $code_location = new CodeLocation($statements_analyzer, $stmt->name);
 
-            $localized_property_node = new TaintNode(
+            $localized_property_node = new ControlFlowNode(
                 $property_id . '-' . $code_location->file_name . ':' . $code_location->raw_file_start,
                 $property_id,
                 $code_location,
                 null
             );
 
-            $codebase->taint->addTaintNode($localized_property_node);
+            $control_flow_graph->addNode($localized_property_node);
 
-            $property_node = new TaintNode(
+            $property_node = new ControlFlowNode(
                 $property_id,
                 $property_id,
                 null,
                 null
             );
 
-            $codebase->taint->addTaintNode($property_node);
+            $control_flow_graph->addNode($property_node);
 
             if ($in_assignment) {
-                $codebase->taint->addPath($localized_property_node, $property_node, 'property-assignment');
+                $control_flow_graph->addPath($localized_property_node, $property_node, 'property-assignment');
             } else {
-                $codebase->taint->addPath($property_node, $localized_property_node, 'property-fetch');
+                $control_flow_graph->addPath($property_node, $localized_property_node, 'property-fetch');
             }
 
-            $type->parent_nodes[] = $localized_property_node;
+            $type->parent_nodes[$localized_property_node->id] = $localized_property_node;
         }
     }
 }

@@ -168,9 +168,9 @@ class Codebase
     public $populator;
 
     /**
-     * @var ?Internal\Codebase\Taint
+     * @var ?Internal\Codebase\TaintFlowGraph
      */
-    public $taint = null;
+    public $taint_flow_graph = null;
 
     /**
      * @var bool
@@ -676,7 +676,7 @@ class Codebase
     {
         return $this->classlikes->classImplements($fq_class_name, $interface);
     }
-    
+
     public function interfaceExists(
         string $fq_interface_name,
         ?CodeLocation $code_location = null,
@@ -893,7 +893,7 @@ class Codebase
 
         $this->file_storage_provider->remove($file_path);
     }
-    
+
     public function getSymbolInformation(string $file_path, string $symbol): ?string
     {
         if (\is_numeric($symbol[0])) {
@@ -1598,11 +1598,11 @@ class Codebase
         array $taints = \Psalm\Type\TaintKindGroup::ALL_INPUT,
         ?CodeLocation $code_location = null
     ) : void {
-        if (!$this->taint) {
+        if (!$this->taint_flow_graph) {
             return;
         }
 
-        $source = new \Psalm\Internal\Taint\Source(
+        $source = new \Psalm\Internal\ControlFlow\TaintSource(
             $taint_id,
             $taint_id,
             $code_location,
@@ -1610,10 +1610,10 @@ class Codebase
             $taints
         );
 
-        $this->taint->addSource($source);
+        $this->taint_flow_graph->addSource($source);
 
         $expr_type->parent_nodes = [
-            $source,
+            $source->id => $source,
         ];
     }
 
@@ -1627,11 +1627,11 @@ class Codebase
         array $taints = \Psalm\Type\TaintKindGroup::ALL_INPUT,
         ?CodeLocation $code_location = null
     ) : void {
-        if (!$this->taint) {
+        if (!$this->taint_flow_graph) {
             return;
         }
 
-        $sink = new \Psalm\Internal\Taint\Sink(
+        $sink = new \Psalm\Internal\ControlFlow\TaintSink(
             $taint_id,
             $taint_id,
             $code_location,
@@ -1639,6 +1639,6 @@ class Codebase
             $taints
         );
 
-        $this->taint->addSink($sink);
+        $this->taint_flow_graph->addSink($sink);
     }
 }
