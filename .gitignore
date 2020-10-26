@@ -13,7 +13,7 @@
 
 # Ignore Drupal's file directory
 /web/sites/*/files/
-!/web/sites/default/files/config_*/sync
+#!/web/sites/default/files/config_*/sync
 
 # Ignore SimpleTest multi-site environment.
 /web/sites/simpletest

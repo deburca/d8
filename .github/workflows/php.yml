@@ -24,7 +24,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php_version }}
-        
+
     - name: Validate composer.json and composer.lock
       run: >
         composer \
@@ -39,7 +39,7 @@ jobs:
           --no-suggest
       continue-on-error: true
       env:
-        CONFIG_SYNC_DIRECTORY: web/sites/default/files/config_DtRpaidPppUTmimR2RrHuX-k0MsGJEYawvbf8N00mZ6lRwD6hWEPjIG00rRp8NI8JmqaSLcYYg/sync
+        CONFIG_SYNC_DIRECTORY: config/sync
 
     - name: PHP Code Style (phpcs)
       run:  ./vendor/bin/phpcs -pv || exit 0
