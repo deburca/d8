@@ -756,6 +756,7 @@ $settings['trusted_host_patterns'] = [
   '^www\.falconi\.net$',
   '^falconi\.net$',
   'localhost',
+  'd-8-pfh59.ondigitalocean.app',
 ];
 
 /**
