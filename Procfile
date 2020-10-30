@@ -1,1 +1,1 @@
-web: vendor/bin/heroku-php-apache2 /workspace/web/
+web: vendor/bin/heroku-php-apache2 --verbose web/
