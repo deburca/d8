@@ -552,7 +552,7 @@ if ($settings['hash_salt']) {
  * about securing private files.
  */
 # $settings['file_private_path'] = '';
-$settings['file_private_path'] = '/Users/paddy/files/private_deburca8.org';
+$settings['file_private_path'] = realpath(__DIR__ . '/../../../private/deburca8.org');
 
 /**
  * Session write interval:
@@ -752,6 +752,7 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  */
 $settings['trusted_host_patterns'] = [
   '^www\.deburca\.org$',
+  '^dev\.deburca\.org$',
   '^deburca\.org$',
   '^www\.falconi\.net$',
   '^falconi\.net$',
@@ -808,7 +809,7 @@ $databases['default']['default'] = array (
   'prefix' => '',
 );
 # $settings['install_profile'] = 'standard';
-$settings["config_sync_directory"] = '../config/sync';
+$settings["config_sync_directory"] = '/var/www/d8/config/sync';
 
 $settings["file_temp_path"] = "/tmp";
 
