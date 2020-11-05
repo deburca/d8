@@ -1,0 +1,21 @@
+uuid: 392ffeb1-e550-440b-8101-b34bbf575be4
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.services
+    - field.storage.block_content.field_icon
+  module:
+    - options
+id: block_content.services.field_icon
+field_name: field_icon
+entity_type: block_content
+bundle: services
+label: Icon
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

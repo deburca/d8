@@ -1,0 +1,22 @@
+uuid: 783f8489-3f1c-4afb-8019-0b2a62b2bace
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - mosaic
+_core:
+  default_config_hash: XMsRP1YhWAcorbrFWZglMYJ_SgWHyF3fyCh5vDXaUN4
+id: mosaic_breadcrumbs
+theme: mosaic
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  provider: system
+  label_display: '0'
+visibility: {  }

@@ -1,0 +1,14 @@
+uuid: 1a0e0a76-df5f-44f3-a6b2-57cb753b3710
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.editor_falconi_
+  module:
+    - user
+id: user_add_role_action.editor_falconi_
+label: 'Add the Editor (Falconi) role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: editor_falconi_

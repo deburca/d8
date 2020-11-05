@@ -819,36 +819,4 @@ ini_set('display_startup_errors', TRUE);
 
 $config['system.logging']['error_level'] = 'verbose';
 
-if (extension_loaded('memcached')) {
-  // Sets default cache storage as Memcache and excludes database connection for cache
-  $settings['cache']['default'] = 'cache.backend.memcache_storage';
-  // Sets Memcache key prefix for your site and useful in working sites with same memcache as backend.
-  $settings['memcache_storage']['key_prefix'] = '';
-  // Sets Memcache storage servers.
-  $settings['memcache_storage']['memcached_servers'] =  ['memcached-13729.c11.us-east-1-2.ec2.cloud.redislabs.com:13729' => 'default'];
-
-  // Memcache settings
-  $settings['cache']['bins']['bootstrap'] = 'cache.backend.memcache_storage';
-  $settings['cache']['bins']['discovery'] = 'cache.backend.memcache_storage';
-  $settings['cache']['bins']['config'] = 'cache.backend.memcache_storage';
-
-  // Enables to display total hits and misses
-  $settings['memcache_storage']['debug'] = TRUE;
-
-  $settings['memcache_storage']['sasl_auth'] = [
-    'username' => 'mc-ASB8D',
-    'user' => 'mc-ASB8D',
-    'password' => 'HFVOfgdKYKBOKxjrdBtR8ePJN4oH37uD',
-  ];
-
-  // When using SASL, Memcached extension needs to be used
-  // because Memcache extension doesn't support it.
-  $settings['memcache_storage']['extension'] = 'Memcached';
-
-  $settings['memcache_storage']['memcached_options'] = [
-    \Memcached::OPT_BINARY_PROTOCOL => TRUE,
-    \Memcached::OPT_TCP_NODELAY => TRUE,
-    \Memcached::OPT_COMPRESSION => FALSE,
-    \Memcached::OPT_DISTRIBUTION => \Memcached::DISTRIBUTION_CONSISTENT,
-  ];
-}
+$settings['config_readonly'] = (isset($_ENV['SITE_ENV']) && $_ENV['SITE_ENV'] === 'prod');

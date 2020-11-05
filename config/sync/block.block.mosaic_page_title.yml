@@ -1,0 +1,20 @@
+uuid: 45aadc68-c932-425b-8fb1-8170e8f4d5c3
+langcode: en
+status: true
+dependencies:
+  theme:
+    - mosaic
+_core:
+  default_config_hash: WImvmaBdDpwIqobqbDWebBnyxssRvrNEnZSQbOsvOe4
+id: mosaic_page_title
+theme: mosaic
+region: tools
+weight: -5
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  provider: core
+  label_display: '0'
+visibility: {  }

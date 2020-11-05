@@ -1,0 +1,35 @@
+uuid: 389bd9b1-cea8-457e-b6de-b170d26e90f9
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:services:4cf4510d-ab80-4e53-8fa3-4c27538e355e'
+  module:
+    - block_class
+    - block_content
+    - system
+  theme:
+    - bootstrap_barrio
+third_party_settings:
+  block_class:
+    classes: 'col-sm-4 services-item'
+id: bootstrap_barrio_builtwith...
+theme: bootstrap_barrio
+region: header
+weight: -6
+provider: null
+plugin: 'block_content:4cf4510d-ab80-4e53-8fa3-4c27538e355e'
+settings:
+  id: 'block_content:4cf4510d-ab80-4e53-8fa3-4c27538e355e'
+  label: 'Built with ...'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

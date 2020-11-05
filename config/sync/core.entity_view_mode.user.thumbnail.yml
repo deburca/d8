@@ -1,0 +1,10 @@
+uuid: f1bf262b-44cd-446b-83ff-0cf9993f4835
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+id: user.thumbnail
+label: Thumbnail
+targetEntityType: user
+cache: true

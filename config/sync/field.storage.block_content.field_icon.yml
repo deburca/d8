@@ -1,0 +1,36 @@
+uuid: c95db113-d589-46f4-87bd-6c40d4a3230c
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+    - options
+id: block_content.field_icon
+field_name: field_icon
+entity_type: block_content
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: gear
+      label: Gear
+    -
+      value: cog
+      label: Cog
+    -
+      value: arrows-alt
+      label: Arrows
+    -
+      value: refresh
+      label: Refresh
+    -
+      value: sync
+      label: Sync
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

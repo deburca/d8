@@ -1,0 +1,23 @@
+uuid: 6921c7c9-5b3e-42c9-9910-a3e738ea74cd
+langcode: en
+status: true
+dependencies:
+  module:
+    - search
+  theme:
+    - mosaic
+_core:
+  default_config_hash: 4kRuucCt4vcJ_pVJlVPquWuttF8Sendj4XbTi0sizq0
+id: mosaic_search_form_narrow
+theme: mosaic
+region: tools
+weight: -4
+provider: null
+plugin: search_form_block
+settings:
+  id: search_form_block
+  label: 'Search form (narrow)'
+  provider: search
+  label_display: '0'
+  page_id: ''
+visibility: {  }

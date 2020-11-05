@@ -1,0 +1,15 @@
+uuid: 0523e59a-09f2-4bc9-b5ec-05d3af9aae82
+langcode: en
+status: true
+dependencies: {  }
+name: thumbnail_50_50_
+label: 'Thumbnail (50×50)'
+effects:
+  7d323071-7ecc-432b-acce-0e335e6d875d:
+    uuid: 7d323071-7ecc-432b-acce-0e335e6d875d
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 50
+      height: 50
+      anchor: center-center

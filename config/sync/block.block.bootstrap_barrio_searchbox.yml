@@ -1,0 +1,25 @@
+uuid: 2053ec0b-2a27-4592-a2de-2951f4e122be
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:99ec3038-fa87-41f6-ab7f-dd97d900e125'
+  module:
+    - block_content
+  theme:
+    - bootstrap_barrio
+id: bootstrap_barrio_searchbox
+theme: bootstrap_barrio
+region: top_header
+weight: -6
+provider: null
+plugin: 'block_content:99ec3038-fa87-41f6-ab7f-dd97d900e125'
+settings:
+  id: 'block_content:99ec3038-fa87-41f6-ab7f-dd97d900e125'
+  label: 'Search box'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

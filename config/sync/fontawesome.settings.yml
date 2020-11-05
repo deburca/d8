@@ -1,0 +1,15 @@
+tag: i
+method: webfonts
+use_cdn: true
+external_svg_location: 'https://use.fontawesome.com/releases/v5.14.0/css/all.css'
+use_shim: true
+external_shim_location: 'https://use.fontawesome.com/releases/v5.13.1/css/v4-shims.css'
+use_solid_file: true
+use_regular_file: false
+use_light_file: false
+use_brands_file: true
+use_duotone_file: false
+external_svg_integrity: sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc
+_core:
+  default_config_hash: tBvH-4rFd4yx9dmyxlCjZn5HflzIVejjiSve31KN1bg
+allow_pseudo_elements: false

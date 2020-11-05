@@ -1,0 +1,22 @@
+uuid: 85b50913-d97a-4a1c-ba1c-f252806c4c78
+langcode: en
+status: true
+dependencies:
+  theme:
+    - mosaic
+_core:
+  default_config_hash: ra6f6AXShbzKP9r6uPc9cfCx2KuomlPqmt1WWPUuDf0
+id: mosaic_primary_local_tasks
+theme: mosaic
+region: highlighted
+weight: -4
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Primary tabs'
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: false
+visibility: {  }
