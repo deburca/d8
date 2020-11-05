@@ -35,9 +35,9 @@
 {% if header %}
   {{ header }}
 {% endif %}
-{% if rows %}
-  {{ rows }}
-{% endif %}
+{% for row in rows %}
+  {{ row.content }}
+{% endfor %}
 {% if footer %}
   {{ footer }}
 {% endif %}

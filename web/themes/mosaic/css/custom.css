@@ -1204,7 +1204,7 @@ a.slideshow-arrow-next {
 
 /* reCaptcha iframe bug fix (causing an emptly line just before
   the closing </body> tag */
-  
+
 iframe[src="about:blank"] {
   display: none !important;
 }
@@ -1419,7 +1419,7 @@ a.port-arrow-next {
 }
 .faq-cats-p ul {
   list-style-type: none;
-  padding: 0; 
+  padding: 0;
   margin: 0;
 }
 .faq-cats-p ul li:first-child {
@@ -1580,7 +1580,7 @@ a.port-arrow-next {
   }
 }
 .shopping-cart .form-control {
-  width: 60px; 
+  width: 60px;
 }
 .shopping-cart .checkout {
   list-style-type: none;
@@ -1706,4 +1706,8 @@ h1.headline span {
 
 .mini-navbar {
   z-index: 999 !important;
+}
+
+.alert.fade {
+  opacity: 1;
 }
