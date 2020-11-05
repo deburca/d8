@@ -1,0 +1,29 @@
+uuid: 52c9e891-b818-452d-83be-23de5af0590d
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:811b412c-f44e-48d4-99c9-f229118801cc'
+  module:
+    - block_class
+    - block_content
+  theme:
+    - mosaic
+third_party_settings:
+  block_class:
+    classes: col-sm-4
+id: drupalassociation
+theme: mosaic
+region: footer
+weight: 0
+provider: null
+plugin: 'block_content:811b412c-f44e-48d4-99c9-f229118801cc'
+settings:
+  id: 'block_content:811b412c-f44e-48d4-99c9-f229118801cc'
+  label: 'Drupal Association'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

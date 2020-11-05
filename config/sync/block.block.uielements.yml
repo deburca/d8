@@ -1,0 +1,30 @@
+uuid: f21d330b-d2be-4e67-8a09-876107234325
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:b04877ce-1cb0-4a2c-a24f-b77ca4fe32c6'
+  module:
+    - block_content
+    - system
+  theme:
+    - mosaic
+id: uielements
+theme: mosaic
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'block_content:b04877ce-1cb0-4a2c-a24f-b77ca4fe32c6'
+settings:
+  id: 'block_content:b04877ce-1cb0-4a2c-a24f-b77ca4fe32c6'
+  label: 'UI elements'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /node/106
+    negate: false

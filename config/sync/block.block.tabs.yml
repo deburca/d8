@@ -1,22 +1,20 @@
-uuid: d099a72a-795f-467e-8dff-f0149bd0ed9c
+uuid: a3b04fce-68f8-4c95-b68f-58b574f70eff
 langcode: en
-status: false
+status: true
 dependencies:
   theme:
     - mosaic
-_core:
-  default_config_hash: V7GM1m6Qh500cQE7LWZV8lRuwLqXdjR0S2kSk8pEv6g
-id: mosaic_secondary_local_tasks
+id: tabs
 theme: mosaic
 region: header
-weight: -5
+weight: -7
 provider: null
 plugin: local_tasks_block
 settings:
   id: local_tasks_block
-  label: 'Secondary tabs'
+  label: Tabs
   provider: core
   label_display: '0'
-  primary: false
+  primary: true
   secondary: true
 visibility: {  }

@@ -12,8 +12,8 @@ _core:
   default_config_hash: 9rMeB9hFDDKsbKpqVK67NJiM0cbgSl2FUJYVmp5bfGc
 id: mosaic_main_menu
 theme: mosaic
-region: tools
-weight: 0
+region: navigation_collapsible
+weight: -6
 provider: null
 plugin: 'system_menu_block:main'
 settings:

@@ -278,7 +278,7 @@ display:
     position: 3
     display_options:
       display_extenders: {  }
-      block_description: ''
+      block_description: Carousel
       style:
         type: views_bootstrap_carousel
         options:

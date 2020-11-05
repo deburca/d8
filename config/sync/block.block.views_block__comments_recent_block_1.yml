@@ -1,0 +1,33 @@
+uuid: 3f7883d3-2f42-4be3-ba0c-66bc471248a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.comments_recent
+  module:
+    - ctools
+    - views
+  theme:
+    - mosaic
+id: views_block__comments_recent_block_1
+theme: mosaic
+region: sidebar_second
+weight: -11
+provider: null
+plugin: 'views_block:comments_recent-block_1'
+settings:
+  id: 'views_block:comments_recent-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      article: article
+      social_account: social_account
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

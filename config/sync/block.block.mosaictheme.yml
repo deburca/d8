@@ -1,0 +1,34 @@
+uuid: b3efee76-aca5-48a0-afd1-65cec6d81615
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:services:7a5f02c8-529c-4348-99f6-22dbeb7126df'
+  module:
+    - block_class
+    - block_content
+    - system
+  theme:
+    - mosaic
+third_party_settings:
+  block_class:
+    classes: 'col-sm-4 services-item'
+id: mosaictheme
+theme: mosaic
+region: header
+weight: -2
+provider: null
+plugin: 'block_content:7a5f02c8-529c-4348-99f6-22dbeb7126df'
+settings:
+  id: 'block_content:7a5f02c8-529c-4348-99f6-22dbeb7126df'
+  label: 'Mosaic Theme'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
