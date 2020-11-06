@@ -30,6 +30,9 @@ jobs:
         composer \
           validate
 
+    - name: Security check
+      uses: symfonycorp/security-checker-action@v2
+      
     - name: Install dependencies
       run: >
         composer \
