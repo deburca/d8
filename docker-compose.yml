@@ -17,11 +17,12 @@ services:
     #image: drupal:9-fpm
     build: './docker/php'
     environment:
-      DB_HOST: mariadb
-      DB_USER: drupal
-      DB_PASSWORD: drupal
-      DB_NAME: drupal
-      DB_DRIVER: mysql
+      MYSQL_HOSTNAME: mariadb
+      MYSQL_USER: drupal
+      MYSQL_PASSWORD: drupal
+      MYSQL_DATABASE: drupal
+      MYSQL_PORT: 7306
+      MYSQL_DRIVER: mysql
     links:
       - mariadb:mysql
     volumes:
