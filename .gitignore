@@ -25,5 +25,8 @@
 /.env
 .php_cs.cache
 
+# Ignore Docker bundles
+/.bundle/
+
 # Ignore private files
 /private/
