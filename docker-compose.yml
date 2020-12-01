@@ -21,7 +21,7 @@ services:
       MYSQL_USER: drupal
       MYSQL_PASSWORD: drupal
       MYSQL_DATABASE: drupal
-      MYSQL_PORT: 7306
+      MYSQL_PORT: 3306
       MYSQL_DRIVER: mysql
     links:
       - mariadb:mysql
