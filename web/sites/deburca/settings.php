@@ -809,7 +809,7 @@ $databases['default']['default'] = array (
   'prefix' => '',
 );
 # $settings['install_profile'] = 'standard';
-$settings["config_sync_directory"] = '/var/www/d8/config/sync';
+$settings["config_sync_directory"] = '/opt/drupal/config/sync';
 
 $settings["file_temp_path"] = "/tmp";
 
