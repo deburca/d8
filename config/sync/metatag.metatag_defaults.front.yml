@@ -1,4 +1,4 @@
-uuid: 34f22de8-a210-43a5-b8cb-52c3263d2988
+uuid: 3981b4e3-3d95-4c1a-9d4f-25a52c01a1b9
 langcode: en
 status: true
 dependencies: {  }
@@ -7,5 +7,9 @@ _core:
 id: front
 label: 'Front page'
 tags:
-  canonical_url: '[site:url]'
+  title: 'de Búrca - things and thoughts'
   shortlink: '[site:url]'
+  canonical_url: '[site:url]'
+  description: 'Idle thoughts of a thoughtful idle.'
+  doc_status: published
+  audience: all

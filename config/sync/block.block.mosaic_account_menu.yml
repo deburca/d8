@@ -1,4 +1,4 @@
-uuid: aa6020ca-0ab4-4736-b3a6-b8d830abd861
+uuid: d0585e24-8422-49cd-8d3e-13eca9b64917
 langcode: en
 status: true
 dependencies:
@@ -9,11 +9,11 @@ dependencies:
   theme:
     - mosaic
 _core:
-  default_config_hash: D0gnx0W-7zrccjimYrBuj7kVO_VUlBigIWkjinC1-nQ
+  default_config_hash: R2K_qX0ZUMbUL6ie_-S9tZVjvqmlWKlscikgeRv9vhw
 id: mosaic_account_menu
 theme: mosaic
 region: tools
-weight: -4
+weight: -7
 provider: null
 plugin: 'system_menu_block:account'
 settings:
@@ -22,6 +22,6 @@ settings:
   provider: system
   label_display: '0'
   level: 1
-  depth: 1
+  depth: 2
   expand_all_items: false
 visibility: {  }

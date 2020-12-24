@@ -1,4 +1,4 @@
-uuid: 033fb334-b399-499b-baf9-e98f2881719b
+uuid: 637c683f-b10f-42dd-bddb-c8a52032a55c
 langcode: en
 status: true
 dependencies:
@@ -7,11 +7,11 @@ dependencies:
   theme:
     - mosaic
 _core:
-  default_config_hash: BL6Gcw5Us0zai1ADadlNYLxlEblMedc_3C3lF0PjtCE
+  default_config_hash: fNNLN48MSGSLiqwIFywCuxH2Dk_IxDbaP0kYhg_IPrg
 id: mosaic_content
 theme: mosaic
 region: content
-weight: 0
+weight: -10
 provider: null
 plugin: system_main_block
 settings:

@@ -29,5 +29,5 @@ regions:
   page_bottom: 'Page bottom'
 
 # Information added by Drupal.org packaging script on 2020-06-18
-version: '1.0.0'
-project: 'Mosaic'
+# version: '1.0.0'
+# project: 'Mosaic'

@@ -1,4 +1,4 @@
-uuid: c2ac0a39-9f42-4c37-9db2-5dcca6703cc9
+uuid: 50cd3893-a049-4dc1-b8a1-9c43903de3dd
 langcode: en
 status: true
 dependencies:
@@ -15,7 +15,7 @@ third_party_settings:
 id: contactus
 theme: mosaic
 region: footer
-weight: 0
+weight: -11
 provider: null
 plugin: 'block_content:a6f9f1a1-5277-4d6a-899f-22a847cc3b11'
 settings:

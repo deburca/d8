@@ -93,8 +93,3 @@ bootstrap_barrio_table_head: ''
 bootstrap_barrio_navbar_top_class: ''
 bootstrap_barrio_navbar_class: ''
 bootstrap_barrio_bootstrap_icons: 0
-bootstrap_barrio_source: bootstrap_barrio/bootstrap_cdn
-bootstrap_barrio_image_fluid: 0
-bootstrap_barrio_navbar_flyout: 0
-bootstrap_barrio_navbar_slide: 0
-bootstrap_barrio_tabs_style: ''

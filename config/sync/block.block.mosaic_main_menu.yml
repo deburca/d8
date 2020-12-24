@@ -1,4 +1,4 @@
-uuid: ec86869b-5ce7-4eff-91f6-e86de2fbb47d
+uuid: 72c611ff-adbc-482b-bc07-fa582d4f0879
 langcode: en
 status: true
 dependencies:
@@ -9,11 +9,11 @@ dependencies:
   theme:
     - mosaic
 _core:
-  default_config_hash: 9rMeB9hFDDKsbKpqVK67NJiM0cbgSl2FUJYVmp5bfGc
+  default_config_hash: GT_zYl7I9VAILH8OxMRe-VDvFadCDHxRcnmBc5xEmf0
 id: mosaic_main_menu
 theme: mosaic
 region: navigation_collapsible
-weight: -6
+weight: -7
 provider: null
 plugin: 'system_menu_block:main'
 settings:
@@ -23,5 +23,5 @@ settings:
   label_display: '0'
   level: 1
   depth: 2
-  expand_all_items: true
+  expand_all_items: false
 visibility: {  }

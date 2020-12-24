@@ -1,4 +1,4 @@
-uuid: b3efee76-aca5-48a0-afd1-65cec6d81615
+uuid: 652375a2-5de5-4e45-82d1-fd6fb2846172
 langcode: en
 status: true
 dependencies:
@@ -16,7 +16,7 @@ third_party_settings:
 id: mosaictheme
 theme: mosaic
 region: header
-weight: -2
+weight: -4
 provider: null
 plugin: 'block_content:7a5f02c8-529c-4348-99f6-22dbeb7126df'
 settings:
@@ -32,3 +32,4 @@ visibility:
     id: request_path
     pages: '<front>'
     negate: false
+    context_mapping: {  }

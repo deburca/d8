@@ -1,4 +1,4 @@
-uuid: a2d14caf-93d2-497d-bc47-4e9e33419dca
+uuid: f815bc37-17f2-4e00-97ab-e5e5b7256460
 langcode: en
 status: true
 dependencies:
@@ -7,11 +7,11 @@ dependencies:
   theme:
     - mosaic
 _core:
-  default_config_hash: 350nGQzvFBtTwZvihMaMT-laz0UZOOpibzt_Ie5C7pc
-id: mosaic_sitebranding
+  default_config_hash: Cy3vkpYrD1O5JG-BeEnokF0bByHYDEa8CBfWivB4_SQ
+id: mosaic_branding
 theme: mosaic
 region: navigation
-weight: -6
+weight: 0
 provider: null
 plugin: system_branding_block
 settings:

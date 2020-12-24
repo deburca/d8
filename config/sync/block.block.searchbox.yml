@@ -1,4 +1,4 @@
-uuid: d1971c9f-b9dd-4146-aff5-cd78fe7ebf26
+uuid: 1ded2424-c72c-4adc-ba50-097e84e19527
 langcode: en
 status: true
 dependencies:
@@ -11,7 +11,7 @@ dependencies:
 id: searchbox
 theme: mosaic
 region: tools
-weight: 0
+weight: -6
 provider: null
 plugin: 'block_content:99ec3038-fa87-41f6-ab7f-dd97d900e125'
 settings:

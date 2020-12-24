@@ -1,4 +1,4 @@
-uuid: 514c1897-1970-4910-8b9e-44e2dd2c067b
+uuid: d7b90d8a-5e6d-4b32-8fef-76ebda5d3ba4
 langcode: en
 status: true
 dependencies:
@@ -15,7 +15,7 @@ third_party_settings:
 id: views_block__frontpage_block_social
 theme: mosaic
 region: footer
-weight: 0
+weight: -10
 provider: null
 plugin: 'views_block:frontpage-block_social'
 settings:

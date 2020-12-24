@@ -1,14 +1,19 @@
-uuid: f21d330b-d2be-4e67-8a09-876107234325
+uuid: 27b4c05c-1161-4685-bac2-585b95a49a76
 langcode: en
 status: true
 dependencies:
   content:
     - 'block_content:basic:b04877ce-1cb0-4a2c-a24f-b77ca4fe32c6'
   module:
+    - block_class
     - block_content
+    - node
     - system
   theme:
     - mosaic
+third_party_settings:
+  block_class:
+    classes: ''
 id: uielements
 theme: mosaic
 region: sidebar_first
@@ -24,7 +29,15 @@ settings:
   info: ''
   view_mode: full
 visibility:
+  node_type:
+    id: node_type
+    bundles:
+      page: page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
   request_path:
     id: request_path
     pages: /node/106
     negate: false
+    context_mapping: {  }
