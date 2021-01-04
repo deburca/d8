@@ -28,6 +28,9 @@
 # Ignore Docker bundles
 /.bundle/
 
+# Ignore NodeJS bundles
+/node_modules/
+
 # Ignore private files
 /private/
 /deburca_deburca8.sql
