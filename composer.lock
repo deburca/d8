@@ -366,16 +366,16 @@
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.2.8",
+            "version": "1.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "8a7ecad675253e4654ea05505233285377405215"
+                "reference": "78a0e288fdcebf92aa2318a8d3656168da6ac1a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/8a7ecad675253e4654ea05505233285377405215",
-                "reference": "8a7ecad675253e4654ea05505233285377405215",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/78a0e288fdcebf92aa2318a8d3656168da6ac1a5",
+                "reference": "78a0e288fdcebf92aa2318a8d3656168da6ac1a5",
                 "shasum": ""
             },
             "require": {
@@ -384,14 +384,15 @@
                 "php": "^5.3.2 || ^7.0 || ^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.7 || 6.5 - 8",
+                "phpstan/phpstan": "^0.12.55",
                 "psr/log": "^1.0",
+                "symfony/phpunit-bridge": "^4.2 || ^5",
                 "symfony/process": "^2.5 || ^3.0 || ^4.0 || ^5.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev"
+                    "dev-main": "1.x-dev"
                 }
             },
             "autoload": {
@@ -421,7 +422,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/ca-bundle/issues",
-                "source": "https://github.com/composer/ca-bundle/tree/1.2.8"
+                "source": "https://github.com/composer/ca-bundle/tree/1.2.9"
             },
             "funding": [
                 {
@@ -437,7 +438,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-23T12:54:47+00:00"
+            "time": "2021-01-12T12:10:35+00:00"
         },
         {
             "name": "composer/composer",
@@ -4126,17 +4127,17 @@
         },
         {
             "name": "drupal/field_formatter_class",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/field_formatter_class.git",
-                "reference": "8.x-1.4"
+                "reference": "8.x-1.5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/field_formatter_class-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "158a1151c37e6aed76702528269fe4a53378de8e"
+                "url": "https://ftp.drupal.org/files/projects/field_formatter_class-8.x-1.5.zip",
+                "reference": "8.x-1.5",
+                "shasum": "a51e0078615791a285250693a4e88775fac87b70"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -4144,8 +4145,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.4",
-                    "datestamp": "1592471596",
+                    "version": "8.x-1.5",
+                    "datestamp": "1610334141",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7350,16 +7351,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.65",
+            "version": "0.12.66",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "1c7658668b28f8d647a8b874372acf14c4352688"
+                "reference": "4110a2425c6bd53acbdfcda07885e87b66e9ba3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1c7658668b28f8d647a8b874372acf14c4352688",
-                "reference": "1c7658668b28f8d647a8b874372acf14c4352688",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/4110a2425c6bd53acbdfcda07885e87b66e9ba3e",
+                "reference": "4110a2425c6bd53acbdfcda07885e87b66e9ba3e",
                 "shasum": ""
             },
             "require": {
@@ -7390,7 +7391,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.65"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.66"
             },
             "funding": [
                 {
@@ -7406,25 +7407,25 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-06T16:51:10+00:00"
+            "time": "2021-01-11T16:43:15+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
-            "version": "0.12.7",
+            "version": "0.12.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-strict-rules.git",
-                "reference": "03807e3410747ec18cd5f05a6342384adcc423bf"
+                "reference": "ee0009302ff5312ca6b92a7330a6b66da0c70f12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/03807e3410747ec18cd5f05a6342384adcc423bf",
-                "reference": "03807e3410747ec18cd5f05a6342384adcc423bf",
+                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/ee0009302ff5312ca6b92a7330a6b66da0c70f12",
+                "reference": "ee0009302ff5312ca6b92a7330a6b66da0c70f12",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1 || ^8.0",
-                "phpstan/phpstan": "^0.12.60"
+                "phpstan/phpstan": "^0.12.66"
             },
             "require-dev": {
                 "phing/phing": "^2.16.3",
@@ -7455,9 +7456,9 @@
             "description": "Extra strict and opinionated rules for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-strict-rules/issues",
-                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/0.12.7"
+                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/0.12.8"
             },
-            "time": "2020-12-13T13:27:14+00:00"
+            "time": "2021-01-11T13:36:23+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -12811,16 +12812,16 @@
     "packages-dev": [
         {
             "name": "amphp/amp",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/amp.git",
-                "reference": "ecdc3c476b3ccff02f8e5d5bcc04f7ccfd18751c"
+                "reference": "efca2b32a7580087adb8aabbff6be1dc1bb924a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/ecdc3c476b3ccff02f8e5d5bcc04f7ccfd18751c",
-                "reference": "ecdc3c476b3ccff02f8e5d5bcc04f7ccfd18751c",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/efca2b32a7580087adb8aabbff6be1dc1bb924a9",
+                "reference": "efca2b32a7580087adb8aabbff6be1dc1bb924a9",
                 "shasum": ""
             },
             "require": {
@@ -12888,7 +12889,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/amphp",
                 "issues": "https://github.com/amphp/amp/issues",
-                "source": "https://github.com/amphp/amp/tree/v2.5.1"
+                "source": "https://github.com/amphp/amp/tree/v2.5.2"
             },
             "funding": [
                 {
@@ -12896,7 +12897,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-11-03T16:23:45+00:00"
+            "time": "2021-01-10T17:06:37+00:00"
         },
         {
             "name": "amphp/byte-stream",
@@ -13124,25 +13125,25 @@
         },
         {
             "name": "felixfbecker/advanced-json-rpc",
-            "version": "v3.1.2",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/felixfbecker/php-advanced-json-rpc.git",
-                "reference": "804ee564f1c7f0bc160d755fc5bdd17a04545070"
+                "reference": "06f0b06043c7438959dbdeed8bb3f699a19be22e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/felixfbecker/php-advanced-json-rpc/zipball/804ee564f1c7f0bc160d755fc5bdd17a04545070",
-                "reference": "804ee564f1c7f0bc160d755fc5bdd17a04545070",
+                "url": "https://api.github.com/repos/felixfbecker/php-advanced-json-rpc/zipball/06f0b06043c7438959dbdeed8bb3f699a19be22e",
+                "reference": "06f0b06043c7438959dbdeed8bb3f699a19be22e",
                 "shasum": ""
             },
             "require": {
                 "netresearch/jsonmapper": "^1.0 || ^2.0",
-                "php": ">=7.0",
+                "php": "^7.1 || ^8.0",
                 "phpdocumentor/reflection-docblock": "^4.3.4 || ^5.0.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.0.0"
+                "phpunit/phpunit": "^7.0 || ^8.0"
             },
             "type": "library",
             "autoload": {
@@ -13163,9 +13164,9 @@
             "description": "A more advanced JSONRPC implementation",
             "support": {
                 "issues": "https://github.com/felixfbecker/php-advanced-json-rpc/issues",
-                "source": "https://github.com/felixfbecker/php-advanced-json-rpc/tree/v3.1.2"
+                "source": "https://github.com/felixfbecker/php-advanced-json-rpc/tree/v3.2.0"
             },
-            "time": "2021-01-10T13:07:47+00:00"
+            "time": "2021-01-10T17:48:47+00:00"
         },
         {
             "name": "felixfbecker/language-server-protocol",
@@ -13329,27 +13330,27 @@
         },
         {
             "name": "league/climate",
-            "version": "3.6.0",
+            "version": "3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/climate.git",
-                "reference": "61eecbde7645528a855a3afef65c5354093b27b2"
+                "reference": "5c717c3032c5118be7ad2395dbe0813d9894e8c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/climate/zipball/61eecbde7645528a855a3afef65c5354093b27b2",
-                "reference": "61eecbde7645528a855a3afef65c5354093b27b2",
+                "url": "https://api.github.com/repos/thephpleague/climate/zipball/5c717c3032c5118be7ad2395dbe0813d9894e8c7",
+                "reference": "5c717c3032c5118be7ad2395dbe0813d9894e8c7",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2",
+                "php": "^7.3 || ^8.0",
                 "psr/log": "^1.0",
                 "seld/cli-prompt": "^1.0"
             },
             "require-dev": {
                 "mikey179/vfsstream": "^1.4",
-                "mockery/mockery": "^1.0",
-                "phpunit/phpunit": "^5.7.16"
+                "mockery/mockery": "^1.4.2",
+                "phpunit/phpunit": "^9.5.0"
             },
             "suggest": {
                 "ext-mbstring": "If ext-mbstring is not available you MUST install symfony/polyfill-mbstring"
@@ -13388,9 +13389,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/climate/issues",
-                "source": "https://github.com/thephpleague/climate/tree/3.6.0"
+                "source": "https://github.com/thephpleague/climate/tree/3.7.0"
             },
-            "time": "2020-10-04T16:02:59+00:00"
+            "time": "2021-01-10T20:18:52+00:00"
         },
         {
             "name": "mglaman/phpstan-drupal",
@@ -13609,16 +13610,16 @@
         },
         {
             "name": "nette/utils",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "d0427c1811462dbb6c503143eabe5478b26685f7"
+                "reference": "2bc2f58079c920c2ecbb6935645abf6f2f5f94ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/d0427c1811462dbb6c503143eabe5478b26685f7",
-                "reference": "d0427c1811462dbb6c503143eabe5478b26685f7",
+                "url": "https://api.github.com/repos/nette/utils/zipball/2bc2f58079c920c2ecbb6935645abf6f2f5f94ba",
+                "reference": "2bc2f58079c920c2ecbb6935645abf6f2f5f94ba",
                 "shasum": ""
             },
             "require": {
@@ -13688,9 +13689,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v3.2.0"
+                "source": "https://github.com/nette/utils/tree/v3.2.1"
             },
-            "time": "2020-11-25T23:47:50+00:00"
+            "time": "2021-01-11T03:05:59+00:00"
         },
         {
             "name": "openlss/lib-array2xml",
