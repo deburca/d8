@@ -539,16 +539,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.9.0",
+            "version": "v1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "b93bcf0fa1fccb0b7d176b0967d969691cd74cca"
+                "reference": "1a0357fccad9d1cc1ea0c9a05b8847fbccccb78d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/b93bcf0fa1fccb0b7d176b0967d969691cd74cca",
-                "reference": "b93bcf0fa1fccb0b7d176b0967d969691cd74cca",
+                "url": "https://api.github.com/repos/composer/installers/zipball/1a0357fccad9d1cc1ea0c9a05b8847fbccccb78d",
+                "reference": "1a0357fccad9d1cc1ea0c9a05b8847fbccccb78d",
                 "shasum": ""
             },
             "require": {
@@ -559,17 +559,18 @@
                 "shama/baton": "*"
             },
             "require-dev": {
-                "composer/composer": "1.6.* || 2.0.*@dev",
-                "composer/semver": "1.0.* || 2.0.*@dev",
-                "phpunit/phpunit": "^4.8.36",
-                "sebastian/comparator": "^1.2.4",
+                "composer/composer": "1.6.* || ^2.0",
+                "composer/semver": "^1 || ^3",
+                "phpstan/phpstan": "^0.12.55",
+                "phpstan/phpstan-phpunit": "^0.12.16",
+                "symfony/phpunit-bridge": "^4.2 || ^5",
                 "symfony/process": "^2.3"
             },
             "type": "composer-plugin",
             "extra": {
                 "class": "Composer\\Installers\\Plugin",
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-main": "1.x-dev"
                 }
             },
             "autoload": {
@@ -607,6 +608,7 @@
                 "Porto",
                 "RadPHP",
                 "SMF",
+                "Starbug",
                 "Thelia",
                 "Whmcs",
                 "WolfCMS",
@@ -647,6 +649,7 @@
                 "phpbb",
                 "piwik",
                 "ppi",
+                "processwire",
                 "puppet",
                 "pxcms",
                 "reindex",
@@ -664,7 +667,7 @@
             ],
             "support": {
                 "issues": "https://github.com/composer/installers/issues",
-                "source": "https://github.com/composer/installers/tree/v1.9.0"
+                "source": "https://github.com/composer/installers/tree/v1.10.0"
             },
             "funding": [
                 {
@@ -672,11 +675,15 @@
                     "type": "custom"
                 },
                 {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/composer/composer",
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-04-07T06:57:05+00:00"
+            "time": "2021-01-14T11:07:16+00:00"
         },
         {
             "name": "composer/semver",
@@ -7351,16 +7358,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.66",
+            "version": "0.12.67",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "4110a2425c6bd53acbdfcda07885e87b66e9ba3e"
+                "reference": "ced7a5d9c5dba908c1c00cea3f1d4ad74da71b86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/4110a2425c6bd53acbdfcda07885e87b66e9ba3e",
-                "reference": "4110a2425c6bd53acbdfcda07885e87b66e9ba3e",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ced7a5d9c5dba908c1c00cea3f1d4ad74da71b86",
+                "reference": "ced7a5d9c5dba908c1c00cea3f1d4ad74da71b86",
                 "shasum": ""
             },
             "require": {
@@ -7391,7 +7398,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.66"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.67"
             },
             "funding": [
                 {
@@ -7407,20 +7414,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-11T16:43:15+00:00"
+            "time": "2021-01-14T14:16:19+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
-            "version": "0.12.8",
+            "version": "0.12.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-strict-rules.git",
-                "reference": "ee0009302ff5312ca6b92a7330a6b66da0c70f12"
+                "reference": "0705fefc7c9168529fd130e341428f5f10f4f01d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/ee0009302ff5312ca6b92a7330a6b66da0c70f12",
-                "reference": "ee0009302ff5312ca6b92a7330a6b66da0c70f12",
+                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/0705fefc7c9168529fd130e341428f5f10f4f01d",
+                "reference": "0705fefc7c9168529fd130e341428f5f10f4f01d",
                 "shasum": ""
             },
             "require": {
@@ -7456,9 +7463,9 @@
             "description": "Extra strict and opinionated rules for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-strict-rules/issues",
-                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/0.12.8"
+                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/0.12.9"
             },
-            "time": "2021-01-11T13:36:23+00:00"
+            "time": "2021-01-13T08:50:28+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -15136,26 +15143,25 @@
         },
         {
             "name": "webmozart/glob",
-            "version": "4.1.0",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/glob.git",
-                "reference": "3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe"
+                "url": "https://github.com/webmozarts/glob.git",
+                "reference": "d1561806559682928e91de5822cd407ec2ace181"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/glob/zipball/3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe",
-                "reference": "3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe",
+                "url": "https://api.github.com/repos/webmozarts/glob/zipball/d1561806559682928e91de5822cd407ec2ace181",
+                "reference": "d1561806559682928e91de5822cd407ec2ace181",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3|^7.0",
+                "php": "^7.3 || ^8.0.0",
                 "webmozart/path-util": "^2.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.6",
-                "sebastian/version": "^1.0.1",
-                "symfony/filesystem": "^2.5"
+                "phpunit/phpunit": "^8.0",
+                "symfony/filesystem": "^5.1"
             },
             "type": "library",
             "extra": {
@@ -15180,10 +15186,10 @@
             ],
             "description": "A PHP implementation of Ant's glob.",
             "support": {
-                "issues": "https://github.com/webmozart/glob/issues",
-                "source": "https://github.com/webmozart/glob/tree/master"
+                "issues": "https://github.com/webmozarts/glob/issues",
+                "source": "https://github.com/webmozarts/glob/tree/4.2.0"
             },
-            "time": "2015-12-29T11:14:33+00:00"
+            "time": "2021-01-14T18:11:58+00:00"
         },
         {
             "name": "zaporylie/composer-drupal-optimizations",
