@@ -67,6 +67,19 @@ jobs:
           --analyzedDirs web/themes/mosaic \
           --tools phpmetrics,phploc:1,phpcs,phpmd,pdepend,phpcpd,psalm:1,security-checker \
           --output cli
+   
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+          node-version: 12
+          
+    - name: Install dependencies
+      run: npm ci
+        
+    - name: Release
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npx semantic-release
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
