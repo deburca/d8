@@ -35,3 +35,6 @@
 /private/
 /deburca_deburca8.sql
 /config/
+
+# Ignore external projects
+/web/themes/mosaic
