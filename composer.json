@@ -50,6 +50,7 @@
         "drupal/metatag": "^1.13",
         "drupal/pathauto": "^1.4",
         "drupal/redirect": "^1.4",
+        "drupal/restui": "^1.19",
         "drupal/seckit": "^2.0",
         "drupal/views_bootstrap": "^4.1",
         "drupal/viewsreference": "^2.0",
