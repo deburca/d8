@@ -1,5 +1,4 @@
 {
-  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "https:git@github.com:deburca/d8.git"
@@ -24,7 +23,7 @@
   "release": {
     "branches": [
       "master",
-      "next"
+      "develop"
     ],
     "plugins": [
       "@semantic-release/commit-analyzer",
