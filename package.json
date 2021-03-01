@@ -7,7 +7,7 @@
   "name": "d8",
   "version": "0.0.0-development",
   "private": true,
-  "husky": {
+  "XXhusky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
@@ -17,7 +17,7 @@
     "@commitlint/config-conventional": "^11.0.0",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
-    "husky": "^4.3.8",
+    "husky": "^5.0.9",
     "semantic-release": "^17.3.7"
   },
   "release": {
@@ -52,7 +52,8 @@
     ]
   },
   "scripts": {
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "prepare": "husky install"
   },
   "publishConfig": {
     "access": "restricted"
