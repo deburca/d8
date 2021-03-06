@@ -15,11 +15,13 @@
     "husky": "^5.0.9",
     "semantic-release": "^17.3.7"
   },
-  "rules": {
-    "body-max-line-length": [
-      0,
-      "always"
-    ]
+  "commitlint": {
+    "rules": {
+      "body-max-line-length": [
+        0,
+        "always"
+      ]
+    }
   },
   "release": {
     "branches": [
