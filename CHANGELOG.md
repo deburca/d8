@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/deburca/d8/compare/v1.4.0...v1.4.1) (2021-03-06)
+
+
+### Bug Fixes
+
+* refine git ignore ([a7bd25b](https://github.com/deburca/d8/commit/a7bd25b010d3f7b2e0a3a9c07563ca590368f09a))
+
 # [1.4.0](https://github.com/deburca/d8/compare/v1.3.0...v1.4.0) (2021-03-06)
 
 
