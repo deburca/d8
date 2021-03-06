@@ -38,3 +38,23 @@
 
 # Ignore external projects
 /web/themes/mosaic/
+
+# Drupal stuff and the like
+/web/.csslintrc
+/web/.editorconfig
+/web/.eslintignore
+/web/.eslintrc.json
+/web/.getattributes
+/web/.ht.router.php
+/web/.htaccess
+/web/.user.ini
+/web/INSTALL.txt
+/web/README.txt
+/web/autoload.php
+/web/example.gitignore
+/web/index.php
+/web/keybase.txt
+/web/phpinfo.php
+/web/robots.txt
+/web/update.php
+/web/web.config
