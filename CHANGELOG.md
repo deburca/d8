@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/deburca/d8/compare/v1.4.1...v1.5.0) (2021-03-07)
+
+
+### Features
+
+* upgrade drupal core ([fd21cd0](https://github.com/deburca/d8/commit/fd21cd0f31fece2c3764a10a01665626fbff6bd3))
+
 ## [1.4.1](https://github.com/deburca/d8/compare/v1.4.0...v1.4.1) (2021-03-06)
 
 
