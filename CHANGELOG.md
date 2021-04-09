@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/deburca/d8/compare/v1.5.0...v1.6.0) (2021-04-09)
+
+
+### Features
+
+* upgrade to Drupal 9.1.6 ([ff5a539](https://github.com/deburca/d8/commit/ff5a539e92b6dae072608731a5be662bafd4074d))
+
 # [1.5.0](https://github.com/deburca/d8/compare/v1.4.1...v1.5.0) (2021-03-07)
 
 
