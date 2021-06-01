@@ -1,4 +1,4 @@
-FROM php:7-fpm
+FROM php:7.3.28-fpm
 
 RUN apt-get update && apt-get install -y \
         libicu-dev libpng-dev libxslt1-dev libzip-dev \
